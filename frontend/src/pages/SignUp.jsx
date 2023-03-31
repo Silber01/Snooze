@@ -1,7 +1,7 @@
 import React from 'react'
 import './SignUp.css'
-import SnoozeHeader from '../general/SnoozeHeader'
-import SignUpTextFIeld from "../sign/SignUpTextfield"
+import SnoozeHeader from '../general/SnoozeHeader.jsx'
+import SignUpTextFIeld from "../sign/SignUpTextfield.jsx"
 
 const SignUp = (props) => {
   return (
