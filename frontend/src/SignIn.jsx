@@ -1,5 +1,5 @@
 import React from 'react'
-import SnoozeHeader from './general/SnoozeHeader'
+import SnoozeHeader from './general/SnoozeHeader.jsx'
 
 const SignIn = (props) => {
   return (
