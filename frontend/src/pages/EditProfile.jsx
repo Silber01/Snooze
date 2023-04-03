@@ -3,7 +3,7 @@ import './EditProfile.css';
 import SnoozeHeader from '../general/SnoozeHeader';
 import icon from '../../assets/sampleprofile.png';
 
-const EditProfile = (props) => {
+const EditProfile = () => {
   return (
     <div className="EditProfile">
       <SnoozeHeader />
