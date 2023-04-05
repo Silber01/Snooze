@@ -21,16 +21,6 @@ const SignIn = (props) => {
         </div>
       </>
     
-
-    
-    //   <div className="sign-in-container">
-    //     <div className="sign-in-sign-in-web">
-    //       <span className="sign-in-text">
-    //         <span>Sign In</span>
-    //       </span>
-    //   </div>
-    //   </div>
-    // 
   )
 }
 
