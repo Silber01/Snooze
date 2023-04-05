@@ -20,15 +20,15 @@ const EditProfile = (props) => {
         <div className="info-box">
           <div className='single-box'>
             <p className='text-title'>Name:</p>
-            <p >Daniel Slade</p>
+            <p>{props.user.name}</p>
           </div>
           <div className='single-box'>
             <p className='text-title'>Email:</p>
-            <p >abc@gmail.com</p>
+            <p>{props.user.email}</p>
           </div>
           <div className='single-box'>
             <p className='text-title'>Phone number:</p>
-            <p >123456789</p>
+            <p>{props.user.phoneNumber}</p>
           </div>
         </div>
         {/* TODO: change the path after creating the profile page */}

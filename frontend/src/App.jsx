@@ -6,14 +6,19 @@ import EditProfile from './pages/EditProfile';
 import SignUp from './pages/SignUp';
 
 function App() {
-
+  // for frontend testing only, will connect with backend and change these lines later
+  const user = {
+    name: "Daniel",
+    email: "test@gmail.com",
+    phoneNumber: '234567810'
+  }
   return (
     <div>
       {/* <SignIn/> */}
       <BrowserRouter>
         <Routes>
             <Route exact path = "/" element={<SignUp/>}/>
-            <Route exact path = "/editprofile" element={<EditProfile/>}/>
+            <Route exact path = "/editprofile" element={<EditProfile user={user} />}/>
         </Routes>
       </BrowserRouter>
     </div>
