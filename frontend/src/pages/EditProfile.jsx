@@ -1,9 +1,13 @@
 import React from 'react';
 import './EditProfile.css';
+import { useNavigate } from 'react-router-dom';
 import SnoozeHeader from '../general/SnoozeHeader';
 import icon from '../../assets/sampleprofile.png';
 
-const EditProfile = () => {
+const EditProfile = (props) => {
+
+  let navigate = useNavigate();
+
   return (
     <div className="EditProfile">
       <SnoozeHeader />
@@ -27,7 +31,8 @@ const EditProfile = () => {
             <p >123456789</p>
           </div>
         </div>
-        <button className='button'>Save</button>
+        {/* TODO: change the path after creating the profile page */}
+        <button className='button' onClick={()=> navigate('/')}>Save</button>
         
         
       </div>

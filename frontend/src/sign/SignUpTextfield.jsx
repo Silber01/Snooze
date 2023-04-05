@@ -24,5 +24,4 @@ function SignUpTextField()
     )
 }
 
-
 export default SignUpTextField

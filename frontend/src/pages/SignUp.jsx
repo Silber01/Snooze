@@ -1,13 +1,13 @@
-import React from 'react'
-import './SignUp.css'
-import SnoozeHeader from '../general/SnoozeHeader'
-import SignUpTextFIeld from "../sign/SignUpTextfield"
+import React from 'react';
+import './SignUp.css';
+import SnoozeHeader from '../general/SnoozeHeader';
+import SignUpTextField from "../sign/SignUpTextField.jsx";
 
 const SignUp = (props) => {
   return (
     <div className="SignUp">
       <SnoozeHeader />
-      <SignUpTextFIeld />
+      <SignUpTextField />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import SignIn from './SignIn';
 import EditProfile from './pages/EditProfile';
+import SignUp from './pages/SignUp';
 
 function App() {
 
@@ -11,8 +12,8 @@ function App() {
       {/* <SignIn/> */}
       <BrowserRouter>
         <Routes>
-              <Route exact path = "/" element={<SignIn/>}/>
-              <Route exact path = "/editprofile" element={<EditProfile/>}/>
+            <Route exact path = "/" element={<SignUp/>}/>
+            <Route exact path = "/editprofile" element={<EditProfile/>}/>
         </Routes>
       </BrowserRouter>
     </div>
