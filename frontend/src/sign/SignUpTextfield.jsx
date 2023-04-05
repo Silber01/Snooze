@@ -16,7 +16,7 @@ function SignUpTextField()
                     <input type="password" placeholder='Password'/>
                 </form>
                 <button className='ContinueButton'>Continue</button>
-                <p className='HaveAnAccountText'>Aleady have an account? <a href="https://example.com">Sign in</a></p>
+                <p className='HaveAnAccountText'>Aleady have an account? <a href="http://localhost:5173/">Sign in</a></p>
             </div>
             
         </div>

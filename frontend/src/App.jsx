@@ -14,10 +14,10 @@ function App() {
   }
   return (
     <div>
-      {/* <SignIn/> */}
       <BrowserRouter>
         <Routes>
-            <Route exact path = "/" element={<SignUp/>}/>
+            <Route exact path = "/" element={<SignIn/>}/>
+            <Route exact path = "/signup" element={<SignUp/>}/>
             <Route exact path = "/editprofile" element={<EditProfile user={user} />}/>
         </Routes>
       </BrowserRouter>
