@@ -5,6 +5,7 @@ import SignIn from './SignIn';
 import EditProfile from './pages/EditProfile';
 import SignUp from './pages/SignUp';
 import ForgotPw from './pages/ForgotPw';
+import EditPassword from './pages/EditPassword';
 
 function App() {
   // for frontend testing only, will connect with backend and change these lines later
@@ -21,8 +22,7 @@ function App() {
             <Route exact path = "/signup" element={<SignUp/>}/>
             <Route exact path = "/editprofile" element={<EditProfile user={user} />}/>
             <Route exact path = "/forgotpassword" element={<ForgotPw/>}/>
-
-
+            <Route exact path = "/editpassword" element={<EditPassword/>}/>
         </Routes>
       </BrowserRouter>
     </div>
