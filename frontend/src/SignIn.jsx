@@ -1,7 +1,6 @@
 import React from 'react'
 import './sign/SignUpTextField.css'
 import SnoozeHeader from './general/SnoozeHeader'
-import SignUpTextField from './sign/SignUpTextField.jsx'
 
 const SignIn = (props) => {
   return (
@@ -16,7 +15,7 @@ const SignIn = (props) => {
               </form>
               <button className='ContinueButton'>Sign In</button>
               <p className='HaveAnAccountText'>Don't have one? <a href="http://localhost:5173/signup"> Sign Up</a></p>
-              <p className='HaveAnAccountText'><a href="http://example.com">Forgot Password?</a></p>
+              <p className='HaveAnAccountText'><a href="http://localhost:5173/forgotpassword">Forgot Password?</a></p>
             </div>
         </div>
       </>
