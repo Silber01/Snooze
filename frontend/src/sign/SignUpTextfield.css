@@ -39,4 +39,9 @@
     background-color: #D3D0EB;
     font-size: 25px;
     color:white;
+    transition: filter 0.2s ease-in-out;
+}
+
+.ContinueButton:hover {
+    filter:brightness(90%)
 }

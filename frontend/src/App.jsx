@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import SignIn from './SignIn';
+import SignIn from './sign/SignIn';
 import EditProfile from './pages/EditProfile';
-import SignUp from './pages/SignUp';
+import SignUp from './sign/SignUp';
 import ForgotPw from './pages/ForgotPw';
 import EditPassword from './pages/EditPassword';
 
