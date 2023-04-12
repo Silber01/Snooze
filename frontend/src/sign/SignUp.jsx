@@ -37,10 +37,10 @@ const SignUp = (props) => {
         setFirstNameValid(false)
       if (!lastNameRef.current.value)
         setLastNameValid(false)
-      // if (!passwordRef.current.value)
-      //   setPasswordValid(false)
+      if (!passwordRef.current.value)
+        setPasswordValid(false)
     }
-  }, [signup, error])
+  }, [error])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
