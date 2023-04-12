@@ -1,6 +1,5 @@
 import React from 'react'
 import './SignUpTextfield.css'
-import './loginForm.css'
 import SnoozeHeader from '../general/SnoozeHeader'
 import { useState, useRef } from 'react'
 
