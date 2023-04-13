@@ -21,6 +21,7 @@ export const useSignup = () => {
     if (!response.ok) {
       setIsLoading(false)
       setError(json.error)
+      window.location.reload()
     }
     if (response.ok) {
       // save the user to local storage
@@ -28,7 +29,8 @@ export const useSignup = () => {
 
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
-
+      console.log("SIGNUP SUCCESSFUL")
+      window.location.href = 'http://localhost:3000/editprofile';
       // update loading state
       setIsLoading(false)
     }

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 // get all hotels
 const getHotels = async (req, res) => {
-  const hotels = await Hotel.find({}).sort({createdAt: -1})
+  const hotels = await Hotel.find({}).sort({ createdAt: -1 })
 
   res.status(200).json(hotels)
 }
@@ -13,44 +13,44 @@ const getHotel = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such hotel'})
+    return res.status(404).json({ error: 'No such hotel' })
   }
 
   const hotel = await Hotel.findById(id)
 
   if (!hotel) {
-    return res.status(404).json({error: 'No such hotel'})
+    return res.status(404).json({ error: 'No such hotel' })
   }
-  
+
   res.status(200).json(hotel)
 }
 
 
 // create new hotel
 const createHotel = async (req, res) => {
-  const {name, location, rooms} = req.body
+  const { name, location, rooms } = req.body
 
   let emptyFields = []
 
-  if(!name) {
+  if (!name) {
     emptyFields.push('name')
   }
-  if(!location) {
+  if (!location) {
     emptyFields.push('location')
   }
-  if(!rooms) {
+  if (!rooms) {
     emptyFields.push('rooms')
   }
-  if(emptyFields.length > 0) {
+  if (emptyFields.length > 0) {
     return res.status(400).json({ error: 'Please fill in all the fields', emptyFields })
   }
 
   // add doc to db
   try {
-    const hotel = await Hotel.create({name, location, rooms})
+    const hotel = await Hotel.create({ name, location, rooms })
     res.status(200).json(hotel)
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message })
   }
 }
 
@@ -59,13 +59,13 @@ const deleteHotel = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such hotel'})
+    return res.status(404).json({ error: 'No such hotel' })
   }
 
-  const hotel = await Hotel.findOneAndDelete({_id: id})
+  const hotel = await Hotel.findOneAndDelete({ _id: id })
 
   if (!hotel) {
-    return res.status(400).json({error: 'No such hotel'})
+    return res.status(400).json({ error: 'No such hotel' })
   }
 
   res.status(200).json(hotel)
@@ -76,15 +76,15 @@ const updateHotel = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such hotel'})
+    return res.status(404).json({ error: 'No such hotel' })
   }
 
-  const hotel = await Hotel.findOneAndUpdate({_id: id}, {
+  const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
     ...req.body
   })
 
   if (!hotel) {
-    return res.status(400).json({error: 'No such hotel'})
+    return res.status(400).json({ error: 'No such hotel' })
   }
 
   res.status(200).json(hotel)

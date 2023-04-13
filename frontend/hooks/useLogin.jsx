@@ -25,12 +25,13 @@ export const useLogin = () => {
     if (response.ok) {
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
-
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
 
       // update loading state
       setIsLoading(false)
+      console.log("LOGIN SUCCESSFUL")
+      window.location.href = 'http://localhost:3000/editprofile';
     }
   }
 
