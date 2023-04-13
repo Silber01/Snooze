@@ -9,11 +9,10 @@ const SignIn = (props) => {
   const [emailValid, setEmailValid] = useState(true)
   const [passwordValid, setPasswordValid] = useState(true)
   const {login, error, isLoading} = useLogin()
-
-  useEffect(() => {
-    console.log("LOGIN: " + login)
-    console.log("ERROR: " + error)
-  }, [error, login])
+  // useEffect(() => {
+  //   console.log("LOGIN: " + login)
+  //   console.log("ERROR: " + error)
+  // }, [error, login])
 
   useEffect(() => {
     console.log(error)
@@ -34,8 +33,10 @@ const SignIn = (props) => {
     }
   }, [error])
 
+
   const handleSubmit = async () => {
-    await login(emailRef.current.value, passwordRef.current.value)
+    login(emailRef.current.value, passwordRef.current.value);
+
   }
 
   return (

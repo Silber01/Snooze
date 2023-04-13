@@ -53,7 +53,7 @@ const SignUp = (props) => {
             <div className="SignUpTextField">
                 <p className='CreateAccountText'>Create An Account</p>
                 <form className='loginForm'>
-                    <input type="text" className={validityClass(emailValid)} placeholder="Email Address" ref={emailRef}/>
+                    <input type="text" className={validityClass(emailValid)} placeholder="Emil Address" ref={emailRef}/>a
                     <input type="text" className={validityClass(firstNameValid)} placeholder="First Name"ref={firstNameRef}/>
                     <input type="text" className={validityClass(lastNameValid)} placeholder='Last Name'ref={lastNameRef}/>
                     <input type="password" className={validityClass(passwordValid)} placeholder='Password'ref={passwordRef}/>
