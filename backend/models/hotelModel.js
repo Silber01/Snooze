@@ -3,9 +3,24 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const hotelSchema = new Schema({
+    id:{
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         required: true
+    },
+    description:{
+        type: String,
+        required: true
+    },
+    ratings:{
+        1: Number,
+        2: Number,
+        3: Number,
+        4: Number,
+        5: Number
     },
     location: {
         address: {
@@ -16,7 +31,7 @@ const hotelSchema = new Schema({
             type: String,
             required: true
         },
-        state: {
+        province: {
             type: String,
             required: false
         },
@@ -26,11 +41,15 @@ const hotelSchema = new Schema({
         },
     },
     rooms: [{
-        id: {type:String},
-        roomType: {type:String}, 
-        datesBooked: {type:String},
+        id:Number,
+        price: Number,
+        beds: Number,
+        hasWifi: Boolean,
+        datesBooked:[{
+            firstDate: String,
+            lastDate: String
+        }]
     }]
-
 })
 
 module.exports = mongoose.model('Hotel', hotelSchema)
