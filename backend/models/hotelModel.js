@@ -22,6 +22,9 @@ const hotelSchema = new Schema({
         4: Number,
         5: Number
     },
+    reviews:[{
+        id: Number,
+    }],
     location: {
         address: {
             type: String,

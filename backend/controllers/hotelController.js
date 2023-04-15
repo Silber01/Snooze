@@ -28,7 +28,7 @@ const getHotel = async (req, res) => {
 
 // create new hotel
 const createHotel = async (req, res) => {
-  const {id, name, description, ratings, location, rooms} = req.body
+  const {id, name, description, ratings, reviews, location, rooms} = req.body
 
   let emptyFields = []
 
@@ -47,7 +47,7 @@ const createHotel = async (req, res) => {
 
   // add doc to db
   try {
-    const hotel = await Hotel.create({id, name, description, ratings, location, rooms})
+    const hotel = await Hotel.create({id, name, description, ratings, reviews, location, rooms})
     res.status(200).json(hotel)
   } catch (error) {
     res.status(400).json({ error: error.message })
