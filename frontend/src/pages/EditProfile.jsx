@@ -26,10 +26,10 @@ const EditProfile = (props) => {
             <p className='text-title'>Email:</p>
             <p>{props.user.email}</p>
           </div>
-          <div className='single-box'>
+          {/* <div className='single-box'>
             <p className='text-title'>Phone number:</p>
             <p>{props.user.phoneNumber}</p>
-          </div>
+          </div> */}
         </div>
         {/* TODO: change the path after creating the profile page */}
         <button className='button' onClick={()=> navigate('/')}>Save</button>

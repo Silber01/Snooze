@@ -14,6 +14,27 @@ const ProfilePage = (props) => {
         <div className="box">
           <img className="image" src={image} alt="" />
         </div>
+            <div className="text">
+                <p>PERSONAL</p>
+                <p>BOOKING</p>
+                <p>REWARDS</p>
+            </div>
+             <p className='title-info'>Personal Info</p>
+             <div className="Info">
+
+             </div>
+             <p className='title-info'>Current Bookings</p>
+             <div className="Info1">
+
+             </div>
+             <p className='title-info'>Past Bookings</p>
+             <div className="Info1">
+
+             </div>
+             <p className='title-info'>Rewards</p>
+            <div className="Info2">
+                
+            </div>
         </>
         
 

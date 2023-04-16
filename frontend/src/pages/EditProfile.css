@@ -47,7 +47,7 @@
 
 .button{
     width: 100px;
-    height: 30px;
+    height: 40px;
     margin-top: 20px;
     background: #34A853;
     border: 1px solid #34A853;
@@ -55,3 +55,6 @@
     color: #ffffff;
 }
 
+.button:hover {
+    filter:brightness(90%)
+}

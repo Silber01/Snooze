@@ -13,6 +13,40 @@ img {
     margin: 5%;
     border-radius: 50%;
     width: 100px;
-    margin-top: 35px;
+    margin-top: 30px;
 }
+
+.text {
+    display: flex;
+    gap: 40%;
+    margin-left: 3%;
+}
+
+.title-info{
+    font-weight: 800;
+    font-size: 25px;
+    margin-left: 10%;
+}
+
+.Info {
+  width: 600px;
+  height: 200px;
+  border: 2px solid black;
+  margin-left: 15%;
+}
+
+.Info1 {
+    width: 800px;
+    height: 250px;
+    background-color: #F2DFDF;
+    margin-left: 15%;
+  }
+
+  .Info2 {
+    height: 1800px;
+    width: 600px;
+    margin-left: 15%;
+    border-radius: 0px;
+    background-color: #E2E7E3;
+  }
 
