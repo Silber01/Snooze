@@ -3,17 +3,17 @@ import "./PaymentTextfield.css"
 import { useNavigate } from 'react-router-dom';
 import SnoozeHeader from '../general/SnoozeHeader';
 
-const PaymentTextField = (props) => {
+const Payment = (props) => {
 
     let navigate = useNavigate();
   
-function PaymentTextField()
+function Payment()
 {
     return (
         <div className='Centerer'>
             <SnoozeHeader />
-            <div className="PaymentTextField">
-                <p className='Pyament Details'>Payment Details</p>
+            <div className="Payment">
+                <p className='Payment Details'>Payment Details</p>
 
                 <input type="text" placeholder='When would you like to pay?'/>
 
