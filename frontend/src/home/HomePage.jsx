@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import sampleHotelData from "../../sampleHotels.json"
 import SnoozeHeader from '../general/SnoozeHeader'
+import SearchBar from '../searchbar/SearchBar';
 
 function HomePage(props) {
-    let hotels = sampleHotelData.HOTELS
-    
-    
+    let hotels = sampleHotelData.HOTELS  
     return (
         <>
         <SnoozeHeader />
+        <SearchBar/>
             {hotels.map((hotel, i) => {
                 return (
                     <>{printHotelRoom(hotel)}</>
@@ -18,7 +18,6 @@ function HomePage(props) {
         </>
     )
 }
-
 
 function printHotelRoom(hotel)
 
