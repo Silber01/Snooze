@@ -15,7 +15,7 @@ const EditProfile = (props) => {
         <div className='icon-box'>
           <p className='title'>Edit Profile</p>
           <img className="icon" src={icon} alt="" />
-          <p>Edit picture or avator</p>
+          <p>Edit picture or avatar</p>
         </div>
         <div className="info-box">
           <div className='single-box'>
