@@ -15,7 +15,7 @@ function HomePage(props) {
         <div>
             <SnoozeHeader>
             <div className='SearchBarContainer'>
-                <SearchBar placeholder="location">
+                <SearchBar placeholder="Location">
                     <GrLocation className='searchbar-icon'/>
                 </SearchBar >
                 <SearchBar placeholder="Check in - out">
