@@ -4,8 +4,11 @@ import ReactDOM from "react-dom";
 import {GrLocation} from 'react-icons/gr' //npm install react-icons --save
 import {MdDateRange} from 'react-icons/md'
 import {MdPeopleOutline} from 'react-icons/md'
+import {BiSearch} from 'react-icons/bi'
 
-const SearchBar = ({}) => {
+
+const SearchBar = ({searchingButton}) => {
+
     return (
         <div className="SearchBar">
             <div className='locationInput'>
@@ -23,6 +26,13 @@ const SearchBar = ({}) => {
             <div className='guestRoomInput'>
                 <div className='input flex'>
                     <input type="text" placeholder='Guest & rooms'></input>
+                </div>
+            </div>
+
+            <div className='searchButton'>
+                <div className='input flex'>
+                    <button className='continueSearchButton' type="submit" onClick={() => {(searchRef)}}>Search</button>
+                    <BiSearch className="searchIcon"/>
                 </div>
             </div>
 
