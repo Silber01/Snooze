@@ -1,18 +1,16 @@
 import React from 'react'
 import "./SearchBar.css"
 import ReactDOM from "react-dom";
-import Search from "./Search";
 
-const SearchBar = (props) => {
+const SearchBar = ({placeholderText, onChangeHandler}) => {
     return (
         <div className="SearchBar">
         <div className="IconInput">
           <input
-            value={props.contactsValue}
-            onChange={props.onChangeHandler}
+            onChange={onChangeHandler}
             className="prompt"
             type="text"
-            placeholder="Location"
+            placeholder={placeholderText}
           />
           <i className="SearchIcon" />
         </div>

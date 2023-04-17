@@ -7,15 +7,17 @@ import SearchBar from '../searchbar/SearchBar';
 function HomePage(props) {
     let hotels = sampleHotelData.HOTELS  
     return (
-        <>
-        <SnoozeHeader />
-        <SearchBar/>
-            {hotels.map((hotel, i) => {
-                return (
-                    <>{printHotelRoom(hotel)}</>
-                )
-            }) }
-        </>
+        <div>
+            <SnoozeHeader />
+            <SearchBar placeholderText="Location"/>
+            <SearchBar placeholderText="Check in - out" />
+            <SearchBar placeholderText="Guest & rooms" />
+
+            
+        </div>
+        
+        
+    
     )
 }
 
