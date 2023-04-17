@@ -31,8 +31,8 @@ const EditProfile = (props) => {
             <p>{props.user.phoneNumber}</p>
           </div> */}
         </div>
-        {/* TODO: change the path after creating the profile page */}
-        <button className='button' onClick={()=> navigate('/')}>Save</button>
+  
+        <button className='button' onClick={()=> navigate('/profilepage')}>Save</button>
         
         
       </div>
