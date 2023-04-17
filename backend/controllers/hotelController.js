@@ -25,6 +25,30 @@ const getHotel = async (req, res) => {
   res.status(200).json(hotel)
 }
 
+// get a single hotel room
+const getRoom = async (req, res) => {
+  const { id } = req.params
+  const { roomid } = req.params
+  console.log(roomid)
+
+  if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(roomid)) {
+    return res.status(404).json({ error: 'No such hotel' })
+  }
+  console.log("valid args")
+
+  const hotel = await Hotel.find({_id: id, 'rooms._id': {$in: roomid}}, {rooms: {$elemMatch: {_id: roomid}}})
+
+  /*
+  const hotel = await Hotel.aggregate([
+    { $match: {_id: id, 'rooms._id': {$eq: roomid}}}
+  ])
+  if (!hotel) {
+    return res.status(404).json({ error: 'No such hotel' })
+  }
+  */
+
+  res.status(200).json(hotel)
+}
 
 // create new hotel
 const createHotel = async (req, res) => {
@@ -90,11 +114,39 @@ const updateHotel = async (req, res) => {
   res.status(200).json(hotel)
 }
 
+//Book a Hotel Room
+const bookHotel = async (req, res) => {
+  const { id } = req.params
+  const { roomid } = req.params
+
+  console.log(req.params)
+  console.log("logging")
+  console.log(req.body)
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such hotel' })
+  }
+
+  //const hotel = await Hotel.findById({_id: id, 'rooms.id': roomid})
+
+  const hotel = await Hotel.findOneAndUpdate({_id: id, rooms:{$elemMatch:{id: roomid}}}, {$set: {rooms}})
+
+  if (!hotel) {
+    return res.status(400).json({ error: 'No such hotel' })
+  }
+
+  res.status(200).json(hotel)
+}
+
+
+
 
 module.exports = {
   getHotel,
   getHotels,
   createHotel,
   deleteHotel,
-  updateHotel
+  updateHotel,
+  getRoom,
+  bookHotel
 }
