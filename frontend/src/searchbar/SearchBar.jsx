@@ -2,47 +2,16 @@ import React from 'react'
 import "./SearchBar.css"
 import ReactDOM from "react-dom";
 import {GrLocation} from 'react-icons/gr' //npm install react-icons --save
-import {MdDateRange} from 'react-icons/md'
-import {MdPeopleOutline} from 'react-icons/md'
-import {BiSearch} from 'react-icons/bi'
 
 
-const SearchBar = ({searchingButton}) => {
+
+const SearchBar = ({placeholder, children}) => {
 
     return (
         <div className="SearchBar">
-            <div className='locationInput'>
-                <div className='input flex'>
-                    <input type="text" placeholder='Location'></input>
-                </div>
-            </div>
-
-            <div className='dateInput'>
-                <div className='input flex'>
-                    <input type="date" placeholder='Check in - out'></input>
-                </div>
-            </div>
-
-            <div className='guestRoomInput'>
-                <div className='input flex'>
-                    <input type="text" placeholder='Guest & rooms'></input>
-                </div>
-            </div>
-
-            <div className='searchButton'>
-                <div className='input flex'>
-                    <button className='continueSearchButton' type="submit" onClick={() => {(searchRef)}}>Search</button>
-                    <BiSearch className="searchIcon"/>
-                </div>
-            </div>
-
-            <div className = 'homeIcons flex'>
-                <div className='leftIcons'>
-                    <GrLocation className='icon'/>
-                    <MdDateRange className='icon'/>
-                    <MdPeopleOutline className='icon'/>
-                </div>
-
+            {children}
+            <div className='input flex'>
+                <input type="text" placeholder={placeholder}></input>
             </div>
         </div>
     )
@@ -50,3 +19,13 @@ const SearchBar = ({searchingButton}) => {
 
 
 export default SearchBar
+
+
+/*
+<div className='searchButton'>
+                    <div className='input flex'>
+                        <button className='continueSearchButton' type="submit" onClick={() => {(searchRef)}}>Search</button>
+                        <BiSearch className="searchIcon"/>
+                    </div>
+                </div>
+*/

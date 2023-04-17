@@ -4,12 +4,31 @@ import sampleHotelData from "../../sampleHotels.json"
 import SnoozeHeader from '../general/SnoozeHeader'
 import SearchBar from '../searchbar/SearchBar';
 
+import {GrLocation} from 'react-icons/gr' //npm install react-icons --save
+import {MdDateRange} from 'react-icons/md'
+import {MdPeopleOutline} from 'react-icons/md'
+import {BiSearch} from 'react-icons/bi'
+
 function HomePage(props) {
     let hotels = sampleHotelData.HOTELS  
     return (
         <div>
-            <SnoozeHeader />
-            <SearchBar/>
+            <SnoozeHeader>
+            <div className='SearchBarContainer'>
+                <SearchBar placeholder="location">
+                    <GrLocation className='searchbar-icon'/>
+                </SearchBar >
+                <SearchBar placeholder="Check in - out">
+                    <MdDateRange className='searchbar-icon'/>
+                </SearchBar >
+
+                <SearchBar placeholder="Guest and Rooms">
+                    <MdPeopleOutline className='searchbar-icon'/>
+                </SearchBar >
+
+            </div>
+            </SnoozeHeader>
+            
             
         </div>
         
