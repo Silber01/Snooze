@@ -39,7 +39,7 @@ const ProfilePage = (props) => {
                 <div className="text-single">
                     <p className='text1'>Credit Card:</p>
                     {/* have to figure out how to mask */}
-                    <p>0000 1111 2222 1234</p>
+                    <p>0000 1122 3344 1234</p>
                 </div>
              </div>
              
