@@ -22,7 +22,7 @@ function HomePage(props) {
                     <MdDateRange className='searchbar-icon'/>
                 </SearchBar >
 
-                <SearchBar placeholder="Guest and Rooms">
+                <SearchBar placeholder="Guest & Rooms">
                     <MdPeopleOutline className='searchbar-icon'/>
                 </SearchBar >
 
