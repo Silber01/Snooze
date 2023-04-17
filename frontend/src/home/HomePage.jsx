@@ -9,10 +9,7 @@ function HomePage(props) {
     return (
         <div>
             <SnoozeHeader />
-            <SearchBar placeholderText="Location"/>
-            <SearchBar placeholderText="Check in - out" />
-            <SearchBar placeholderText="Guest & rooms" />
-
+            <SearchBar/>
             
         </div>
         

@@ -1,11 +1,57 @@
 .SearchBar {
     margin-top: 100px;
     text-align: center;
-    left: auto;
+    nav-down: 50%
+    ;
   }
 
-i {
-    cursor: pointer;
+.icon{
+    width: 2%;
+    height: 5%;
+    position: relative;
+    right: 10%;
+    padding: 8%;
+    padding-top: 1%;
+    
 }
-  
-  
+
+.locationInput{
+    position: absolute;
+    width: 14 em;
+    height: 179 em;
+    right: 70%;
+    top: 16%;
+    background: #FFFFFF;
+    border-radius: 25px;
+    border: 37.5% solid #9A9A9A;
+
+}
+
+.dateInput{
+    box-sizing: border-box;
+    
+    position: absolute;
+    width: 14 em;
+    height: 179 em;
+    right: 53%;
+    top: 16%;
+    
+    background: #FFFFFF;
+    border-radius: 25px;
+    border: 37.5% solid #9A9A9A;
+}
+      
+.guestRoomInput{
+    box-sizing: border-box;
+    
+    position: absolute;
+    width: 14 em;
+    height: 179 em;
+    right: 34%;
+    top: 16%;
+    
+    background: #FFFFFF;
+    border-radius: 25px;
+    border: 37.5% solid #9A9A9A;
+}
+   
