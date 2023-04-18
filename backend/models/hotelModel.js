@@ -7,6 +7,26 @@ const hotelSchema = new Schema({
         type: String,
         required: true
     },
+    description:{
+        type: String,
+        required: true
+    },
+    imgsrc:{
+        type: String,
+        required: true
+    },
+    ratings:{
+        1:{type: Number},
+        2:{type: Number},
+        3:{type: Number},
+        4:{type: Number},
+        5:{type: Number}
+    },
+    reviews:[{
+        user: String,
+        review: String,
+        rating: Number,
+    }],
     location: {
         address: {
             type: String,
@@ -16,7 +36,7 @@ const hotelSchema = new Schema({
             type: String,
             required: true
         },
-        state: {
+        province: {
             type: String,
             required: false
         },
@@ -26,10 +46,38 @@ const hotelSchema = new Schema({
         },
     },
     rooms: [{
-        id: {type:String},
-        roomType: {type:String}, 
-        datesBooked: {type:String},
-    }]
+        datesBooked:[{
+            firstDate:{
+                type: String,
+            },
+            lastDate: {
+                type: String,
+            },
+        }],
+        price: {
+            type:Number,
+            required: true
+        },
+        roomType: {
+            type:String,
+            required: true
+        },
+        roomNum: {
+            type:Number,
+            required: true
+        },
+        beds: {
+            type:Number,
+            required: true
+        },
+        hasWifi: {
+            type:Boolean,
+            required: true
+        },
+        
+        imgsrc: String,
+    }],
+
 
 })
 

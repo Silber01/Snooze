@@ -8,6 +8,38 @@ const getHotels = async (req, res) => {
   res.status(200).json(hotels)
 }
 
+run()
+async function run(){
+  const hotel = await Hotel.create ({
+    name: "Another Test Hotel 2",
+    description: "Test Description",
+    imgsrc: "image",
+    rooms:[{price:40, roomType:"Suite",roomNum:200, beds: 2, hasWifi: true, imgsrc: "image", 
+    datesBooked:[
+      {firstDate:"2023-04-07",lastDate:"2023-04-10"},
+      {firstDate:"2023-04-13",lastDate:"2023-04-17"},
+    ]}],
+    ratings:{1:4, 2:5, 3:4, 4:4, 5:5},
+    reviews:[
+      {user:"test user", review: "abc", rating:4},
+      {user:"test user", review: "abc", rating:4},
+      {user:"test user", review: "abc", rating:4}
+    ],
+    location:{
+      address:"test",
+      city:"san jose",
+      province:"California",
+      country:"United States"
+    },
+  })
+  await hotel.save()
+  console.log(hotel)
+}
+
+
+
+
+
 // get a single hotel
 const getHotel = async (req, res) => {
   const { id } = req.params
@@ -36,8 +68,10 @@ const getRoom = async (req, res) => {
   }
   console.log("valid args")
 
-  const hotel = await Hotel.find({_id: id, 'rooms._id': {$in: roomid}}, {rooms: {$elemMatch: {_id: roomid}}})
-
+  const hotel = await Hotel.find(
+    {_id: id, rooms: { $elemMatch: {_id: roomid} } },
+    { "rooms.$": 1}
+ )
   /*
   const hotel = await Hotel.aggregate([
     { $match: {_id: id, 'rooms._id': {$eq: roomid}}}
