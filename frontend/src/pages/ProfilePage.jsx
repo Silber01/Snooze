@@ -2,11 +2,38 @@ import React from 'react';
 import './ProfilePage.css';
 import { useNavigate } from 'react-router-dom';
 import image from '../../assets/sampleprofile.png';
+import Rewardpoints from '../components/Rewardpoints';
 
 
 const ProfilePage = (props) => {
 
     let navigate = useNavigate();
+    const pointList = [
+        {
+            point: 1500,
+            gifts: ["Snooze Keychains", "Snooze Pen", "Snooze Sleeping Mask"]
+        },
+        {
+            point: 3000,
+            gifts: ["$15 Giftcard", "$15 Voucher"]
+        },
+        {
+            point: 20000,
+            gifts: ["Hotel Gift Basket", "Snooze Blanket"]
+        },
+        {
+            point: 100000,
+            gifts: ["Free Stay at Hotel under $200 per night", "Free Flight up to $250"]
+        },
+        {
+            point: 500000,
+            gifts: ["Full Paid Trip (Hotel and Flight) for 5 day stay at Any Hotel"]
+        },
+        
+
+
+    ]
+    const name = `${props.user.firstName} ${props.user.lastName}`;
 
     return (
         <>
@@ -18,8 +45,7 @@ const ProfilePage = (props) => {
                 </div>
                 <div className='right'>
                     <button className='button-profile' onClick={()=> navigate('/editprofile')}>EditProfile</button>
-                    {/* have to change with user input */}
-                    <p className="text-pp">Daniel Slade</p>
+                    <p className="text-pp">{name}</p>
                 </div>
             </div>
 
@@ -34,8 +60,7 @@ const ProfilePage = (props) => {
              <div className='info-box'>
                 <div className="text-single">
                     <p className='text1'>Email:</p>
-                    {/* have to change with user input */}
-                    <p>siliver01@gmail.com</p>
+                    <p>{props.user.email}</p>
                 </div>
                 <div className="text-single">
                     {/* <p className='text1'>Credit Card:</p> */}
@@ -48,7 +73,6 @@ const ProfilePage = (props) => {
              <div className="Info1">
                 {/* have to figure out how to show the bookings */}
              </div>
-
              <p className='title-info'>Past Bookings</p>
              <div className="Info1">
                 {/* have to figure out showing past bookings */}
@@ -59,10 +83,17 @@ const ProfilePage = (props) => {
                 <p className='rewards'> Point & Rewards</p>
                 <div className='circle'>
                     <div className='rewardtext'>
-                        <p>100,000</p>
-                        <p>Points available</p>
+                        {/* have to figure out how to get reward points and replace here */}
+                        <p>1,000,000 <br/> Points available </p>
                     </div>
                 </div>
+                {/* call the component instead of writing the same code multiple time */}
+                {pointList.map(reward => {
+                return (
+                    <Rewardpoints reward={reward}/>
+                )
+                })}
+              
              </div>
              
         </>

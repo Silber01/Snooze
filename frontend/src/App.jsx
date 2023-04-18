@@ -15,7 +15,7 @@ function App() {
     userData = {
       firstName: null,
       lastName: null,
-      email: null
+      email: null,
     }
   }
   
@@ -30,13 +30,14 @@ function App() {
         <Routes>
             <Route exact path = "/" element={<SignIn/>}/>
             <Route exact path = "/signup" element={<SignUp/>}/>
-            <Route exact path = "/profilepage" element={<ProfilePage/>}/>
-            <Route exact path = "/editprofile" element={<EditProfile user={user} />}/>
+            <Route exact path = "/profilepage" element={<ProfilePage user={user}/>}/>
+            <Route exact path = "/editprofile" element={<EditProfile user={user}/>}/>
             <Route exact path = "/forgotpassword" element={<ForgotPw/>}/>
             <Route exact path = "/editpassword" element={<EditPassword/>}/>
         </Routes>
       </BrowserRouter>
     </div>
+    
   )
 }
 

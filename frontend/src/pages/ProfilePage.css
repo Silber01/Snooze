@@ -118,13 +118,22 @@ img {
     margin-left: 20%;
   }
   
-  /* have to make two rows */
   .rewardtext {
     font-size: 30px;
     display: flex;
     margin: auto;
     flex-direction: row;
+    text-align: center;
+    font-weight: 600;
   }
 
+  .points-box > h1 {
+    font-size: 25px;
+    margin-left: 2em;
+    margin-top:2em;
+  }
 
-  
+  .points-box > p {
+    margin-left: 8em;
+  }
+
