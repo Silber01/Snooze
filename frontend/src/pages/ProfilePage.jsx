@@ -22,6 +22,7 @@ const ProfilePage = (props) => {
                     <p className="text-pp">Daniel Slade</p>
                 </div>
             </div>
+
             <div className="text">
                 <p>PERSONAL</p>
                 <p>BOOKING</p>
@@ -37,33 +38,35 @@ const ProfilePage = (props) => {
                     <p>siliver01@gmail.com</p>
                 </div>
                 <div className="text-single">
-                    <p className='text1'>Credit Card:</p>
+                    {/* <p className='text1'>Credit Card:</p> */}
                     {/* have to figure out how to mask */}
-                    <p>0000 1122 3344 1234</p>
+                    {/* <p>0000 1122 3344 1234</p> */}
                 </div>
              </div>
              
-
              <p className='title-info'>Current Bookings</p>
              <div className="Info1">
-
+                {/* have to figure out how to show the bookings */}
              </div>
 
              <p className='title-info'>Past Bookings</p>
              <div className="Info1">
-
+                {/* have to figure out showing past bookings */}
              </div>
 
              <p className='title-info'>Rewards</p>
-            <div className="Info2">
-
-            </div>
+             <div className="Info2">
+                <p className='rewards'> Point & Rewards</p>
+                <div className='circle'>
+                    <div className='rewardtext'>
+                        <p>100,000</p>
+                        <p>Points available</p>
+                    </div>
+                </div>
+             </div>
+             
         </>
-        
-
-      
-
-    
+     
  )
 
 }
