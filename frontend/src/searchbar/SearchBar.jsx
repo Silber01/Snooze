@@ -6,13 +6,10 @@ import {GrLocation} from 'react-icons/gr' //npm install react-icons --save
 
 
 const SearchBar = ({placeholder, children}) => {
-
     return (
         <div className="SearchBar">
             {children}
-            <div className='input flex'>
-                <input type="text" placeholder={placeholder}></input>
-            </div>
+            <input type="text" placeholder={placeholder}></input>
         </div>
     )
 };
