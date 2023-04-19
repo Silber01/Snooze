@@ -8,6 +8,8 @@ const EditProfile = (props) => {
 
   let navigate = useNavigate();
 
+  const name = `${props.user.firstName} ${props.user.lastName}`;
+
   return (
     <div className="EditProfile">
       <SnoozeHeader />
@@ -15,24 +17,24 @@ const EditProfile = (props) => {
         <div className='icon-box'>
           <p className='title'>Edit Profile</p>
           <img className="icon" src={icon} alt="" />
-          <p>Edit picture or avator</p>
+          <p>Edit picture or avatar</p>
         </div>
         <div className="info-box">
           <div className='single-box'>
             <p className='text-title'>Name:</p>
-            <p>{props.user.name}</p>
+            <p>{name}</p>
           </div>
           <div className='single-box'>
             <p className='text-title'>Email:</p>
             <p>{props.user.email}</p>
           </div>
-          <div className='single-box'>
+          {/* <div className='single-box'>
             <p className='text-title'>Phone number:</p>
             <p>{props.user.phoneNumber}</p>
-          </div>
+          </div> */}
         </div>
-        {/* TODO: change the path after creating the profile page */}
-        <button className='button' onClick={()=> navigate('/')}>Save</button>
+  
+        <button className='button' onClick={()=> navigate('/profilepage')}>Save</button>
         
         
       </div>

@@ -1,0 +1,47 @@
+.room-type {
+    position: relative;
+    width:100%;
+    top: 5%;
+    left: 5%;
+}
+
+.hotel-info-container {
+    position: relative;
+    display: flex;
+    width: 90%;
+    margin: 5%;
+}
+.hotel-info {
+    width: 100%;
+    background-size: 95%;
+    background-color: #F2DFDF;
+}
+
+.hotel-info-text {
+    margin: auto;
+    margin: 5%;
+}
+
+.hotel-price {
+    margin: 5%;
+}
+
+.reserve-button {
+    position: relative;
+    height: 25%;
+    width: 10%;
+    padding: 1%;
+    border-radius: 10px;
+    border: 3px solid whitesmoke;
+    background-color: #D3D0EB;
+    transition: filter 0.2s ease-in-out;
+    font-size: large;
+    color:white;
+}
+
+.reserve-button:hover {
+    position: relative;
+    filter:brightness(90%);
+}
+
+

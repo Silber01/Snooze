@@ -1,0 +1,141 @@
+img {
+    width: 11.25em;
+    padding: 1%;
+}
+
+.box {
+    background-color:#C1DCC6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.row-box {
+    display: flex;
+    align-items: flex-start;
+}
+
+.left{
+    width: 20%；
+}
+
+.right{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.image {
+    border-radius: 50%;
+    width: 7em;
+    margin: 3em 2em 1em 8em;
+    padding: 0;
+    
+}
+
+.button-profile {
+    align-self: flex-end;
+    border-radius: 2em;
+    margin-top: 1em;
+    margin-right: 1em;
+    border:none;
+    padding: 1em 2em;
+}
+
+.button-profile:hover{
+    filter:brightness(90%);
+}
+
+.text-pp{
+    font-size: 30px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+}
+
+.text {
+    display: flex;
+    gap: 35%;
+    margin-left: 3%;
+}
+
+.text > p {
+    font-weight: 200;
+    font-size: 20px;
+    color: white;
+}
+
+.title-info{
+    font-weight: 800;
+    font-size: 25px;
+    margin-left: 10%;
+}
+
+.Info {
+  width: 600px;
+  height: 200px;
+  border: 2px solid black;
+  margin-left: 15%;
+}
+
+.Info1 {
+    width: 50em;
+    height: 17em;
+    background-color: #F2DFDF;
+    margin-left: 15%;
+}
+
+.Info2 {
+    height: 113em;
+    width: 38em;
+    margin-left: 15%;
+    border-radius: 0px;
+    background-color: #E2E7E3;
+}
+
+.text-single{
+    margin: 1em;
+    display: flex;
+    align-items: space-evenly;
+    gap: 5em;
+    padding-left: 11em;
+    font-size: large;
+    font-weight: 500;
+}
+
+/* have to check later */
+.rewards {
+    font-size: 30px;
+    padding-left: 1em;
+    padding-top:3%;
+    font-family: cursive;
+}
+
+.circle {
+    display: flex;
+    width: 20em;
+    height: 20em;
+    border: 1em solid #eecaca;
+    border-radius: 50%;
+    margin-left: 20%;
+  }
+  
+  .rewardtext {
+    font-size: 30px;
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .points-box > h1 {
+    font-size: 25px;
+    margin-left: 2em;
+    margin-top:2em;
+  }
+
+  .points-box > p {
+    margin-left: 8em;
+  }
+
