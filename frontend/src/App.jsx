@@ -7,6 +7,7 @@ import SignUp from './sign/SignUp';
 import ForgotPw from './pages/ForgotPw';
 import EditPassword from './pages/EditPassword';
 import HomePage from './home/HomePage';
+import Payment from './pages/payment/Payment'
 
 function App() {
   let userData = JSON.parse(localStorage.getItem('user'))
@@ -34,6 +35,7 @@ function App() {
             <Route exact path = "/editprofile" element={<EditProfile user={user} />}/>
             <Route exact path = "/forgotpassword" element={<ForgotPw/>}/>
             <Route exact path = "/editpassword" element={<EditPassword/>}/>
+            <Route exact path = "/payment" element={<Payment user={user} />}/>
         </Routes>
       </BrowserRouter>
     </div>
