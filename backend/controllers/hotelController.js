@@ -72,8 +72,8 @@ const queryHotels = async (req, res) => {
     const provinceQuery = req.query.province
     const cityQuery = req.query.city
     const sortQuery = parseInt(req.query.sort)
-    const firstDateQuery = new Date(req.query.firstDate)
-    const lastDateQuery = new Date(req.query.lastDate)
+    //const firstDateQuery = new Date(req.query.firstDate)
+    //const lastDateQuery = new Date(req.query.lastDate)
 
     //Create Query Map
     const dynamicQueryObj = {}
@@ -82,8 +82,8 @@ const queryHotels = async (req, res) => {
     if (countryQuery){dynamicQueryObj['location.country'] =  {$regex: countryQuery, $options: 'i'}}
     if (cityQuery){dynamicQueryObj['location.city'] =  {$regex: cityQuery, $options: 'i'}}
     if (provinceQuery){dynamicQueryObj['location.province'] =  {$regex: provinceQuery, $options: 'i'}}
-    if (provinceQuery){dynamicQueryObj['rooms.datesBooked.firstDate'] =  {new Date()}}
-    if (provinceQuery){dynamicQueryObj['rooms.datesBooked.lastDate'] =  {$regex: provinceQuery, $options: 'i'}}
+    //if (firstDateQuery && firstDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.firstDate'] =  {$not: {$gte: firstDateQuery}}}
+    //if (lastDateQuery && lastDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.lastDate'] =  lastDateQuery}
     console.log(sortQuery)
 
     console.log(dynamicQueryObj)
@@ -111,7 +111,15 @@ const queryHotels = async (req, res) => {
     */
 
     //SELECT * location.city, location.province, location.country, ratings, rooms.price
-    const hotels = await Hotel.find(dynamicQueryObj, {name:1, "location.city":1, "location.province":1, "location.country":1, "ratings":1, "rooms.price":1})
+    const hotels = await Hotel.find(dynamicQueryObj, 
+      {name:1, 
+        "location.city":1, 
+        "location.province":1, 
+        "location.country":1, 
+        "ratings":1, 
+        "rooms.price":1,
+        "rooms.datesBooked":1
+      })
     .sort(sortRule)
     .skip(page * limit)
     .limit(limit)
@@ -244,8 +252,8 @@ const bookHotel = async (req, res) => {
   const dataCheck = await Hotel.find({
     _id: id,
     'rooms._id': roomid,
-    'rooms.datesBooked.firstDate': { $lte: new Date(lastDate) },
-    'rooms.datesBooked.lastDate': { $gte: new Date(firstDate) }
+    'rooms.datesBooked.firstDate': { $lte: lastDate },
+    'rooms.datesBooked.lastDate': { $gte: firstDate }
 
   })
   console.log(dataCheck)
