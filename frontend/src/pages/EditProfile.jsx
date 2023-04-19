@@ -8,6 +8,8 @@ const EditProfile = (props) => {
 
   let navigate = useNavigate();
 
+  const name = `${props.user.firstName} ${props.user.lastName}`;
+
   return (
     <div className="EditProfile">
       <SnoozeHeader />
@@ -20,7 +22,7 @@ const EditProfile = (props) => {
         <div className="info-box">
           <div className='single-box'>
             <p className='text-title'>Name:</p>
-            <p>{props.user.name}</p>
+            <p>{name}</p>
           </div>
           <div className='single-box'>
             <p className='text-title'>Email:</p>

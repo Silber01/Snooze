@@ -13,9 +13,10 @@ function App() {
   if (!userData)
   { 
     userData = {
-      firstName: null,
-      lastName: null,
-      email: null,
+      // testing for profile page
+      firstName: "Daniel",
+      lastName: "Slade",
+      email: "test@gmail.com",
     }
   }
   

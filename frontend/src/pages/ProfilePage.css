@@ -105,8 +105,10 @@ img {
 
 /* have to check later */
 .rewards {
-    font-size: 25px;
+    font-size: 30px;
     padding-left: 1em;
+    padding-top:3%;
+    font-family: cursive;
 }
 
 .circle {

@@ -80,7 +80,7 @@ const ProfilePage = (props) => {
 
              <p className='title-info'>Rewards</p>
              <div className="Info2">
-                <p className='rewards'> Point & Rewards</p>
+                <p className='rewards'> Points & Rewards</p>
                 <div className='circle'>
                     <div className='rewardtext'>
                         {/* have to figure out how to get reward points and replace here */}
