@@ -7,6 +7,8 @@ import SignUp from './sign/SignUp';
 import ForgotPw from './pages/ForgotPw';
 import EditPassword from './pages/EditPassword';
 import ViewHotelRoom from './home/ViewHotelRoom';
+import HomePage from './home/HomePage';
+import Payment from './pages/payment/Payment'
 
 function App() {
   let userData = JSON.parse(localStorage.getItem('user'))
@@ -32,9 +34,11 @@ function App() {
             <Route exact path = "/signup" element={<SignUp/>}/>
             <Route exact path = "/homepage" element={<homepage/>}/>
             <Route exact path = "/viewhotelroom" element={<ViewHotelRoom/>}/>
+            <Route exact path = "/home" element={<HomePage/>}/>
             <Route exact path = "/editprofile" element={<EditProfile user={user} />}/>
             <Route exact path = "/forgotpassword" element={<ForgotPw/>}/>
             <Route exact path = "/editpassword" element={<EditPassword/>}/>
+            <Route exact path = "/payment" element={<Payment user={user} />}/>
         </Routes>
       </BrowserRouter>
     </div>
