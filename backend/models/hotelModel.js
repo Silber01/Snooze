@@ -48,10 +48,10 @@ const hotelSchema = new Schema({
     rooms: [{
         datesBooked:[{
             firstDate:{
-                type: String,
+                type: Date,
             },
             lastDate: {
-                type: String,
+                type: Date,
             },
         }],
         price: {

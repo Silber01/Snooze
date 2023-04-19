@@ -6,13 +6,14 @@ const {
   deleteHotel,
   updateHotel,
   getRoom,
-  bookHotel
+  bookHotel,
+  queryHotels
 } = require('../controllers/hotelController')
 
 const router = express.Router()
 
 // GET all hotels
-router.get('/', getHotels)
+router.get('/search', queryHotels)
 
 //GET a single hotel
 router.get('/:id', getHotel)
@@ -22,10 +23,10 @@ router.get('/:id/:roomid', getRoom)
 
 
 // POST a new hotel
-router.post('/', createHotel)
+//router.post('/', createHotel)
 
 // DELETE a hotel
-router.delete('/:id', deleteHotel)
+//router.delete('/:id', deleteHotel)
 
 // UPDATE a hotel
 //router.patch('/:id', updateHotel)
