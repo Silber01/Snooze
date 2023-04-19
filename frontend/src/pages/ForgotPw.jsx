@@ -10,7 +10,7 @@ const ForgotPw = (props) => {
     <>
       <SnoozeHeader />
         <div className='Centerer'>
-            <div className="SignUpTextField">
+            <div className="SignUpTextfield">
               <p className="CreateAccountText"> Enter Email Address</p>
               <form className= 'loginForm'>
                   <input type="text" placeholder='Email Address' ref={emailRef}/>

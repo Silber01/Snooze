@@ -1,0 +1,28 @@
+.dropdown{
+    background-color: aliceblue;
+}
+
+.dropdown-button{
+    width: 10rem;
+    height: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000000;
+}
+
+.dropdown-box{
+    width: 15rem;
+    height: 15rem;
+    padding: 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+
+.slider{
+    border: 20px;
+}

@@ -59,7 +59,7 @@ const SignUp = (props) => {
           </form>
           <button className='ContinueButton' onClick={handleSubmit}>Continue</button>
           {getErrorDiv(error)}
-          <p className='HaveAnAccountText'>Aleady have an account? <a href="./">Sign in</a></p>
+          <p className='HaveAnAccountText'>Already have an account? <a href="./">Sign in</a></p>
         </div>
 
       </div>
