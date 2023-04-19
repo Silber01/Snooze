@@ -1,0 +1,79 @@
+{
+    "HOTELS": [
+        {
+        "id": 100,
+        "name": "Marina Bay Sands",
+        "description": "dummy description", 
+        "ratings": {
+            "1": 23,
+            "2": 12,
+            "3": 13,
+            "4": 28,
+            "5": 37
+        },
+        "reviews": [100, 101, 102],
+        "location": {
+            "address": "10 Bayfront Avenue",
+            "city": "Singapore",
+            "province": null,
+            "country": "Singapore"
+        },
+        "rooms":
+        [
+            {
+                "id": 100,
+                "name": "Room 1",
+                "price": 150,
+                "beds": 1,
+                "hasWifi": true,
+                "datesBooked": [["2023-04-25", "2023-04-27"], ["2023-05-19", "2023-05-23"]]
+            },
+            {
+                "id": 101,
+                "name": "Room 1",
+                "price": 200,
+                "beds": 2,
+                "hasWifi": false,
+                "datesBooked": [["2023-05-25", "2023-05-27"], ["2023-06-19", "2023-06-23"]]
+            }
+            
+        ]
+    },
+    {
+        "name": "Disney's Paradise Pier Hotel",
+        "description": "dummy description 2", 
+        "ratings": {
+            "1": 12,
+            "2": 17,
+            "3": 20,
+            "4": 58,
+            "5": 60
+        },
+        "reviews": [103, 104, 105],
+        "location": {
+            "address": "1717 S DisneyLand Dr",
+            "city": "Anaheim",
+            "province": "California",
+            "country": "United States"
+        },
+        "rooms":
+        [
+            {
+                "id": 102,
+                "name": "Room 1",
+                "price": 150,
+                "beds": 1,
+                "hasWifi": true,
+                "datesBooked": [["2023-04-25", "2023-04-27"], ["2023-05-19", "2023-05-23"]]
+            },
+            {
+                "id": 103,
+                "name": "Room 2",
+                "price": 200,
+                "beds": 2,
+                "hasWifi": true,
+                "datesBooked": [["2023-05-25", "2023-05-27"], ["2023-06-19", "2023-06-23"]]
+            }
+        ]
+    } ]
+}
