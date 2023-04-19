@@ -22,6 +22,16 @@ function App() {
   // the code above is what i tried to do to fix it, but it didn't work
   // - Connor
   
+  let userData = JSON.parse(localStorage.getItem('user'))
+  if (!userData)
+  { 
+    userData = {
+      firstName: null,
+      lastName: null,
+      email: null
+    }
+  }
+  
   const user = {
     firstName: userData.firstName,
     lastName: userData.lastName,
