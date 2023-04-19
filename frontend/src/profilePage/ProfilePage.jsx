@@ -2,7 +2,7 @@ import React from 'react';
 import './ProfilePage.css';
 import { useNavigate } from 'react-router-dom';
 import image from '../../assets/sampleprofile.png';
-import Rewardpoints from '../components/Rewardpoints';
+import Rewardpoints from './Rewardpoints';
 
 
 const ProfilePage = (props) => {

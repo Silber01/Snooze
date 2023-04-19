@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Payment.css";
 import { useNavigate } from 'react-router-dom';
-import SnoozeHeader from '../../general/SnoozeHeader';
+import SnoozeHeader from '../general/SnoozeHeader';
 
 
 export default function Payment(props)

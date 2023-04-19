@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import './HotelFilter.css';
-import Dropdown from '../Dropdown/Dropdown';
+import Dropdown from './Dropdown';
 
 const HotelFilter = () => {
     return (

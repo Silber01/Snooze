@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import sampleHotelData from "../../sampleHotels.json"
 import SnoozeHeader from '../general/SnoozeHeader'
-import SearchBar from '../searchbar/SearchBar';
+import SearchBar from './SearchBar';
 import './HomePage.css';
 import {GrLocation} from 'react-icons/gr' //npm install react-icons --save
 import {MdDateRange} from 'react-icons/md'
 import {MdPeopleOutline} from 'react-icons/md'
 import {BiSearch} from 'react-icons/bi'
-import HotelFilter from "../filter/HotelFilter";
+import HotelFilter from "./HotelFilter";
 
 function HomePage(props) {
     let hotels = sampleHotelData.HOTELS  

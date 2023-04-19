@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import SignIn from './sign/SignIn';
-import EditProfile from './pages/EditProfile';
+import EditProfile from './profilePage/EditProfile';
 import SignUp from './sign/SignUp';
 import ForgotPw from './pages/ForgotPw';
 import EditPassword from './pages/EditPassword';
-import ViewHotelRoom from './home/ViewHotelRoom';
+import ProfilePage from './profilePage/ProfilePage';
+import ViewHotelRoom from './viewHotel/ViewHotelRoom';
 import HomePage from './home/HomePage';
-import Payment from './pages/payment/Payment'
+import Payment from './payment/Payment'
 
 function App() {
   // for frontend testing only, will connect with backend and change these lines later
@@ -43,7 +44,6 @@ function App() {
         <Routes>
             <Route exact path = "/" element={<SignIn/>}/>
             <Route exact path = "/signup" element={<SignUp/>}/>
-            <Route exact path = "/homepage" element={<homepage/>}/>
             <Route exact path = "/viewhotelroom" element={<ViewHotelRoom/>}/>
             <Route exact path = "/home" element={<HomePage/>}/>
             <Route exact path = "/profilepage" element={<ProfilePage user={user}/>}/>
