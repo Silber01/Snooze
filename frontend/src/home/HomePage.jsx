@@ -8,6 +8,7 @@ import {GrLocation} from 'react-icons/gr' //npm install react-icons --save
 import {MdDateRange} from 'react-icons/md'
 import {MdPeopleOutline} from 'react-icons/md'
 import {BiSearch} from 'react-icons/bi'
+import HotelFilter from "../filter/HotelFilter";
 
 function HomePage(props) {
     let hotels = sampleHotelData.HOTELS  
@@ -31,9 +32,10 @@ function HomePage(props) {
                         }}>
                         Search
                     </button>
-                        
                 </div>
             </div>
+            <HotelFilter/>
+
             <div className='BannerContainer'>
                 <h1>Wanna Earn Rewards? Sign Up Today and Begin Collecting Points!</h1>
             </div>
