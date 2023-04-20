@@ -24,7 +24,12 @@ const hotelSchema = new Schema({
     },
     reviews:[{
         review: String,
-        rating: Number,
+        rating:{
+            required: true,
+            type: Number,
+            min: 1,
+            max: 5
+        },
         user:{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'

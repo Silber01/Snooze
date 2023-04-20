@@ -290,16 +290,17 @@ const bookHotel = async (req, res) => {
 
 const addReview = async(req, res) => 
 {
-  /**
-  var auth = req.headers.authorization.split(' ')[1], authorization
+  console.log(req.headers);
+  var authorization = req.headers.authorization.split(' ')[1]
+  console.log(authorization + "abc");
   try{
-    authorization = jwt.verify(auth, process.env.SECRET);
+    decoded = jwt.verify(authorization, process.env.SECRET);
   }
   catch (e){
     return res.status(401).json({error: "action not authorized"})
   }
-  */
-  //var userId = authorization.id
+  var userId = authorization.id
+  console.log(userId);
   console.log(req.params);
   console.log(req.body);
   const {id} = req.params;
