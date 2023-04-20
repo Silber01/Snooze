@@ -265,7 +265,6 @@ const bookHotel = async (req, res) => {
     return res.status(404).json({ error: 'No such hotel' })
   }
 
-
   console.log("VALID. ADDING TO DB")
   const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
     $push: {
