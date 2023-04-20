@@ -23,11 +23,10 @@ const hotelSchema = new Schema({
         5:{type: Number}
     },
     reviews:[{
-        user: String,
         review: String,
         rating: Number,
         user:{
-            type:mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
     }],
@@ -57,6 +56,10 @@ const hotelSchema = new Schema({
             lastDate: {
                 type: Date,
             },
+            user:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            }
         }],
         price: {
             type:Number,
@@ -77,10 +80,6 @@ const hotelSchema = new Schema({
         hasWifi: {
             type:Boolean,
             required: true
-        },
-        user:{
-            type: mongoose.Schema.Types.ObjectId, 
-            ref: 'User'
         },
         imgsrc: String,
     }],

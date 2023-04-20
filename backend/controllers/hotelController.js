@@ -288,7 +288,30 @@ const bookHotel = async (req, res) => {
   res.status(200).json(hotel)
 }
 
+const addReview = async(req, res) => 
+{
+  /**
+  var auth = req.headers.authorization.split(' ')[1], authorization
+  try{
+    authorization = jwt.verify(auth, process.env.SECRET);
+  }
+  catch (e){
+    return res.status(401).json({error: "action not authorized"})
+  }
+  */
+  //var userId = authorization.id
+  console.log(req.params);
+  console.log(req.body);
+  const {id} = req.params;
+  const hotel = await Hotel.findByIdAndUpdate({_id: id},{
+    $push:{
+      "reviews" : req.body
+    }
+  })
 
+  res.status(200).json(hotel);
+
+}
 
 
 module.exports = {
@@ -299,5 +322,6 @@ module.exports = {
   updateHotel,
   getRoom,
   bookHotel,
+  addReview,
   queryHotels
 }
