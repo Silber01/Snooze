@@ -265,10 +265,16 @@ const bookHotel = async (req, res) => {
     return res.status(404).json({ error: 'No such hotel' })
   }
 
+  var authorization = req.headers.authorization.split(" ")[1]
+  const[,auth,] = authorization.split(".")
+  var userId = atob(auth)
+  userId = userId.substring(8,32);
+  var body = req.body;
+  body._id = userId;
   console.log("VALID. ADDING TO DB")
   const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
     $push: {
-      "rooms.$[i].datesBooked": req.body
+      "rooms.$[i].datesBooked": body
     }
   },
     {
