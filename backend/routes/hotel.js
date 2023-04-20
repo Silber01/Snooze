@@ -33,7 +33,7 @@ router.get('/:id/:roomid', getRoom)
 //router.patch('/:id', updateHotel)
 
 //Book a Hotel Room
-router.patch('/:id/:roomid', bookHotel)
+router.put('hotel/:id/:roomid', bookHotel)
 
 //Add Review
 router.put('/review/:id', addReview);
