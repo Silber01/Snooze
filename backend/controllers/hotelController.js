@@ -290,23 +290,16 @@ const bookHotel = async (req, res) => {
 
 const addReview = async(req, res) => 
 {
-  console.log(req.headers);
   var authorization = req.headers.authorization.split(' ')[1]
-  console.log(authorization + "abc");
-  try{
-    decoded = jwt.verify(authorization, process.env.SECRET);
-  }
-  catch (e){
-    return res.status(401).json({error: "action not authorized"})
-  }
-  var userId = authorization.id
-  console.log(userId);
-  console.log(req.params);
-  console.log(req.body);
+  const[,auth,] = authorization.split(".")
+  var userId = atob(auth);
+  userId = userId.substring(8,32);
   const {id} = req.params;
+  var body = req.body;
+  body._id = userId;
   const hotel = await Hotel.findByIdAndUpdate({_id: id},{
     $push:{
-      "reviews" : req.body
+      "reviews" : body
     }
   })
 
