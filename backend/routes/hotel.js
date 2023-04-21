@@ -7,6 +7,7 @@ const {
   updateHotel,
   getRoom,
   bookHotel,
+  addReview,
   queryHotels
 } = require('../controllers/hotelController')
 
@@ -35,6 +36,8 @@ router.get('/:id/:roomid', getRoom)
 //router.patch('/:id', updateHotel)
 
 //Book a Hotel Room
-router.patch('/:id/:roomid', bookHotel)
+router.patch('/booking/:id/:roomid', bookHotel)
 
+//Add Review
+router.put('/review/:id', addReview);
 module.exports = router

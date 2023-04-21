@@ -110,8 +110,8 @@ const queryHotels = async (req, res) => {
 
     console.log(dynamicQueryObj)
     console.log(sortRule)
-    //SELECT * location.city, location.province, location.country, ratings, rooms.price
 
+    //SELECT * location.city, location.province, location.country, ratings, rooms.price
     const hotels = await Hotel.aggregate([
       {
         $project: {
@@ -168,20 +168,6 @@ const queryHotels = async (req, res) => {
     .sort(sortRule)
     .skip(page * limit)
     .limit(limit)
-    /*
-    const hotels = await Hotel.find(dynamicQueryObj, 
-    {name:0, 
-    location:0, 
-    description:0,
-    review:0, 
-    ratings:0, 
-    rooms:{$elemMatch:{price: {$lte: endPriceQuery, $gte: startPriceQuery}}},
-    reviews:0
-  })
-    .sort(sortRule)
-    .skip(page * limit)
-    .limit(limit)
-    */
 
     res.status(200).json(hotels)
   } catch (err) {
@@ -323,11 +309,16 @@ const bookHotel = async (req, res) => {
     return res.status(404).json({ error: 'No such hotel' })
   }
 
-
+  var authorization = req.headers.authorization.split(" ")[1]
+  const [, auth,] = authorization.split(".")
+  var userId = atob(auth)
+  userId = userId.substring(8, 32);
+  var body = req.body;
+  body.userId = userId;
   console.log("VALID. ADDING TO DB")
   const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
     $push: {
-      "rooms.$[i].datesBooked": req.body
+      "rooms.$[i].datesBooked": body
     }
   },
     {
@@ -346,7 +337,28 @@ const bookHotel = async (req, res) => {
   res.status(200).json(hotel)
 }
 
+const addReview = async (req, res) => {
+  var authorization = req.headers.authorization.split(' ')[1]
+  const [, auth,] = authorization.split(".")
+  var userId = atob(auth);
+  userId = userId.substring(8, 32);
+  const { id } = req.params;
+  var body = req.body;
+  body.userId = userId;
+  const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
+    $push: {
+      "reviews": body
+    }
+  })
 
+  const rating = await Hotel.findByIdAndUpdate({_id:id},{
+    $inc:{
+      [`ratings.${body.rating}`] : 1
+    }
+  })
+  res.status(200).json(hotel);
+
+}
 
 
 module.exports = {
@@ -357,5 +369,6 @@ module.exports = {
   updateHotel,
   getRoom,
   bookHotel,
+  addReview,
   queryHotels
 }

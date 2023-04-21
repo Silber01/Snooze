@@ -23,9 +23,16 @@ const hotelSchema = new Schema({
         5:{type: Number}
     },
     reviews:[{
-        user: String,
         review: String,
-        rating: Number,
+        rating:{
+            required: true,
+            type: Number,
+            min: 1,
+            max: 5
+        },
+        userId:{
+            type: String
+        }
     }],
     location: {
         address: {
@@ -53,6 +60,9 @@ const hotelSchema = new Schema({
             lastDate: {
                 type: Date,
             },
+            userId:{
+                type: String
+            }
         }],
         price: {
             type:Number,
@@ -74,7 +84,6 @@ const hotelSchema = new Schema({
             type:Boolean,
             required: true
         },
-        
         imgsrc: String,
     }],
 
