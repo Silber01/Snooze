@@ -78,10 +78,10 @@ const queryHotels = async (req, res) => {
     //Create Query Map
     const dynamicQueryObj = {}
     let sortRule = {}
-    if (nameQuery){dynamicQueryObj['name'] = {$regex: nameQuery, $options: 'i'}}
-    if (countryQuery){dynamicQueryObj['location.country'] =  {$regex: countryQuery, $options: 'i'}}
-    if (cityQuery){dynamicQueryObj['location.city'] =  {$regex: cityQuery, $options: 'i'}}
-    if (provinceQuery){dynamicQueryObj['location.province'] =  {$regex: provinceQuery, $options: 'i'}}
+    if (nameQuery) { dynamicQueryObj['name'] = { $regex: nameQuery, $options: 'i' } }
+    if (countryQuery) { dynamicQueryObj['location.country'] = { $regex: countryQuery, $options: 'i' } }
+    if (cityQuery) { dynamicQueryObj['location.city'] = { $regex: cityQuery, $options: 'i' } }
+    if (provinceQuery) { dynamicQueryObj['location.province'] = { $regex: provinceQuery, $options: 'i' } }
     //if (firstDateQuery && firstDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.firstDate'] =  {$not: {$gte: firstDateQuery}}}
     //if (lastDateQuery && lastDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.lastDate'] =  lastDateQuery}
     console.log(sortQuery)
@@ -95,10 +95,10 @@ const queryHotels = async (req, res) => {
      * ID 3 = Rating sort Descending
      * ID 4 = Rating sort Ascending
      */
-    if (sortQuery == 1){sortRule = {'rooms.price': 1}}
-    else if (sortQuery == 2){sortRule = {'rooms.price': -1}}
-    else if (sortQuery == 3){sortRule = {'ratings': 1}}
-    else if (sortQuery == 4){sortRule = {'ratings': -1}}
+    if (sortQuery == 1) { sortRule = { 'rooms.price': 1 } }
+    else if (sortQuery == 2) { sortRule = { 'rooms.price': -1 } }
+    else if (sortQuery == 3) { sortRule = { 'ratings': 1 } }
+    else if (sortQuery == 4) { sortRule = { 'ratings': -1 } }
     console.log(sortRule)
 
     /*    Ignore this
@@ -111,18 +111,19 @@ const queryHotels = async (req, res) => {
     */
 
     //SELECT * location.city, location.province, location.country, ratings, rooms.price
-    const hotels = await Hotel.find(dynamicQueryObj, 
-      {name:1, 
-        "location.city":1, 
-        "location.province":1, 
-        "location.country":1, 
-        "ratings":1, 
-        "rooms.price":1,
-        "rooms.datesBooked":1
+    const hotels = await Hotel.find(dynamicQueryObj,
+      {
+        name: 1,
+        "location.city": 1,
+        "location.province": 1,
+        "location.country": 1,
+        "ratings": 1,
+        "rooms.price": 1,
+        "rooms.datesBooked": 1
       })
-    .sort(sortRule)
-    .skip(page * limit)
-    .limit(limit)
+      .sort(sortRule)
+      .skip(page * limit)
+      .limit(limit)
 
     res.status(200).json(hotels)
   } catch (err) {
@@ -266,11 +267,11 @@ const bookHotel = async (req, res) => {
   }
 
   var authorization = req.headers.authorization.split(" ")[1]
-  const[,auth,] = authorization.split(".")
+  const [, auth,] = authorization.split(".")
   var userId = atob(auth)
-  userId = userId.substring(8,32);
+  userId = userId.substring(8, 32);
   var body = req.body;
-  body._id = userId;
+  body.userId = userId;
   console.log("VALID. ADDING TO DB")
   const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
     $push: {
@@ -293,21 +294,25 @@ const bookHotel = async (req, res) => {
   res.status(200).json(hotel)
 }
 
-const addReview = async(req, res) => 
-{
+const addReview = async (req, res) => {
   var authorization = req.headers.authorization.split(' ')[1]
-  const[,auth,] = authorization.split(".")
+  const [, auth,] = authorization.split(".")
   var userId = atob(auth);
-  userId = userId.substring(8,32);
-  const {id} = req.params;
+  userId = userId.substring(8, 32);
+  const { id } = req.params;
   var body = req.body;
-  body._id = userId;
-  const hotel = await Hotel.findByIdAndUpdate({_id: id},{
-    $push:{
-      "reviews" : body
+  body.userId = userId;
+  const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
+    $push: {
+      "reviews": body
     }
   })
 
+  const rating = await Hotel.findByIdAndUpdate({_id:id},{
+    $inc:{
+      [`ratings.${body.rating}`] : 1
+    }
+  })
   res.status(200).json(hotel);
 
 }

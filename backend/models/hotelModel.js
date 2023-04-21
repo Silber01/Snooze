@@ -30,9 +30,8 @@ const hotelSchema = new Schema({
             min: 1,
             max: 5
         },
-        user:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+        userId:{
+            type: String
         }
     }],
     location: {
@@ -61,9 +60,8 @@ const hotelSchema = new Schema({
             lastDate: {
                 type: Date,
             },
-            user:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
+            userId:{
+                type: String
             }
         }],
         price: {
