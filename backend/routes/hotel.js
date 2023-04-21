@@ -13,6 +13,9 @@ const {
 const router = express.Router()
 
 // GET all hotels
+router.get('/', getHotels)
+
+// GET search hotels
 router.get('/search', queryHotels)
 
 //GET a single hotel

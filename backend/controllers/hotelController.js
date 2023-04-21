@@ -12,15 +12,19 @@ const getHotels = async (req, res) => {
 run()
 async function run(){
   const hotel = await Hotel.create ({
-    name: "Another Test Hotel 2",
+    name: "SOup",
     description: "Test Description",
-    imgsrc: "image",
-    rooms:[{price:40, roomType:"Suite",roomNum:200, beds: 2, hasWifi: true, imgsrc: "image", 
+    imgsrc: "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png",
+    rooms:[{price:252, roomType:"Suite",roomNum:240, beds: 4, hasWifi: true, imgsrc: "image", 
+    datesBooked:[
+      {firstDate:"2023-04-07",lastDate:"2023-04-10"},
+      {firstDate:"2023-04-13",lastDate:"2023-04-17"},
+    ]}, {price:350, roomType:"Modern",roomNum:505, beds: 3, hasWifi: true, imgsrc: "image", 
     datesBooked:[
       {firstDate:"2023-04-07",lastDate:"2023-04-10"},
       {firstDate:"2023-04-13",lastDate:"2023-04-17"},
     ]}],
-    ratings:{1:4, 2:5, 3:4, 4:4, 5:5},
+    ratings:{1:6, 2:2, 3:4, 4:4, 5:20},
     reviews:[
       {user:"test user", review: "abc", rating:4},
       {user:"test user", review: "abc", rating:4},
@@ -28,7 +32,7 @@ async function run(){
     ],
     location:{
       address:"test",
-      city:"san jose",
+      city:"Milpitas",
       province:"California",
       country:"United States"
     },
@@ -66,28 +70,30 @@ const queryHotels = async (req, res) => {
 
     //Define Page Limits and Query Params
     const page = parseInt(req.query.page) - 1 || 0
-    const limit = parseInt(req.query.limit) || 3
+    const limit = parseInt(req.query.limit) || 10
     const nameQuery = req.query.name
     const countryQuery = req.query.country
     const provinceQuery = req.query.province
     const cityQuery = req.query.city
-    const sortQuery = parseInt(req.query.sort)
+    const ratingQuery = parseInt(req.query.rating)
+    const startPriceQuery = parseInt(req.query.startPrice) || 0
+    const endPriceQuery = parseInt(req.query.endPrice) || 999999
+    const sortQuery = parseInt(req.query.sort) || 1
     //const firstDateQuery = new Date(req.query.firstDate)
     //const lastDateQuery = new Date(req.query.lastDate)
 
-    //Create Query Map
+    //Create Match Query Map
     const dynamicQueryObj = {}
+    if (nameQuery) { dynamicQueryObj['name'] = { $regex: nameQuery, $options: 'i' } }
+    if (countryQuery) { dynamicQueryObj['location.country'] = { $regex: countryQuery, $options: 'i' } }
+    if (cityQuery) { dynamicQueryObj['location.city'] = { $regex: cityQuery, $options: 'i' } }
+    if (provinceQuery) { dynamicQueryObj['location.province'] = { $regex: provinceQuery, $options: 'i' } }
+    if (ratingQuery){ dynamicQueryObj['ratings'] = {$gte: ratingQuery}}
+    if (startPriceQuery || endPriceQuery) {dynamicQueryObj['rooms.price'] = {$gte: startPriceQuery, $lte: endPriceQuery}}
+
+    //let priceProjRule = {rooms:{$elemMatch:{price: {$lte: endPriceQuery, $gte: startPriceQuery}}}}
+
     let sortRule = {}
-    if (nameQuery){dynamicQueryObj['name'] = {$regex: nameQuery, $options: 'i'}}
-    if (countryQuery){dynamicQueryObj['location.country'] =  {$regex: countryQuery, $options: 'i'}}
-    if (cityQuery){dynamicQueryObj['location.city'] =  {$regex: cityQuery, $options: 'i'}}
-    if (provinceQuery){dynamicQueryObj['location.province'] =  {$regex: provinceQuery, $options: 'i'}}
-    //if (firstDateQuery && firstDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.firstDate'] =  {$not: {$gte: firstDateQuery}}}
-    //if (lastDateQuery && lastDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.lastDate'] =  lastDateQuery}
-    console.log(sortQuery)
-
-    console.log(dynamicQueryObj)
-
     //Sorting Rules
     /**
      * ID 1 = Price Sort Descending
@@ -95,34 +101,87 @@ const queryHotels = async (req, res) => {
      * ID 3 = Rating sort Descending
      * ID 4 = Rating sort Ascending
      */
-    if (sortQuery == 1){sortRule = {'rooms.price': 1}}
-    else if (sortQuery == 2){sortRule = {'rooms.price': -1}}
-    else if (sortQuery == 3){sortRule = {'ratings': 1}}
-    else if (sortQuery == 4){sortRule = {'ratings': -1}}
+    if (sortQuery == 1) { sortRule = {'rooms.price' : 1}}
+    else if (sortQuery == 2) { sortRule =  {'rooms.price': -1}  }
+    else if (sortQuery == 3) { sortRule =  {'ratings': 1}  }
+    else if (sortQuery == 4) { sortRule =  {'ratings': -1}  }
+    //if (firstDateQuery && firstDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.firstDate'] =  {$not: {$gte: firstDateQuery}}}
+    //if (lastDateQuery && lastDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.lastDate'] =  lastDateQuery}
+
+    console.log(dynamicQueryObj)
     console.log(sortRule)
-
-    /*    Ignore this
-    const hotels = await Hotel.aggregate([
-      {$match: dynamicQueryObj},
-      {$sort: {
-        'rooms.price': 1
-      }}
-    ])
-    */
-
     //SELECT * location.city, location.province, location.country, ratings, rooms.price
-    const hotels = await Hotel.find(dynamicQueryObj, 
-      {name:1, 
-        "location.city":1, 
-        "location.province":1, 
-        "location.country":1, 
-        "ratings":1, 
-        "rooms.price":1,
-        "rooms.datesBooked":1
-      })
+
+    const hotels = await Hotel.aggregate([
+      {
+        $project: {
+          name:1,
+          description:1,
+          ratings:
+          {
+            $divide: [
+              {
+                $sum: [
+                  { $multiply: ["$ratings.2", 2] },
+                  { $multiply: ["$ratings.3", 3] },
+                  { $multiply: ["$ratings.4", 4] },
+                  { $multiply: ["$ratings.5", 5] },
+                ]
+              },
+              {
+                $sum: [
+                  "$ratings.1",
+                  "$ratings.2",
+                  "$ratings.3",
+                  "$ratings.4",
+                  "$ratings.5"
+                ]
+              }]
+          },
+          rooms: {
+            $filter: {
+              input: "$rooms",
+              as: "room",
+              cond: {$and:[{$gte: ["$$room.price", startPriceQuery]},
+              {$lte: ["$$room.price", endPriceQuery]}]}
+            }
+          }
+        },
+      },
+      {
+        $unwind: "$rooms"
+      },
+      {
+        $match: dynamicQueryObj
+      },
+      {
+        '$sort': sortRule,
+      },
+      {
+        $group: {_id: "$_id", 
+        name: {$first: "$name"}, 
+        description: {$first: "$description"}, 
+        ratings: {$first: "$ratings"},
+        rooms: {$push: "$rooms"}}
+      },
+    ])
     .sort(sortRule)
     .skip(page * limit)
     .limit(limit)
+    /*
+    const hotels = await Hotel.find(dynamicQueryObj, 
+    {name:0, 
+    location:0, 
+    description:0,
+    review:0, 
+    ratings:0, 
+    rooms:{$elemMatch:{price: {$lte: endPriceQuery, $gte: startPriceQuery}}},
+    reviews:0
+  })
+    .sort(sortRule)
+    .skip(page * limit)
+    .limit(limit)
+    */
 
     res.status(200).json(hotels)
   } catch (err) {
@@ -159,8 +218,7 @@ const getRoom = async (req, res) => {
   console.log("valid args")
 
   const hotel = await Hotel.find(
-    { _id: id, rooms: { $elemMatch: { _id: roomid } } },
-    { "rooms.$": 1 }
+    { _id: id, rooms: { $elemMatch: { _id: roomid } } },{ name:1, location:1, "rooms.$": 1 }
   )
 
   res.status(200).json(hotel)
