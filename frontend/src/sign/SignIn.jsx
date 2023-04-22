@@ -1,23 +1,23 @@
-import './SignUpTextfield.css'
-import SnoozeHeader from '../general/SnoozeHeader'
-import React, { useState, useRef, useEffect } from 'react'
-import { useLogin } from '../../hooks/useLogin'
+import "./SignUpTextfield.css";
+import SnoozeHeader from "../general/SnoozeHeader";
+import React, { useState, useRef, useEffect } from "react";
+import { useLogin } from "../../hooks/useLogin";
 
 const SignIn = (props) => {
-  console.log('on sign in page')
+  console.log("on sign in page");
   // localStorage.clear('user')
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const [emailValid, setEmailValid] = useState(true)
-  const [passwordValid, setPasswordValid] = useState(true)
-  const { login, error, isLoading } = useLogin()
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const [emailValid, setEmailValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
+  const { login, error, isLoading } = useLogin();
   useEffect(() => {
     if (!error) {
-      setEmailValid(true)
-      setPasswordValid(true)
+      setEmailValid(true);
+      setPasswordValid(true);
     } else {
-      setEmailValid(false)
-      setPasswordValid(false)
+      setEmailValid(false);
+      setPasswordValid(false);
     }
     // else if (error == "Email not found") {
     //   setEmailValid(false)
@@ -32,53 +32,70 @@ const SignIn = (props) => {
     //     setPasswordValid(false)
     //   }
     // }
-  }, [error])
+  }, [error]);
 
   const handleSubmit = async () => {
-    console.log('logging in', emailRef.current.value, passwordRef.current.value)
+    console.log(
+      "logging in",
+      emailRef.current.value,
+      passwordRef.current.value
+    );
     login(emailRef.current.value, passwordRef.current.value);
-  }
+  };
 
   return (
     <>
       <SnoozeHeader />
-      <div className='Centerer'>
+      <div className="Centerer">
         <div className="SignUpTextField">
           <p className="CreateAccountText"> Sign In</p>
-          <form className='loginForm'>
-            <input type="text" className={validityClass(emailValid)} placeholder='Email Address' ref={emailRef} />
-            <input type="password" className={validityClass(passwordValid)} placeholder='Password' ref={passwordRef} />
+          <form className="loginForm">
+            <input
+              type="text"
+              className={validityClass(emailValid)}
+              placeholder="Email Address"
+              ref={emailRef}
+            />
+            <input
+              type="password"
+              className={validityClass(passwordValid)}
+              placeholder="Password"
+              ref={passwordRef}
+            />
           </form>
-          <button className='ContinueButton' onClick={handleSubmit}>Sign In</button>
+          <button className="ContinueButton" onClick={handleSubmit}>
+            Sign In
+          </button>
           {getErrorDiv(error)}
-          <p className='HaveAnAccountText'>Don't have one? <a href="./signup"> Sign Up</a></p>
-          <p className='HaveAnAccountText'><a href="./forgotpassword">Forgot Password?</a></p>
+          <p className="HaveAnAccountText">
+            Don't have one? <a href="./signup"> Sign Up</a>
+          </p>
+          <p className="HaveAnAccountText">
+            <a href="./forgotpassword">Forgot Password?</a>
+          </p>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 function printEmailPasswordInsecure(emailRef, passwordRef) {
-  console.log(emailRef.current.value)
-  console.log(passwordRef.current.value)
+  console.log(emailRef.current.value);
+  console.log(passwordRef.current.value);
 }
 
 function validityClass(valid) {
-  if (valid)
-    return "validText"
-  return "invalidText"
+  if (valid) return "validText";
+  return "invalidText";
 }
 
 function getErrorDiv(error) {
-
-  if (!error)
-    return
+  if (!error) return;
   return (
-    <div className="errorText"><span>{error}</span></div>
-  )
-
+    <div className="errorText">
+      <span>{error}</span>
+    </div>
+  );
 }
 
-
-export default SignIn
+export default SignIn;

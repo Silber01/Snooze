@@ -1,0 +1,924 @@
+[
+  {
+    "ratings": { "1": 5, "2": 10, "3": 20, "4": 25, "5": 100 },
+    "location": {
+      "name": "Courtyard Marriot Tulsa",
+      "address": "415 S Boston Ave",
+      "city": "Tulsa",
+      "province": "Oklahoma",
+      "url": "https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/624b471bdf247131f10ea14f_61d31b8dbff9b500cbd7ed32_types_of_rooms_in_a_5-star_hotel_2_optimized_optimized.jpeg",
+      "country": "Singapore"
+    },
+    "url": "https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/624b471bdf247131f10ea14f_61d31b8dbff9b500cbd7ed32_types_of_rooms_in_a_5-star_hotel_2_optimized_optimized.jpeg",
+    "_id": "643b06290d8c6d624bd2a1cd",
+    "id": 100,
+    "name": "Courtyard Marriot Tulsa",
+    "description": "Cool hotel",
+    "reviews": [
+      { "id": 100, "_id": "643b06290d8c6d624bd2a1ce" },
+      { "id": 101, "_id": "643b06290d8c6d624bd2a1cf" },
+      {
+        "review": "very big cool hotel",
+        "rating": 10,
+        "user": "6439af88b6d4643072d78691",
+        "_id": "6441a695a8bfeaede2a3e750"
+      },
+      {
+        "review": "very big cool hotel",
+        "rating": 10,
+        "user": "6439af88b6d4643072d78691",
+        "_id": "6441a78f2ba342269de5c6d7"
+      },
+      {
+        "review": "very big cool hotel",
+        "rating": 10,
+        "user": "6439af88b6d4643072d78691",
+        "_id": "6441a7c4605c37d0b85bc23b"
+      },
+      { "review": "hi", "rating": 5, "_id": "6441b42f9b25a70e8569bb6a" },
+      { "review": "hi", "rating": 5, "_id": "6441b493f230b9deee3de64a" },
+      { "review": "hi", "rating": 5, "_id": "6441b4dafff8772ae890287b" },
+      { "review": "hi", "rating": 5, "_id": "6441b4fd0e22b7bc27747ae0" },
+      { "review": "hi", "rating": 5, "_id": "6441b5090f2176e0765d3e84" },
+      { "review": "hi", "rating": 5, "_id": "6441b5e00b21aa7b2892e73f" },
+      { "review": "hi", "rating": 5, "_id": "6441b693296f5d9541e54a5c" },
+      { "review": "hi", "rating": 5, "_id": "6441b725a48d49ed6aa61f4b" },
+      { "review": "hi", "rating": 5, "_id": "6441b734c7589ba43f177874" },
+      { "review": "hi", "rating": 5, "_id": "6441b7b1a04b30e696bf08f5" },
+      { "review": "hi", "rating": 5, "_id": "6441b7eca04b55bca4fe9651" },
+      { "review": "hi", "rating": 5, "_id": "6441b8110ff5cef17a99317a" },
+      { "review": "hi", "rating": 5, "_id": "6441b82a826077bcd3ce6f92" },
+      { "review": "hi", "rating": 5, "_id": "6441b8a6e3ac1d7f0c8b40f9" },
+      { "review": "hi", "rating": 5, "_id": "6441b8b31ad3006aa7c4dc5f" },
+      { "review": "hi", "rating": 5, "_id": "6441b8be91de5578ed2405d5" },
+      { "review": "hi", "rating": 5, "_id": "6441b8c92a874462c3daf9e0" },
+      { "review": "hi", "rating": 5, "_id": "6441af482f0c47a7c260cfc8" },
+      { "review": "hi", "rating": 5, "_id": "6441af482f0c47a7c260cfc8" },
+      { "review": "poop", "rating": 5, "_id": "6441af482f0c47a7c260cfc8" },
+      { "review": "poop", "rating": 5, "_id": "6441af482f0c47a7c260cfc8" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 50,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b06290d8c6d624bd2a1d1"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b06290d8c6d624bd2a1d2"
+          }
+        ],
+        "_id": "643b06290d8c6d624bd2a1d0"
+      },
+      {
+        "id": 101,
+        "price": 30,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b06290d8c6d624bd2a1d4"
+          }
+        ],
+        "_id": "643b06290d8c6d624bd2a1d3"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 100, "2": 5, "3": 20, "4": 30, "5": 20 },
+    "location": {
+      "address": "1200 St Antoine Street",
+      "city": "Detriot",
+      "province": "Michigan",
+      "country": "United States"
+    },
+    "_id": "643b067c0d8c6d624bd2a1d6",
+    "id": 101,
+    "name": "Greektown Hotel",
+    "description": "Epic hotel",
+    "reviews": [
+      { "id": 102, "_id": "643b067c0d8c6d624bd2a1d7" },
+      { "id": 103, "_id": "643b067c0d8c6d624bd2a1d8" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 300,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b067c0d8c6d624bd2a1da"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b067c0d8c6d624bd2a1db"
+          }
+        ],
+        "_id": "643b067c0d8c6d624bd2a1d9"
+      },
+      {
+        "id": 101,
+        "price": 200,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b067c0d8c6d624bd2a1dd"
+          }
+        ],
+        "_id": "643b067c0d8c6d624bd2a1dc"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 0, "2": 5, "3": 50, "4": 100, "5": 100 },
+    "location": {
+      "address": "1111 Lakeside Ave",
+      "city": "Cleveland",
+      "province": "Ohio",
+      "country": "United States"
+    },
+    "_id": "643b06cc0d8c6d624bd2a1df",
+    "id": 102,
+    "name": "DoubleTree",
+    "description": "Extreme hotel",
+    "reviews": [
+      { "id": 103, "_id": "643b06cc0d8c6d624bd2a1e0" },
+      { "id": 104, "_id": "643b06cc0d8c6d624bd2a1e1" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 50,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b06cc0d8c6d624bd2a1e3"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b06cc0d8c6d624bd2a1e4"
+          }
+        ],
+        "_id": "643b06cc0d8c6d624bd2a1e2"
+      },
+      {
+        "id": 101,
+        "price": 150,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b06cc0d8c6d624bd2a1e6"
+          }
+        ],
+        "_id": "643b06cc0d8c6d624bd2a1e5"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 100, "2": 0, "3": 20, "4": 5, "5": 1 },
+    "location": {
+      "address": "191 Dorrance Street",
+      "city": "Providence",
+      "province": "Rhode Island",
+      "country": "United States"
+    },
+    "_id": "643b071a0d8c6d624bd2a1e8",
+    "id": 102,
+    "name": "Aloft Providence",
+    "description": "bad hotel",
+    "reviews": [
+      { "id": 105, "_id": "643b071a0d8c6d624bd2a1e9" },
+      { "id": 106, "_id": "643b071a0d8c6d624bd2a1ea" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 25,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b071a0d8c6d624bd2a1ec"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b071a0d8c6d624bd2a1ed"
+          }
+        ],
+        "_id": "643b071a0d8c6d624bd2a1eb"
+      },
+      {
+        "id": 101,
+        "price": 125,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b071a0d8c6d624bd2a1ef"
+          }
+        ],
+        "_id": "643b071a0d8c6d624bd2a1ee"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 2, "3": 20, "4": 25, "5": 50 },
+    "location": {
+      "address": "Boat Station 1",
+      "city": "Boracay",
+      "province": "Malay",
+      "country": "Philippines"
+    },
+    "_id": "643b07c70d8c6d624bd2a1f1",
+    "id": 105,
+    "name": "Astoria Boracay",
+    "description": "Beach Hotel",
+    "reviews": [
+      { "id": 107, "_id": "643b07c70d8c6d624bd2a1f2" },
+      { "id": 108, "_id": "643b07c70d8c6d624bd2a1f3" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 50,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b07c70d8c6d624bd2a1f5"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b07c70d8c6d624bd2a1f6"
+          }
+        ],
+        "_id": "643b07c70d8c6d624bd2a1f4"
+      },
+      {
+        "id": 101,
+        "price": 75,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b07c70d8c6d624bd2a1f8"
+          }
+        ],
+        "_id": "643b07c70d8c6d624bd2a1f7"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 2, "3": 20, "4": 50, "5": 100 },
+    "location": {
+      "address": "New Seaside Drive",
+      "city": "Paranaque",
+      "province": "Manila",
+      "country": "Philippines"
+    },
+    "_id": "643b07ff0d8c6d624bd2a1fa",
+    "id": 106,
+    "name": "Okada Hotel",
+    "description": "Casino Hotel",
+    "reviews": [
+      { "id": 107, "_id": "643b07ff0d8c6d624bd2a1fb" },
+      { "id": 108, "_id": "643b07ff0d8c6d624bd2a1fc" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 50,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b07ff0d8c6d624bd2a1fe"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b07ff0d8c6d624bd2a1ff"
+          }
+        ],
+        "_id": "643b07ff0d8c6d624bd2a1fd"
+      },
+      {
+        "id": 101,
+        "price": 75,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b07ff0d8c6d624bd2a201"
+          }
+        ],
+        "_id": "643b07ff0d8c6d624bd2a200"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 2, "3": 25, "4": 70, "5": 150 },
+    "location": {
+      "address": "Seaside Boulevard",
+      "city": "Paranaque",
+      "province": "Manila",
+      "country": "Philippines"
+    },
+    "_id": "643b08380d8c6d624bd2a203",
+    "id": 107,
+    "name": "Conrad Hotel",
+    "description": "Casino Hotel",
+    "reviews": [
+      { "id": 110, "_id": "643b08380d8c6d624bd2a204" },
+      { "id": 111, "_id": "643b08380d8c6d624bd2a205" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 200,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b08380d8c6d624bd2a207"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b08380d8c6d624bd2a208"
+          }
+        ],
+        "_id": "643b08380d8c6d624bd2a206"
+      },
+      {
+        "id": 101,
+        "price": 500,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b08380d8c6d624bd2a20a"
+          }
+        ],
+        "_id": "643b08380d8c6d624bd2a209"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 2, "3": 100, "4": 50, "5": 200 },
+    "location": {
+      "address": "1 Southgate Ave",
+      "city": "Melborne",
+      "province": "Victoria",
+      "country": "Australia"
+    },
+    "_id": "643b09d30d8c6d624bd2a20c",
+    "id": 108,
+    "name": "Langham Melborne",
+    "description": "Fancy Hotel",
+    "reviews": [
+      { "id": 110, "_id": "643b09d30d8c6d624bd2a20d" },
+      { "id": 111, "_id": "643b09d30d8c6d624bd2a20e" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 200,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b09d30d8c6d624bd2a210"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b09d30d8c6d624bd2a211"
+          }
+        ],
+        "_id": "643b09d30d8c6d624bd2a20f"
+      },
+      {
+        "id": 101,
+        "price": 500,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b09d30d8c6d624bd2a213"
+          }
+        ],
+        "_id": "643b09d30d8c6d624bd2a212"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 10, "3": 200, "4": 100, "5": 25 },
+    "location": {
+      "address": "Sofitel",
+      "city": "Sydney",
+      "province": "New South Wales",
+      "country": "Australia"
+    },
+    "_id": "643b0a2b0d8c6d624bd2a215",
+    "id": 109,
+    "name": "Sofitel Sydney",
+    "description": "Budget Hotel",
+    "reviews": [
+      { "id": 113, "_id": "643b0a2b0d8c6d624bd2a216" },
+      { "id": 114, "_id": "643b0a2b0d8c6d624bd2a217" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 30,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b0a2b0d8c6d624bd2a219"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b0a2b0d8c6d624bd2a21a"
+          }
+        ],
+        "_id": "643b0a2b0d8c6d624bd2a218"
+      },
+      {
+        "id": 101,
+        "price": 20,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b0a2b0d8c6d624bd2a21c"
+          }
+        ],
+        "_id": "643b0a2b0d8c6d624bd2a21b"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 100, "3": 150, "4": 50, "5": 10 },
+    "location": {
+      "address": "53 Calle de ODonnell",
+      "city": "Madrid",
+      "province": "N/A",
+      "country": "Spain"
+    },
+    "_id": "643b0a8b0d8c6d624bd2a21e",
+    "id": 110,
+    "name": "Novotel Madrid",
+    "description": "City Hotel",
+    "reviews": [
+      { "id": 116, "_id": "643b0a8b0d8c6d624bd2a21f" },
+      { "id": 117, "_id": "643b0a8b0d8c6d624bd2a220" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 100,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          {
+            "firstDate": "2023-06-25T00:00:00.000Z",
+            "lastDate": "2023-07-01T00:00:00.000Z",
+            "_id": "643b0a8b0d8c6d624bd2a222"
+          },
+          {
+            "firstDate": "2023-06-14T00:00:00.000Z",
+            "lastDate": "2023-06-15T00:00:00.000Z",
+            "_id": "643b0a8b0d8c6d624bd2a223"
+          },
+          {
+            "firstDate": "2023-05-26T00:00:00.000Z",
+            "lastDate": "2023-05-27T00:00:00.000Z",
+            "_id": "643f5f7b42e935eb2749743c"
+          }
+        ],
+        "_id": "643b0a8b0d8c6d624bd2a221"
+      },
+      {
+        "id": 101,
+        "price": 105,
+        "beds": 2,
+        "hasWifi": false,
+        "datesBooked": [
+          {
+            "firstDate": "2023-05-01T07:00:00.000Z",
+            "_id": "643b0a8b0d8c6d624bd2a225"
+          }
+        ],
+        "_id": "643b0a8b0d8c6d624bd2a224"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 100, "3": 150, "4": 50, "5": 10 },
+    "location": {
+      "address": "53 Calle de ODonnell",
+      "city": "Madrid",
+      "province": "N/A",
+      "country": "Spain"
+    },
+    "_id": "643de344836a1b0fc94aac49",
+    "id": 110,
+    "name": "Test Hotel",
+    "description": "City Hotel",
+    "reviews": [
+      { "id": 116, "_id": "643b0a8b0d8c6d624bd2a21f" },
+      { "id": 117, "_id": "643b0a8b0d8c6d624bd2a220" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 100,
+        "beds": 2,
+        "hasWifi": true,
+        "datesBooked": [
+          { "1": "2023-04-20T00:00:00.000Z", "_id": "6441bc42556b45d3bded339b" }
+        ],
+        "_id": "643b0a8b0d8c6d624bd2a221"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 1, "2": 100, "3": 150, "4": 50, "5": 10 },
+    "location": {
+      "address": "53 Calle de ODonnell",
+      "city": "Madrid",
+      "province": "N/A",
+      "country": "Spain"
+    },
+    "_id": "643de3b8836a1b0fc94aac4a",
+    "id": 110,
+    "name": "Poop City",
+    "description": "City Hotel",
+    "reviews": [
+      { "id": 116, "_id": "643b0a8b0d8c6d624bd2a21f" },
+      { "id": 117, "_id": "643b0a8b0d8c6d624bd2a220" }
+    ],
+    "rooms": [
+      {
+        "id": 100,
+        "price": 100,
+        "beds": 2,
+        "hasWifi": true,
+        "_id": "643b0a8b0d8c6d624bd2a221",
+        "datesBooked": []
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 4, "2": 5, "3": 4, "4": 4, "5": 5 },
+    "location": {
+      "address": "test",
+      "city": "san jose",
+      "province": "California",
+      "country": "United States"
+    },
+    "_id": "643df8f5fae1b05a854b4307",
+    "name": "Test Hotel",
+    "description": "Test Description",
+    "imgsrc": "image",
+    "reviews": [
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643df8f6fae1b05a854b4308"
+      }
+    ],
+    "rooms": [
+      {
+        "datesBooked": [
+          {
+            "firstDate": "2023-04-07T00:00:00.000Z",
+            "lastDate": "2023-04-10T00:00:00.000Z",
+            "_id": "643df8f6fae1b05a854b430a"
+          }
+        ],
+        "price": 40,
+        "roomType": "Suite",
+        "roomNum": 200,
+        "beds": 2,
+        "hasWifi": true,
+        "imgsrc": "image",
+        "_id": "643df8f6fae1b05a854b4309"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 4, "2": 5, "3": 4, "4": 4, "5": 5 },
+    "location": {
+      "address": "test",
+      "city": "san jose",
+      "province": "California",
+      "country": "United States"
+    },
+    "_id": "643df9b9e2a3e43c47c9fbe5",
+    "name": "Another Test Hotel",
+    "description": "Test Description",
+    "imgsrc": "image",
+    "reviews": [
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643df9b9e2a3e43c47c9fbe6"
+      }
+    ],
+    "rooms": [
+      {
+        "datesBooked": [
+          {
+            "firstDate": "2023-04-07T00:00:00.000Z",
+            "lastDate": "2023-04-10T00:00:00.000Z",
+            "_id": "643df9b9e2a3e43c47c9fbe8"
+          }
+        ],
+        "price": 40,
+        "roomType": "Suite",
+        "roomNum": 200,
+        "beds": 2,
+        "hasWifi": true,
+        "imgsrc": "image",
+        "_id": "643df9b9e2a3e43c47c9fbe7"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 4, "2": 5, "3": 4, "4": 4, "5": 5 },
+    "location": {
+      "address": "test",
+      "city": "san jose",
+      "province": "California",
+      "country": "United States"
+    },
+    "_id": "643dfa477d480520bd5f465b",
+    "name": "Another Test Hotel 2",
+    "description": "Test Description",
+    "imgsrc": "image",
+    "reviews": [
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643dfa477d480520bd5f465c"
+      },
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643dfa477d480520bd5f465d"
+      },
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643dfa477d480520bd5f465e"
+      },
+      { "_id": "643e46822cbfcad3d9ab3f75" }
+    ],
+    "rooms": [
+      {
+        "datesBooked": [
+          {
+            "firstDate": "2023-04-07T00:00:00.000Z",
+            "lastDate": "2023-04-10T00:00:00.000Z",
+            "_id": "643dfa477d480520bd5f4660"
+          },
+          {
+            "firstDate": "2023-04-13T00:00:00.000Z",
+            "lastDate": "2023-04-17T00:00:00.000Z",
+            "_id": "643dfa477d480520bd5f4661"
+          },
+          {
+            "firstDate": "2023-04-11T00:00:00.000Z",
+            "lastDate": "2023-04-13T00:00:00.000Z",
+            "_id": "643e4651e2f34d8e3b8b6b25"
+          },
+          {
+            "firstDate": "2023-05-23T00:00:00.000Z",
+            "lastDate": "2023-05-24T00:00:00.000Z",
+            "_id": "643e48c5869d7731dd24cf0d"
+          },
+          {
+            "firstDate": "2023-05-23T00:00:00.000Z",
+            "lastDate": "2023-05-24T00:00:00.000Z",
+            "_id": "643e48cb869d7731dd24cf17"
+          },
+          {
+            "firstDate": "2023-04-13T00:00:00.000Z",
+            "lastDate": "2023-04-14T00:00:00.000Z",
+            "_id": "643e4fdf61f05bf8ad5dd550"
+          },
+          {
+            "firstDate": "2023-05-23T00:00:00.000Z",
+            "lastDate": "2023-05-24T00:00:00.000Z",
+            "_id": "643e5d29c6668735acc45889"
+          },
+          {
+            "firstDate": "2023-05-23T00:00:00.000Z",
+            "lastDate": "2023-05-24T00:00:00.000Z",
+            "_id": "643e5e1c6f9d209ae4789afb"
+          },
+          {
+            "firstDate": "2023-05-23T00:00:00.000Z",
+            "lastDate": "2023-05-24T00:00:00.000Z",
+            "_id": "643e5eba711a7f8586f911a4"
+          },
+          {
+            "firstDate": "2023-05-26T00:00:00.000Z",
+            "lastDate": "2023-05-27T00:00:00.000Z",
+            "_id": "643e641d21a3764da1a21854"
+          }
+        ],
+        "price": 40,
+        "roomType": "Suite",
+        "roomNum": 200,
+        "beds": 2,
+        "hasWifi": true,
+        "imgsrc": "image",
+        "_id": "643dfa477d480520bd5f465f"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 4, "2": 5, "3": 4, "4": 4, "5": 5 },
+    "location": {
+      "address": "test",
+      "city": "san jose",
+      "province": "California",
+      "country": "United States"
+    },
+    "_id": "643dfe48105eedfc9a19ca19",
+    "name": "Another Test Hotel 2",
+    "description": "Test Description",
+    "imgsrc": "image",
+    "reviews": [
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643dfe48105eedfc9a19ca1a"
+      },
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643dfe48105eedfc9a19ca1b"
+      },
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643dfe48105eedfc9a19ca1c"
+      }
+    ],
+    "rooms": [
+      {
+        "datesBooked": [
+          {
+            "firstDate": "2023-04-07T00:00:00.000Z",
+            "lastDate": "2023-04-10T00:00:00.000Z",
+            "_id": "643dfe48105eedfc9a19ca1e"
+          },
+          {
+            "firstDate": "2023-04-13T00:00:00.000Z",
+            "lastDate": "2023-04-17T00:00:00.000Z",
+            "_id": "643dfe48105eedfc9a19ca1f"
+          }
+        ],
+        "price": 40,
+        "roomType": "Suite",
+        "roomNum": 200,
+        "beds": 2,
+        "hasWifi": true,
+        "imgsrc": "image",
+        "_id": "643dfe48105eedfc9a19ca1d"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "ratings": { "1": 4, "2": 5, "3": 4, "4": 4, "5": 5 },
+    "location": {
+      "address": "test",
+      "city": "san jose",
+      "province": "California",
+      "country": "United States"
+    },
+    "_id": "643e00d093cc4cb64cdfa306",
+    "name": "Another Test Hotel 2",
+    "description": "Test Description",
+    "imgsrc": "image",
+    "reviews": [
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643e00d093cc4cb64cdfa307"
+      },
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643e00d093cc4cb64cdfa308"
+      },
+      {
+        "user": "test user",
+        "review": "abc",
+        "rating": 4,
+        "_id": "643e00d093cc4cb64cdfa309"
+      }
+    ],
+    "rooms": [
+      {
+        "datesBooked": [
+          {
+            "firstDate": "2023-04-07T00:00:00.000Z",
+            "lastDate": "2023-04-10T00:00:00.000Z",
+            "_id": "643e00d093cc4cb64cdfa30b"
+          },
+          {
+            "firstDate": "2023-04-13T00:00:00.000Z",
+            "lastDate": "2023-04-17T00:00:00.000Z",
+            "_id": "643e00d093cc4cb64cdfa30c"
+          },
+          {
+            "firstDate": "2023-05-26T00:00:00.000Z",
+            "lastDate": "2023-05-27T00:00:00.000Z",
+            "_id": "643f3969b9c2f9298c9a2c6a"
+          }
+        ],
+        "price": 40,
+        "roomType": "Suite",
+        "roomNum": 200,
+        "beds": 2,
+        "hasWifi": true,
+        "imgsrc": "image",
+        "_id": "643e00d093cc4cb64cdfa30a"
+      }
+    ],
+    "__v": 0
+  }
+]
