@@ -1,57 +1,68 @@
-.BannerContainer{
-    display: flex;
-    width:  120em;
-    height: 20em;
-    left: 15%;
-    top: 25%;
-    align-content: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    position: absolute;
-    background: #F5C2C2;
+.BannerContainer {
+  display: flex;
+  width: 120em;
+  height: 20em;
+  left: 15%;
+  top: 25%;
+  align-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: absolute;
+  background: #f5c2c2;
 }
 
-.searchBarWrapper{
-    width:100%;
-    padding:1%;
-    background-color: #C1DCC6;
-    display: flex;
-    justify-content: space-around;
+.searchBarWrapper {
+  width: 100%;
+  padding: 1%;
+  background-color: #c1dcc6;
+  display: flex;
+  justify-content: space-around;
 }
 
-.searchButton{
-    background-color: #D3D0EB;
-    border: 0px;
-    border-radius: 5px;
-    width: 150px;
-    height: 40px;
-    color: white;
-    font-size: 18px;
-    font-weight: 300;
-    transition: filter 0.2s ease-in-out;
-
+.searchButton {
+  background-color: #d3d0eb;
+  border: 0px;
+  border-radius: 5px;
+  width: 150px;
+  height: 40px;
+  color: white;
+  font-size: 18px;
+  font-weight: 300;
+  transition: filter 0.2s ease-in-out;
 }
 
 .searchButton:hover {
-    filter:brightness(90%);
+  filter: brightness(90%);
 }
 
-h1{
-    font-family: 'Lato';
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 29px;
-    display: flex;
-    align-items: center;
-    text-align: center;
+h1 {
+  font-family: "Lato";
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  text-align: center;
 
-    color: #000000;
+  color: #000000;
 
-    position: absolute;
-    width: 447px;
-    height: 143px;
-    left: 65%;
-    top: 15%;
+  position: absolute;
+  width: 447px;
+  height: 143px;
+  left: 65%;
+  top: 15%;
 }
 
+.squareGrid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.squareBox {
+  width: calc(33.33% - 10px);
+  height: calc(33.33% - 10px);
+  margin: 5px;
+  background-color: lightgray;
+}
