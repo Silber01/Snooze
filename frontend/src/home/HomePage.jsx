@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useContext, useState } from "react";
 import sampleHotelData from "../../sampleHotels.json";
 import NavBar from "../Navbar";
 import Hotel from "../components/Hotel";
 import hotelData from "../../hotelDataAll.json";
+import { UserContext } from "../../context/UserContext";
 import "./HomePage.css";
 
 import {
@@ -28,6 +29,9 @@ import Ratings from "../ratings/Ratings";
 
 function HomePage(props) {
   let hotels = sampleHotelData.HOTELS;
+
+  const userContext = useContext(UserContext);
+
   const searchRef = useRef();
   const [priceSlider, setPriceSlider] = useState([0, 2000]);
 
