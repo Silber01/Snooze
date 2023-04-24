@@ -66,3 +66,17 @@ h1 {
   margin: 5px;
   background-color: lightgray;
 }
+
+.filterButton {
+  border: 0px;
+  border-radius: 5px;
+
+  width: 150px;
+  height: 40px;
+  color: gray;
+  font-size: 18px;
+  font-weight: 300;
+  transition: filter 0.2s ease-in-out;
+  position: relative;
+  left: 120%;
+}
