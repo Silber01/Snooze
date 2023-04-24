@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import "./EditProfile.css";
 import { useNavigate } from "react-router-dom";
 import SnoozeHeader from "../general/SnoozeHeader";
 import icon from "../../assets/sampleprofile.png";
+import { UserContext } from "../../context/UserContext";
 
 const EditProfile = (props) => {
+  const userContext = useContext(UserContext);
   let navigate = useNavigate();
 
   const name = `${props.user.firstName} ${props.user.lastName}`;

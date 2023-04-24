@@ -1,14 +1,18 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import sampleHotelData from "../../sampleHotels.json";
 import NavBar from "../Navbar";
 import Hotel from "../components/Hotel";
 import hotelData from "../../hotelDataAll.json";
+import { UserContext } from "../../context/UserContext";
 import "./HomePage.css";
 
 import { Box, Flex, Button, Input } from "@chakra-ui/react";
 
 function HomePage(props) {
   let hotels = sampleHotelData.HOTELS;
+
+  const userContext = useContext(UserContext);
+
   const searchRef = useRef();
 
   // one hotel entry to display on each square

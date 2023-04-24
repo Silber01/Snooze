@@ -1,4 +1,6 @@
+import React from "react";
 import { useState } from "react";
+import { UserContext } from "../context/UserContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import SignIn from "./sign/SignIn";
@@ -10,6 +12,7 @@ import ProfilePage from "./profilePage/ProfilePage";
 import ViewHotelRoom from "./viewHotel/ViewHotelRoom";
 import HomePage from "./home/HomePage";
 import Payment from "./payment/Payment";
+import { AuthContext } from "../context/AuthContext";
 
 function App() {
   // for frontend testing only, will connect with backend and change these lines later
@@ -22,6 +25,13 @@ function App() {
   // then change it back to JSON.parse(localStorage.getItem('user')).email
   // the code above is what i tried to do to fix it, but it didn't work
   // - Connor
+
+  // const { userFromContext } = useContext(AuthContext);
+  // console.log(
+  //   userFromContext.email,
+  //   userFromContext.firstName,
+  //   userFromContext.lastName
+  // );
 
   let userData = JSON.parse(localStorage.getItem("user"));
   if (!userData) {
@@ -37,28 +47,35 @@ function App() {
     lastName: userData.lastName,
     email: userData.email,
   };
+
+  const allUserData = {
+    // api call to retrieve a users data, based on their email
+  };
+
   return (
     <div>
       <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<SignIn />} />
-          <Route exact path="/signup" element={<SignUp />} />
-          <Route exact path="/viewhotelroom" element={<ViewHotelRoom />} />
-          <Route exact path="/home" element={<HomePage />} />
-          <Route
-            exact
-            path="/profilepage"
-            element={<ProfilePage user={user} />}
-          />
-          <Route
-            exact
-            path="/editprofile"
-            element={<EditProfile user={user} />}
-          />
-          <Route exact path="/forgotpassword" element={<ForgotPw />} />
-          <Route exact path="/editpassword" element={<EditPassword />} />
-          <Route exact path="/payment" element={<Payment user={user} />} />
-        </Routes>
+        <UserContext.Provider value={JSON.stringify(user)}>
+          <Routes>
+            <Route exact path="/" element={<SignIn />} />
+            <Route exact path="/signup" element={<SignUp />} />
+            <Route exact path="/viewhotelroomS" element={<ViewHotelRoom />} />
+            <Route exact path="/home" element={<HomePage />} />
+            <Route
+              exact
+              path="/profilepage"
+              element={<ProfilePage user={user} />}
+            />
+            <Route
+              exact
+              path="/editprofile"
+              element={<EditProfile user={user} />}
+            />
+            <Route exact path="/forgotpassword" element={<ForgotPw />} />
+            <Route exact path="/editpassword" element={<EditPassword />} />
+            <Route exact path="/payment" element={<Payment user={user} />} />
+          </Routes>
+        </UserContext.Provider>
       </BrowserRouter>
     </div>
   );
