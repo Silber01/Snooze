@@ -50,6 +50,10 @@ export const colors = {
   secondary: "#0496FF",
   accent: "#FF8484",
   purple: "#533A7B",
+  mintgreen: "#C1DCC6",
+  indiepink: "#F2DFDF",
+  lightpink:"#eecaca",
+  pink:"#F5C2C2",
   selectedSwitch: {
     50: switchColorScheme,
     100: switchColorScheme,

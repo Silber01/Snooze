@@ -38,7 +38,8 @@ function App() {
     userData = {
       firstName: null,
       lastName: null,
-      email: null,
+      email: 'test@gmail.com'
+    }
     };
   }
 

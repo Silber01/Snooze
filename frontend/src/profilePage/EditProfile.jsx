@@ -4,6 +4,7 @@ import "./EditProfile.css";
 import { useNavigate } from "react-router-dom";
 import SnoozeHeader from "../general/SnoozeHeader";
 import icon from "../../assets/sampleprofile.png";
+import { Box, Button, propNames, Text } from "@chakra-ui/react";
 import { UserContext } from "../../context/UserContext";
 
 const EditProfile = (props) => {
@@ -30,10 +31,6 @@ const EditProfile = (props) => {
             <p className="text-title">Email:</p>
             <p>{props.user.email}</p>
           </div>
-          {/* <div className='single-box'>
-            <p className='text-title'>Phone number:</p>
-            <p>{props.user.phoneNumber}</p>
-          </div> */}
         </div>
 
         <button className="button" onClick={() => navigate("/profilepage")}>
