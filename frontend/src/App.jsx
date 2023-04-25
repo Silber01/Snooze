@@ -35,10 +35,10 @@ function App() {
   }, [])
 
 
-  useEffect(() => {
-    console.log("User data: ");
-    console.log(allUserData)
-  }, [allUserData])
+  // useEffect(() => {
+  //   console.log("User data: ");
+  //   console.log(allUserData)
+  // }, [allUserData])
 
   useEffect
 

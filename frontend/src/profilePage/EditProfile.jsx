@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import "./EditProfile.css";
+import React, {useEffect, useState} from "react";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SnoozeHeader from "../general/SnoozeHeader";
 import image from "../../assets/sampleprofile.png";
@@ -11,24 +11,35 @@ import {
   Input,
   Stack,
   Image,
-  FormControl
+  FormControl,
+  Tag,
+  FormLabel
 } from "@chakra-ui/react";
 
-const EditProfile = ({ user }) => {
-  const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
-  const navigate = useNavigate();
-import icon from "../../assets/sampleprofile.png";
-import { Box, Button, propNames, Text } from "@chakra-ui/react";
-import { UserContext } from "../../context/UserContext";
 
-const EditProfile = (props) => {
-  let navigate = useNavigate();
+
+const EditProfile = ({ user }) => {
+  const userData = useContext(UserContext);
+  console.log(userData)
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const navigate = useNavigate();
+
+  const handleSave = (event) => {
+    event.preventDefault();
+  };
 
   function handleClick() {
     navigate('/profilepage');
   }
-  
+
+  useEffect(() => {
+    if (userData.firstName)
+    {
+      setFirstName(userData.firstName)
+      setLastName(userData.lastName)
+    }
+  }, [userData])
   return (
     <>
     <SnoozeHeader />
@@ -50,17 +61,23 @@ const EditProfile = (props) => {
     <FormControl onSubmit={handleSave}>
     <Stack spacing={8}  align='center' mt={10} >
       {/* need to figure out how to change name */}
-      <Input size='lg' w={500}
-      type='text' 
-      value={name} 
-      onChange={(event) => setName(event.target.value)}
-      />
+      <div>
+        <FormLabel>First Name</FormLabel>
+        <Input size='lg'  w={500}
+        type='text'
+        value={firstName} 
+        onChange={(event) => setFirstName(event.target.value)}
+        />
+      </div>
       {/* need to figure out how to update in profile page after change */}
-      <Input size='lg'  w={500}
-      type='email'
-      value={email} 
-      onChange={(event) => setEmail(event.target.value)}
-      />
+      <div>
+        <FormLabel>Last Name</FormLabel>
+        <Input size='lg'  w={500}
+        type='text'
+        value={lastName} 
+        onChange={(event) => setLastName(event.target.value)}
+        />
+      </div>
       <Button onClick={handleClick} mt={7} colorScheme='green'>
             Save
       </Button>
