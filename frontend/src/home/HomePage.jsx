@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import sampleHotelData from "../../sampleHotels.json";
 import NavBar from "../Navbar";
 import Hotel from "../components/Hotel";
@@ -27,8 +27,26 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import Ratings from "../ratings/Ratings";
 
+
+
 function HomePage(props) {
-  let hotels = sampleHotelData.HOTELS;
+  let [hotels, setHotels] = useState([])
+
+
+
+  async function fetchHotels() {
+    const response = await fetch("api/hotel");
+    const data = await response.json()
+    setHotels(data);
+  }
+
+  useEffect(() => {
+    fetchHotels()
+  }, [])
+
+  useEffect(() => {
+   console.log(hotels) 
+  }, [hotels])
 
   const userContext = useContext(UserContext);
   console.log({ userContext });
@@ -40,17 +58,7 @@ function HomePage(props) {
   const { name, address, city, url } = hotelData[0].location; // I added all of our test data into "location" just for testing purposes
   // later on we'll do a loop through all the queried json requests.
 
-  // create an array of empty squares to display as placeholders
-  const numSquares = 20;
-  const emptySquares = Array.from(Array(numSquares)).map((_, index) => (
-    <Box
-      key={index}
-      w={["90vw", "80vw", "400px"]}
-      h={["90vw", "80vw", "400px"]}
-      bg="gray.200"
-      m="3"
-    />
-  ));
+  
 
   return (
     <div>
@@ -149,14 +157,10 @@ function HomePage(props) {
       {/* <HotelFilter /> */}
       {/*render all hotels, this will be a for loop through the json request later on*/}
       <Flex flexWrap="wrap" justifyContent="center" alignItems="center" mt="8">
-        {Array.from({ length: 10 }).map((_, index) => (
+        {hotels.map((hotel, index) => (
           <Hotel
             key={index}
-            name={name}
-            address={address}
-            city={city}
-            imageSrc={url}
-            price={200}
+            hotel={hotel}
           />
         ))}
       </Flex>

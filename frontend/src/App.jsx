@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -15,29 +15,32 @@ import Payment from "./payment/Payment";
 import { AuthContext } from "../context/AuthContext";
 
 function App() {
-  let userData = JSON.parse(localStorage.getItem("user"));
-  if (!userData) {
-    userData = {
-      firstName: null,
-      lastName: null,
-      email: "test@gmail.com",
-    };
-  }
-  const user = {
-    email: userData.email,
-    firstName: "First",
-    lastName: "Last",
-  };
+  const [allUserData, setAllUserData] = useState({
+    firstName: null,
+    lastName: null,
+    email: "test@gmail.com",
+  })
 
-  let allUserData = {};
-  async function fetchData() {
-    const response = await fetch("api/user/getUser/context@gmail.com");
-    const data = await response.json();
-    console.log("fetch: ", data);
-    return data;
+  async function fetchData(email) {
+    const response = await fetch("api/user/getUser/" + email);
+    const data = await response.json()
+    setAllUserData(data);
   }
-  allUserData = fetchData();
-  console.log("all user data: ", { allUserData });
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("user"))
+    if (user) {
+      fetchData(user.email)
+    }
+  }, [])
+
+
+  useEffect(() => {
+    console.log("User data: ");
+    console.log(allUserData)
+  }, [allUserData])
+
+  useEffect
 
   return (
     <div>
@@ -51,16 +54,16 @@ function App() {
             <Route
               exact
               path="/profilepage"
-              element={<ProfilePage user={user} />}
+              element={<ProfilePage user={allUserData} />}
             />
             <Route
               exact
               path="/editprofile"
-              element={<EditProfile user={user} />}
+              element={<EditProfile user={allUserData} />}
             />
             <Route exact path="/forgotpassword" element={<ForgotPw />} />
             <Route exact path="/editpassword" element={<EditPassword />} />
-            <Route exact path="/payment" element={<Payment user={user} />} />
+            <Route exact path="/payment" element={<Payment user={allUserData} />} />
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>
