@@ -43,13 +43,14 @@ const EditProfile = ({ user }) => {
   return (
     <>
     <SnoozeHeader />
-    <Heading align='center' fontSize={25} mt={5}>
+    <Heading align='center' fontSize={25} mt={7}>
       Edit Profile
     </Heading>
     <Box align='center'>
       <Image
+      mt={4}
       borderRadius='full'
-      boxSize='150px'
+      boxSize='130px'
       src={image}
       alt=''
       />

@@ -30,12 +30,12 @@ function ProfilePage(props) {
 
     return (
     <>
-    <img src='../../assets/SnoozeLogo.svg'></img>
+    <Image w={150} p={3} ml={3} src='../../assets/SnoozeLogo.svg'></Image>
 
     <Box bg='mintgreen' p={4} align='center'>
         <Image
         borderRadius='full'
-        boxSize='150px'
+        boxSize='130px'
         src={image}
         alt=''
         />
@@ -62,7 +62,7 @@ function ProfilePage(props) {
     </Box>
 
     <Heading ml={20} mt={12} size="lg">Rewards</Heading>
-    <Box bg='gray.200' mt={5} ml={40} w='35em' h='40em'>
+    <Box bg='darkGray' mt={5} ml={40} w='35em' h='40em'>
         {/* have to figure out how to get reward points */}
         <Flex justifyContent='center' alignItems='center'>
         <Circle mt={10} size='20em' borderColor='pink' borderWidth='12px' color='black'>

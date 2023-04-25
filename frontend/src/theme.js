@@ -54,6 +54,7 @@ export const colors = {
   indiepink: "#F2DFDF",
   lightpink:"#eecaca",
   pink:"#F5C2C2",
+  darkGray:"#E2E7E3",
   selectedSwitch: {
     50: switchColorScheme,
     100: switchColorScheme,
