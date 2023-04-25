@@ -1,13 +1,18 @@
 import React from 'react';
-// import './ProfilePage.css';
+// import './ProfilePage.css'; I don't use this one
 import { useNavigate } from 'react-router-dom';
 import image from '../../assets/sampleprofile.png';
 import Rewardpoints from './Rewardpoints';
-import {Box, Button, Circle, Flex, Heading, Image, TabList, Tabs, Text} from "@chakra-ui/react";
+import {Box, Button, Circle, Flex, Heading, Image, Text} from "@chakra-ui/react";
 
 function ProfilePage(props) {
     const name = `${props.user.firstName} ${props.user.lastName}`;
     const {email} = props;
+    const navigate = useNavigate();
+
+    function handleClick() {
+        navigate('/editprofile');
+    }
 
     return (
     <>
@@ -20,8 +25,7 @@ function ProfilePage(props) {
         src={image}
         alt=''
         />
-        {/* have to make onclick route to editprofile */}
-        <Button mt={4} colorScheme='gray'>
+        <Button onClick={handleClick} mt={4} colorScheme='gray'>
             Edit Profile 
         </Button>
     </Box>

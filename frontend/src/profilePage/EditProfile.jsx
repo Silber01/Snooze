@@ -1,40 +1,70 @@
-import React from "react";
-import "./EditProfile.css";
+import React, {useState} from "react";
+// import "./EditProfile.css";
 import { useNavigate } from "react-router-dom";
 import SnoozeHeader from "../general/SnoozeHeader";
-import icon from "../../assets/sampleprofile.png";
-import { Box, Button, propNames, Text } from "@chakra-ui/react";
+import image from "../../assets/sampleprofile.png";
+import { 
+  Box, 
+  Button, 
+  Heading, 
+  Input,
+  Stack,
+  Image,
+  FormControl
+} from "@chakra-ui/react";
 
-const EditProfile = (props) => {
-  let navigate = useNavigate();
+const EditProfile = ({ user }) => {
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const navigate = useNavigate();
 
-  const name = `${props.user.firstName} ${props.user.lastName}`;
+  const handleSave = (event) => {
+    event.preventDefault();
+  };
 
+  function handleClick() {
+    navigate('/profilepage');
+  }
+  
   return (
-    <div className="EditProfile">
-      <SnoozeHeader />
-      <div className="container">
-        <div className="icon-box">
-          <p className="title">Edit Profile</p>
-          <img className="icon" src={icon} alt="" />
-          <p>Edit picture or avatar</p>
-        </div>
-        <div className="info-box">
-          <div className="single-box">
-            <p className="text-title">Name:</p>
-            <p>{name}</p>
-          </div>
-          <div className="single-box">
-            <p className="text-title">Email:</p>
-            <p>{props.user.email}</p>
-          </div>
-        </div>
+    <>
+    <SnoozeHeader />
+    <Heading align='center' fontSize={25} mt={5}>
+      Edit Profile
+    </Heading>
+    <Box align='center'>
+      <Image
+      borderRadius='full'
+      boxSize='150px'
+      src={image}
+      alt=''
+      />
+      <Button colorScheme='messenger' variant='link'>
+        Edit picture or avatar
+      </Button>
+    </Box>
 
-        <button className="button" onClick={() => navigate("/profilepage")}>
-          Save
-        </button>
-      </div>
-    </div>
+    <FormControl onSubmit={handleSave}>
+    <Stack spacing={8}  align='center' mt={10} >
+      {/* need to figure out how to change name */}
+      <Input size='lg' w={500}
+      type='text' 
+      value={name} 
+      onChange={(event) => setName(event.target.value)}
+      />
+      {/* need to figure out how to update in profile page after change */}
+      <Input size='lg'  w={500}
+      type='email'
+      value={email} 
+      onChange={(event) => setEmail(event.target.value)}
+      />
+      <Button onClick={handleClick} mt={7} colorScheme='green'>
+            Save
+      </Button>
+    </Stack>
+    </FormControl>
+   
+    </>
   );
 };
 
