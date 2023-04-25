@@ -9,6 +9,7 @@ import { UserContext } from "../../context/UserContext";
 
 const EditProfile = (props) => {
   const userContext = useContext(UserContext);
+  console.log(userContext);
   let navigate = useNavigate();
 
   const name = `${props.user.firstName} ${props.user.lastName}`;

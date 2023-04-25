@@ -31,6 +31,7 @@ function HomePage(props) {
   let hotels = sampleHotelData.HOTELS;
 
   const userContext = useContext(UserContext);
+  console.log({ userContext });
 
   const searchRef = useRef();
   const [priceSlider, setPriceSlider] = useState([0, 2000]);

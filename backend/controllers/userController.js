@@ -37,4 +37,16 @@ const signupUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, loginUser };
+// get a users data
+const getUser = async (req, res) => {
+  const email = req.params;
+  try {
+    const user = await User.findOne(email);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    throw Error("No Email");
+  }
+};
+
+module.exports = { signupUser, loginUser, getUser };
