@@ -1,30 +1,31 @@
 const express = require('express')
 const {
-  createHotel,
-  getHotel,
+  getAllHotels,
   getHotels,
+  getHotel,
+  createHotel,
   deleteHotel,
   updateHotel,
   getRoom,
   bookHotel,
   addReview,
-  queryHotels
+  addDateToUser,
+  getAvailableRooms
 } = require('../controllers/hotelController')
 
 const router = express.Router()
 
 // GET all hotels
-router.get('/', getHotels)
+router.get('/', getAllHotels)
 
 // GET search hotels
-router.get('/search', queryHotels)
+router.get('/search', getHotels)
 
 //GET a single hotel
 router.get('/:id', getHotel)
 
 //GET a single room
 router.get('/:id/:roomid', getRoom)
-
 
 // POST a new hotel
 //router.post('/', createHotel)
@@ -38,6 +39,10 @@ router.get('/:id/:roomid', getRoom)
 //Book a Hotel Room
 router.patch('/booking/:id/:roomid', bookHotel)
 
+//Test add review to User
+router.patch('/test', addDateToUser)
+
 //Add Review
 router.put('/review/:id', addReview);
+
 module.exports = router

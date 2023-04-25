@@ -1,8 +1,9 @@
 const Hotel = require('../models/hotelModel')
+const User = require('../models/userModel')
 const mongoose = require('mongoose')
 
 // get all hotels
-const getHotels = async (req, res) => {
+const getAllHotels = async (req, res) => {
   const hotels = await Hotel.find({}).sort({ createdAt: -1 })
 
   res.status(200).json(hotels)
@@ -12,19 +13,34 @@ const getHotels = async (req, res) => {
 run()
 async function run(){
   const hotel = await Hotel.create ({
-    name: "SOup",
-    description: "Test Description",
+    name: "Azure Rose Hotel ",
+    description: "Fancy Blue Hotel.",
     imgsrc: "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png",
-    rooms:[{price:252, roomType:"Suite",roomNum:240, beds: 4, hasWifi: true, imgsrc: "image", 
+    rooms:[
+      
+    {price:Math.floor(Math.random() * 10000), 
+    roomType:"Suite",
+    roomNum:Math.floor(Math.random() * 999), 
+    beds: Math.floor(Math.random() * 5), 
+    hasWifi: true, 
+    imgsrc: "image", 
     datesBooked:[
       {firstDate:"2023-04-07",lastDate:"2023-04-10"},
       {firstDate:"2023-04-13",lastDate:"2023-04-17"},
-    ]}, {price:350, roomType:"Modern",roomNum:505, beds: 3, hasWifi: true, imgsrc: "image", 
-    datesBooked:[
-      {firstDate:"2023-04-07",lastDate:"2023-04-10"},
-      {firstDate:"2023-04-13",lastDate:"2023-04-17"},
-    ]}],
-    ratings:{1:6, 2:2, 3:4, 4:4, 5:20},
+    ]},
+
+    {price:Math.floor(Math.random() * 10000), 
+        roomType:"Suite",
+        roomNum:Math.floor(Math.random() * 999), 
+        beds: Math.floor(Math.random() * 5 + 1), 
+        hasWifi: true, 
+        imgsrc: "image", 
+        datesBooked:[
+          {firstDate:"2023-04-07",lastDate:"2023-04-10"},
+          {firstDate:"2023-04-13",lastDate:"2023-04-17"},
+        ]},
+    ],
+    ratings:{1:Math.floor(Math.random()* 1000), 2:Math.floor(Math.random()* 1000), 3:Math.floor(Math.random()*1000), 4:Math.floor(Math.random()*1000), 5:Math.floor(Math.random()*1000)},
     reviews:[
       {user:"test user", review: "abc", rating:4},
       {user:"test user", review: "abc", rating:4},
@@ -44,17 +60,23 @@ async function run(){
 
 
 
-// query hotels
+
+// get hotels
 // Currently logs the query map. Needs to be removed later.
 
 /**
  * Handles hotel query from get request.
- *  
- * @param name
- * @param country
- * @param province
- * @param city
- * @param sort 
+ * 
+ * @param page        //page number
+ * @param limit       //page limit
+ * @param name        //hotel name
+ * @param country     //country name
+ * @param province    //province name
+ * @param city        //city name
+ * @param ratings     //minimum ratings
+ * @param startPrice  //starting price
+ * @param endPrice    //endPrice
+ * @param sort        //sort param
  *     
  * //Sorting Rules
      * ID 1 = Price Sort Descending
@@ -65,31 +87,31 @@ async function run(){
  * Ex:
  * http://localhost:4000/api/hotel/search?page=1&limit=10&country=Philip&province=Manila&sort=2
  */
-const queryHotels = async (req, res) => {
+const getHotels = async (req, res) => {
   try {
 
     //Define Page Limits and Query Params
-    const page = parseInt(req.query.page) - 1 || 0
-    const limit = parseInt(req.query.limit) || 10
-    const nameQuery = req.query.name
-    const countryQuery = req.query.country
-    const provinceQuery = req.query.province
-    const cityQuery = req.query.city
-    const ratingQuery = parseInt(req.query.rating)
-    const startPriceQuery = parseInt(req.query.startPrice) || 0
-    const endPriceQuery = parseInt(req.query.endPrice) || 999999
-    const sortQuery = parseInt(req.query.sort) || 1
+    const page = parseInt(req.body.page) - 1 || 0
+    const limit = parseInt(req.body.limit) || 10
+    const nameQuery = req.body.name
+    const countryQuery = req.body.country
+    const provinceQuery = req.body.province
+    const cityQuery = req.body.city
+    const ratingQuery = parseInt(req.body.rating)
+    const startPriceQuery = parseInt(req.body.startPrice) || 0
+    const endPriceQuery = parseInt(req.body.endPrice) || 999999
+    const sortQuery = parseInt(req.body.sort) || 1
     //const firstDateQuery = new Date(req.query.firstDate)
     //const lastDateQuery = new Date(req.query.lastDate)
 
     //Create Match Query Map
     const dynamicQueryObj = {}
-    if (nameQuery) { dynamicQueryObj['name'] = { $regex: nameQuery, $options: 'i' } }
-    if (countryQuery) { dynamicQueryObj['location.country'] = { $regex: countryQuery, $options: 'i' } }
-    if (cityQuery) { dynamicQueryObj['location.city'] = { $regex: cityQuery, $options: 'i' } }
-    if (provinceQuery) { dynamicQueryObj['location.province'] = { $regex: provinceQuery, $options: 'i' } }
-    if (ratingQuery){ dynamicQueryObj['ratings'] = {$gte: ratingQuery}}
-    if (startPriceQuery || endPriceQuery) {dynamicQueryObj['rooms.price'] = {$gte: startPriceQuery, $lte: endPriceQuery}}
+    if (nameQuery && nameQuery != '') { dynamicQueryObj['name'] = { $regex: nameQuery, $options: 'i' } }
+    if (countryQuery && countryQuery != '') { dynamicQueryObj['location.country'] = { $regex: countryQuery, $options: 'i' } }
+    if (cityQuery && cityQuery != '') { dynamicQueryObj['location.city'] = { $regex: cityQuery, $options: 'i' } }
+    if (provinceQuery && provinceQuery != '') { dynamicQueryObj['location.province'] = { $regex: provinceQuery, $options: 'i' } }
+    if (ratingQuery && ratingQuery != null){ dynamicQueryObj['ratings'] = {$gte: ratingQuery}}
+    if (startPriceQuery && startPriceQuery != null || endPriceQuery && endPriceQuery != null) {dynamicQueryObj['rooms.price'] = {$gte: startPriceQuery, $lte: endPriceQuery}}
 
     //let priceProjRule = {rooms:{$elemMatch:{price: {$lte: endPriceQuery, $gte: startPriceQuery}}}}
 
@@ -117,6 +139,7 @@ const queryHotels = async (req, res) => {
         $project: {
           name:1,
           description:1,
+          imgsrc:1,
           ratings:
           {
             $divide: [
@@ -138,6 +161,8 @@ const queryHotels = async (req, res) => {
                 ]
               }]
           },
+          reviews:1,
+          location:1,
           rooms: {
             $filter: {
               input: "$rooms",
@@ -161,7 +186,10 @@ const queryHotels = async (req, res) => {
         $group: {_id: "$_id", 
         name: {$first: "$name"}, 
         description: {$first: "$description"}, 
+        imgsrc: {$first: "$imgsrc"}, 
         ratings: {$first: "$ratings"},
+        reviews: {$first: "$reviews"}, 
+        location: {$first: "$location"},    
         rooms: {$push: "$rooms"}}
       },
     ])
@@ -190,6 +218,11 @@ const getHotel = async (req, res) => {
   }
 
   res.status(200).json(hotel)
+}
+
+// get available room
+const getAvailableRooms = async (req, res) => {
+
 }
 
 // get a single hotel room
@@ -309,6 +342,7 @@ const bookHotel = async (req, res) => {
     return res.status(404).json({ error: 'No such hotel' })
   }
 
+
   var authorization = req.headers.authorization.split(" ")[1]
   const [, auth,] = authorization.split(".")
   var userId = atob(auth)
@@ -328,15 +362,27 @@ const bookHotel = async (req, res) => {
     }
   )
 
-  //const hotel = await Hotel.find({_id: id, 'rooms._id': roomid}, { "rooms.datesBooked.firstDate": 1, "rooms.datesBooked.lastDate": 1})
 
   if (!hotel) {
     return res.status(400).json({ error: 'No such hotel' })
   }
 
+  //const hotel = await Hotel.find({_id: id, 'rooms._id': roomid}, { "rooms.datesBooked.firstDate": 1, "rooms.datesBooked.lastDate": 1})
+
   res.status(200).json(hotel)
 }
 
+const addDateToUser = async (req, res) => {
+  let id = "64478e4a70afb823ebb4fb94";
+  const user = await User.updateOne({ _id: id }, {
+    $push: {
+      "datesBooked": req.body
+    }
+  }
+  )
+
+  res.status(200).json("Updated User")
+}
 const addReview = async (req, res) => {
   var authorization = req.headers.authorization.split(' ')[1]
   const [, auth,] = authorization.split(".")
@@ -362,13 +408,15 @@ const addReview = async (req, res) => {
 
 
 module.exports = {
-  getHotel,
+  getAllHotels,
   getHotels,
+  getHotel,
   createHotel,
   deleteHotel,
   updateHotel,
   getRoom,
   bookHotel,
   addReview,
-  queryHotels
+  addDateToUser,
+  getAvailableRooms
 }
