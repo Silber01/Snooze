@@ -1,5 +1,6 @@
-import React, {useState} from "react";
-// import "./EditProfile.css";
+import React, { useContext } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import "./EditProfile.css";
 import { useNavigate } from "react-router-dom";
 import SnoozeHeader from "../general/SnoozeHeader";
 import image from "../../assets/sampleprofile.png";
@@ -17,10 +18,12 @@ const EditProfile = ({ user }) => {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const navigate = useNavigate();
+import icon from "../../assets/sampleprofile.png";
+import { Box, Button, propNames, Text } from "@chakra-ui/react";
+import { UserContext } from "../../context/UserContext";
 
-  const handleSave = (event) => {
-    event.preventDefault();
-  };
+const EditProfile = (props) => {
+  let navigate = useNavigate();
 
   function handleClick() {
     navigate('/profilepage');
