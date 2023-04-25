@@ -40,7 +40,7 @@ function ProfilePage(props) {
         alt=''
         />
         {/* have to make onclick route to editprofile */}
-        <Button mt={4} colorScheme='gray'>
+        <Button onClick={handleClick} mt={4} colorScheme='gray'>
             Edit Profile 
         </Button>
     </Box>

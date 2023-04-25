@@ -1,5 +1,4 @@
 import React from "react";
-import "./ProfilePage.css";
 
 const Rewardpoints = (props) => {
   return (
