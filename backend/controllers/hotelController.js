@@ -279,29 +279,26 @@ const bookHotel = async (req, res) => {
   } catch (err) {
     console.log(err)
   }
-
-  // update a hotel
-  const updateHotel = async (req, res) => {
-    const { id } = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ error: 'No such hotel' })
-    }
-
-    const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
-      ...req.body
-    })
-
-    if (!hotel) {
-      return res.status(400).json({ error: 'No such hotel' })
-    }
-
-    res.status(200).json(hotel)
-  }
-
-
 }
 
+// update a hotel
+const updateHotel = async (req, res) => {
+  const { id } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such hotel' })
+  }
+
+  const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
+    ...req.body
+  })
+
+  if (!hotel) {
+    return res.status(400).json({ error: 'No such hotel' })
+  }
+
+  res.status(200).json(hotel)
+}
 
 const addReview = async (req, res) => {
   var authorization = req.headers.authorization.split(' ')[1]
