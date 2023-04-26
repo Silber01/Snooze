@@ -21,8 +21,8 @@ function App() {
     email: "test@gmail.com",
   })
 
-  async function fetchData(email) {
-    const response = await fetch("api/user/getUser/" + email);
+  async function fetchData(email, token) {
+    const response = await fetch("http://localhost:3000/api/user/getUser/" + email);
     const data = await response.json()
     setAllUserData(data);
   }
@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"))
     if (user) {
-      fetchData(user.email)
+      fetchData(user.email, user.token)
     }
   }, [])
 
@@ -40,7 +40,6 @@ function App() {
   //   console.log(allUserData)
   // }, [allUserData])
 
-  useEffect
 
   return (
     <div>
@@ -49,7 +48,9 @@ function App() {
           <Routes>
             <Route exact path="/" element={<SignIn />} />
             <Route exact path="/signup" element={<SignUp />} />
-            <Route exact path="/viewhotelroomS" element={<ViewHotelRoom />} />
+            <Route path="/hotel" element={<ViewHotelRoom />}>
+              <Route path=":id" element={<ViewHotelRoom />} />
+            </Route>
             <Route exact path="/home" element={<HomePage />} />
             <Route
               exact

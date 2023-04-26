@@ -1,4 +1,5 @@
 import { Box, Button, Text, Image, Grid, GridItem } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function getLocation(location)
 {
@@ -50,7 +51,14 @@ function getStartingPrice(rooms)
   return minPrice;
 }
 
+function handleRedirect(navigate, id)
+{
+  
+  navigate('/hotel/' + id)
+}
+
 function Hotel({hotel}) {
+  const navigate = useNavigate()
   let rating = getRating(hotel.ratings)
   return (
     <Box
@@ -83,7 +91,7 @@ function Hotel({hotel}) {
           <Text as="span" margin="auto">Starting At </Text>
           <Text fontWeight="bold" fontSize="1.2em" as="span">${getStartingPrice(hotel.rooms)}</Text>
         </Box>
-        <Button colorScheme="green">
+        <Button colorScheme="green" onClick={() => {handleRedirect(navigate, hotel._id)}}>
           Book
         </Button>
       </Grid>

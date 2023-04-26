@@ -75,12 +75,14 @@ function HomePage(props) {
               marginRight={10}
             />
             <Input
+              type="date"
               size="md"
               variant="filled"
               placeholder="Check In Date"
               marginRight={10}
             />
             <Input
+              type="date"
               size="md"
               variant="filled"
               placeholder="Check Out Date"
