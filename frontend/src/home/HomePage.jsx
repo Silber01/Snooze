@@ -34,8 +34,13 @@ function HomePage(props) {
   let [hotels, setHotels] = useState([])
 
   const userContext = useContext(UserContext);
-  console.log({ userContext });
   const navigate = useNavigate()
+  useEffect(() => {
+    if (userContext == "NOT LOGGED IN")
+    {
+      navigate("/")
+    }
+  }, [userContext])
 
 
   async function fetchHotels() {
@@ -49,12 +54,7 @@ function HomePage(props) {
       fetchHotels()
   }, [])
 
-  useEffect(() => {
-    if (userContext == "NOT LOGGED IN")
-    {
-      navigate("/")
-    }
-  }, [userContext])
+  
 
   useEffect(() => {
    console.log(hotels) 
@@ -64,12 +64,6 @@ function HomePage(props) {
 
   const searchRef = useRef();
   const [priceSlider, setPriceSlider] = useState([0, 2000]);
-
-  // one hotel entry to display on each square
-  const { name, address, city, url } = hotelData[0].location; // I added all of our test data into "location" just for testing purposes
-  // later on we'll do a loop through all the queried json requests.
-
-  
 
   return (
     <div>

@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    console.log("logged in context ", { user });
+    // console.log("logged in context ", { user });
     if (user) {
       dispatch({
         type: "LOGIN",

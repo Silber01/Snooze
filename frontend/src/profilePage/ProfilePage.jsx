@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 // import './ProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import { useState, useEffect } from "react";
 import image from "../../assets/sampleprofile.png";
 import Rewardpoints from "./Rewardpoints";
 import {
@@ -21,8 +22,15 @@ function ProfilePage(props) {
   const name = `${props.user.firstName} ${props.user.lastName}`;
   const { email } = props;
 
-  console.log(userContext);
+  // console.log(userContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userContext == "NOT LOGGED IN")
+    {
+      navigate("/")
+    }
+  }, [userContext])
 
   function handleClick() {
     navigate("/editprofile");

@@ -1,5 +1,6 @@
-import { Box, Button, Text, Image, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Button, Text, Image, Grid, GridItem, Center } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import StarRating from "./StarRating";
 
 function getLocation(location) {
   let locationList = [];
@@ -23,13 +24,6 @@ function getRating(ratings) {
     totalRatings += value;
   }
   return (avg / totalRatings).toFixed(1);
-}
-
-function getStar(rating, place) {
-  let thisRating = rating - place + 0.00001;
-  if (thisRating <= 0) return 0;
-  else if (thisRating >= 1) return 10;
-  return ("" + thisRating * 10).substring(0, 1);
 }
 
 function getStartingPrice(rooms) {
@@ -71,28 +65,17 @@ function Hotel({ hotel }) {
       />
       <Text fontWeight="bold">{hotel.name}</Text>
       <Text>{getLocation(hotel.location)}</Text>
-      <Grid templateColumns="repeat(5, 1fr)" gap={1} mt={4}>
-        <Image
-          src={"../../assets/stars/" + getStar(rating, 0) + ".png"}
-          width="30px"
-        />
-        <Image
-          src={"../../assets/stars/" + getStar(rating, 1) + ".png"}
-          width="30px"
-        />
-        <Image
-          src={"../../assets/stars/" + getStar(rating, 2) + ".png"}
-          width="30px"
-        />
-        <Image
-          src={"../../assets/stars/" + getStar(rating, 3) + ".png"}
-          width="30px"
-        />
-        <Image
-          src={"../../assets/stars/" + getStar(rating, 4) + ".png"}
-          width="30px"
-        />
+      <Grid templateColumns="5fr 1fr" mt="4">
+      <StarRating rating={rating} />
+      <Center>
+        <Box>
+          <Text fontWeight="bold">{rating}</Text>
+        </Box>
+      </Center>
       </Grid>
+      
+
+      
 
       <Grid mt={4} templateColumns="2fr 1fr" gap={1}>
         <Box margin="auto">
