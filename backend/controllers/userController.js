@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
 const createToken = (_id) => {
-  return jwt.sign({_id}, process.env.SECRET, { expiresIn: '3d' })
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' })
 }
 
 /*
@@ -24,31 +24,31 @@ async function run(){
 
 // login a user
 const loginUser = async (req, res) => {
-  const {email, password} = req.body
+  const { email, password } = req.body
 
   try {
     const user = await User.login(email, password)
 
     // create a token
     const token = createToken(user._id)
-    res.status(200).json({email, token})
+    res.status(200).json({ email, token })
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message })
   }
 }
 
 // signup a user
 const signupUser = async (req, res) => {
-  const {email, password, firstName, lastName} = req.body
+  const { email, password, firstName, lastName } = req.body
 
   try {
     const user = await User.signup(email, password, firstName, lastName)
 
     // create a token
     const token = createToken(user._id)
-    res.status(200).json({email, token})
+    res.status(200).json({ email, token })
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message })
   }
 }
 
@@ -61,18 +61,18 @@ const editProfile = async (req, res) => {
   var userId = atob(auth)
   userId = userId.substring(8, 32);
 
-  const {imgsrc, email, firstName, lastName, password} = req.body
+  const { imgsrc, email, firstName, lastName, password } = req.body
   console.log(req.body)
-  if (password){
+  if (password) {
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
   }
 
-  try{
-    const user = await User.findOneAndUpdate({_id: userId}, req.body)
+  try {
+    const user = await User.findOneAndUpdate({ _id: userId }, req.body)
     res.status(200).json(user)
-  } catch(error){
-    res.status(400).json({error: error.message})
+  } catch (error) {
+    res.status(400).json({ error: error.message })
   }
 }
 
@@ -80,14 +80,28 @@ const editProfile = async (req, res) => {
 //curently takes userid from body.
 //I need user authentication from jwt token in header.
 const getBookings = async (req, res) => {
-  const {_id, imgsrc} = req.body
+  const { _id, imgsrc } = req.body
 
-  try{
-    const user = await User.findOneAndUpdate({_id: _id}, req.body)
+  try {
+    const user = await User.findOneAndUpdate({ _id: _id }, req.body)
     res.status(200).json(user)
-  } catch(error){
-    res.status(400).json({error: error.message})
+  } catch (error) {
+    res.status(400).json({ error: error.message })
   }
 }
 
-module.exports = { signupUser, loginUser, editProfile}
+//update points of a user
+const updatePoints = async (req, res) => {
+  var authorization = req.headers.authorization.split(" ")[1]
+  const [, auth,] = authorization.split(".")
+  var userId = atob(auth)
+  userId = userId.substring(8, 32);
+  if (parseInt(JSON.stringify(req.body.rewardsPoints)) < 0) {
+    res.status(400).json("Invalid rewards points")
+  }
+  else {
+    const user = await User.findOneAndUpdate({ _id: userId }, req.body)
+    res.status(200).json("sucess");
+  }
+}
+module.exports = { signupUser, loginUser, editProfile, updatePoints }
