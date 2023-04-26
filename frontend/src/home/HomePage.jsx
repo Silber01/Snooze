@@ -5,6 +5,7 @@ import Hotel from "../components/Hotel";
 import hotelData from "../../hotelDataAll.json";
 import { UserContext } from "../../context/UserContext";
 import "./HomePage.css";
+import { useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -32,24 +33,34 @@ import Ratings from "../ratings/Ratings";
 function HomePage(props) {
   let [hotels, setHotels] = useState([])
 
+  const userContext = useContext(UserContext);
+  console.log({ userContext });
+  const navigate = useNavigate()
 
 
   async function fetchHotels() {
-    const response = await fetch("api/hotel");
+    let apiUrl = import.meta.env.VITE_API_URL
+    const response = await fetch(apiUrl + "/api/hotel");
     const data = await response.json()
     setHotels(data);
   }
 
   useEffect(() => {
-    fetchHotels()
+      fetchHotels()
   }, [])
+
+  useEffect(() => {
+    if (userContext == "NOT LOGGED IN")
+    {
+      navigate("/")
+    }
+  }, [userContext])
 
   useEffect(() => {
    console.log(hotels) 
   }, [hotels])
 
-  const userContext = useContext(UserContext);
-  console.log({ userContext });
+  
 
   const searchRef = useRef();
   const [priceSlider, setPriceSlider] = useState([0, 2000]);

@@ -18,11 +18,12 @@ function App() {
   const [allUserData, setAllUserData] = useState({
     firstName: null,
     lastName: null,
-    email: "test@gmail.com",
+    email: null,
   })
 
-  async function fetchData(email, token) {
-    const response = await fetch("http://localhost:3000/api/user/getUser/" + email);
+  async function fetchData(email) {
+    let apiUrl = import.meta.env.VITE_API_URL
+    const response = await fetch(apiUrl + "/api/user/getUser/" + email);
     const data = await response.json()
     setAllUserData(data);
   }
@@ -30,8 +31,10 @@ function App() {
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"))
     if (user) {
-      fetchData(user.email, user.token)
+      fetchData(user.email)
     }
+    else
+      setAllUserData("NOT LOGGED IN")
   }, [])
 
 

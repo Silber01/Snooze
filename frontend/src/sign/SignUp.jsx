@@ -23,7 +23,7 @@ const SignUp = (props) => {
     setPasswordValid(true);
     if (!error) {
       console.log("successful signup");
-    } else if (error == "Invalid email") setEmailValid(false);
+    } else if (error == "Email not valid") setEmailValid(false);
     else if (error == "Password not strong enough") setPasswordValid(false);
     else if (error == "Email already in use") setEmailValid(false);
     else {
