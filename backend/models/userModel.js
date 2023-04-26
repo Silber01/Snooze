@@ -26,7 +26,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  datesBooked: {
+  bookings: {
     type: Array,
   },
   reviews:{
