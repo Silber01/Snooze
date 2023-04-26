@@ -110,8 +110,8 @@ const getHotels = async (req, res) => {
     if (countryQuery && countryQuery != '') { dynamicQueryObj['location.country'] = { $regex: countryQuery, $options: 'i' } }
     if (cityQuery && cityQuery != '') { dynamicQueryObj['location.city'] = { $regex: cityQuery, $options: 'i' } }
     if (provinceQuery && provinceQuery != '') { dynamicQueryObj['location.province'] = { $regex: provinceQuery, $options: 'i' } }
-    if (ratingQuery && ratingQuery != null){ dynamicQueryObj['ratings'] = {$gte: ratingQuery}}
-    if (startPriceQuery && startPriceQuery != null || endPriceQuery && endPriceQuery != null) {dynamicQueryObj['rooms.price'] = {$gte: startPriceQuery, $lte: endPriceQuery}}
+    if (ratingQuery && ratingQuery != null) { dynamicQueryObj['ratings'] = { $gte: ratingQuery } }
+    if (startPriceQuery && startPriceQuery != null || endPriceQuery && endPriceQuery != null) { dynamicQueryObj['rooms.price'] = { $gte: startPriceQuery, $lte: endPriceQuery } }
 
     //let priceProjRule = {rooms:{$elemMatch:{price: {$lte: endPriceQuery, $gte: startPriceQuery}}}}
 
@@ -123,10 +123,10 @@ const getHotels = async (req, res) => {
      * ID 3 = Rating sort Descending
      * ID 4 = Rating sort Ascending
      */
-    if (sortQuery == 1) { sortRule = {'rooms.price' : 1}}
-    else if (sortQuery == 2) { sortRule =  {'rooms.price': -1}  }
-    else if (sortQuery == 3) { sortRule =  {'ratings': 1}  }
-    else if (sortQuery == 4) { sortRule =  {'ratings': -1}  }
+    if (sortQuery == 1) { sortRule = { 'rooms.price': 1 } }
+    else if (sortQuery == 2) { sortRule = { 'rooms.price': -1 } }
+    else if (sortQuery == 3) { sortRule = { 'ratings': 1 } }
+    else if (sortQuery == 4) { sortRule = { 'ratings': -1 } }
     //if (firstDateQuery && firstDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.firstDate'] =  {$not: {$gte: firstDateQuery}}}
     //if (lastDateQuery && lastDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.lastDate'] =  lastDateQuery}
 
@@ -137,9 +137,9 @@ const getHotels = async (req, res) => {
     const hotels = await Hotel.aggregate([
       {
         $project: {
-          name:1,
-          description:1,
-          imgsrc:1,
+          name: 1,
+          description: 1,
+          imgsrc: 1,
           ratings:
           {
             $divide: [
@@ -161,14 +161,16 @@ const getHotels = async (req, res) => {
                 ]
               }]
           },
-          reviews:1,
-          location:1,
+          reviews: 1,
+          location: 1,
           rooms: {
             $filter: {
               input: "$rooms",
               as: "room",
-              cond: {$and:[{$gte: ["$$room.price", startPriceQuery]},
-              {$lte: ["$$room.price", endPriceQuery]}]}
+              cond: {
+                $and: [{ $gte: ["$$room.price", startPriceQuery] },
+                { $lte: ["$$room.price", endPriceQuery] }]
+              }
             }
           }
         },
@@ -183,19 +185,21 @@ const getHotels = async (req, res) => {
         '$sort': sortRule,
       },
       {
-        $group: {_id: "$_id", 
-        name: {$first: "$name"}, 
-        description: {$first: "$description"}, 
-        imgsrc: {$first: "$imgsrc"}, 
-        ratings: {$first: "$ratings"},
-        reviews: {$first: "$reviews"}, 
-        location: {$first: "$location"},    
-        rooms: {$push: "$rooms"}}
+        $group: {
+          _id: "$_id",
+          name: { $first: "$name" },
+          description: { $first: "$description" },
+          imgsrc: { $first: "$imgsrc" },
+          ratings: { $first: "$ratings" },
+          reviews: { $first: "$reviews" },
+          location: { $first: "$location" },
+          rooms: { $push: "$rooms" }
+        }
       },
     ])
-    .sort(sortRule)
-    .skip(page * limit)
-    .limit(limit)
+      .sort(sortRule)
+      .skip(page * limit)
+      .limit(limit)
 
     res.status(200).json(hotels)
   } catch (err) {
@@ -237,7 +241,7 @@ const getRoom = async (req, res) => {
   console.log("valid args")
 
   const hotel = await Hotel.find(
-    { _id: id, rooms: { $elemMatch: { _id: roomid } } },{ name:1, location:1, "rooms.$": 1 }
+    { _id: id, rooms: { $elemMatch: { _id: roomid } } }, { name: 1, location: 1, "rooms.$": 1 }
   )
 
   res.status(200).json(hotel)
@@ -383,27 +387,48 @@ const addDateToUser = async (req, res) => {
 
   res.status(200).json("Updated User")
 }
+
 const addReview = async (req, res) => {
   var authorization = req.headers.authorization.split(' ')[1]
   const [, auth,] = authorization.split(".")
+  var userIds = atob(auth);
+  userIds = userIds.substring(8, 32);
+  var body = req.body;
+  const id = body.hotelId;
+  delete body.hotelId;
+  body.userId = userIds;
+
+  const userReview = await Hotel.findById({ _id: id }).find({ 'reviews': { $elemMatch: { userId: userIds } } });
+  console.log(JSON.stringify(userReview).includes("review"));
+  if (JSON.stringify(userReview).includes("review")) {
+    res.status(409).json("REVIEW ALREADY EXISTS");
+  }
+  else {
+    const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
+      $push: {
+        "reviews": body
+      }
+    })
+  }
+  res.status(200).json(userReview);
+}
+
+const addRating = async (req, res) => {
+  var authorization = req.headers.authorization.split(' ')[1];
+  const [, auth,] = authorization.split(".")
   var userId = atob(auth);
   userId = userId.substring(8, 32);
-  const { id } = req.params;
-  var body = req.body;
+  var body = req.body
+  const id = body.hotelId;
+  delete body.hotelId;
   body.userId = userId;
-  const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
-    $push: {
-      "reviews": body
-    }
-  })
 
-  const rating = await Hotel.findByIdAndUpdate({_id:id},{
-    $inc:{
-      [`ratings.${body.rating}`] : 1
+  const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
+    $inc: {
+      [`ratings.${body.rating}`]: 1
     }
   })
   res.status(200).json(hotel);
-
 }
 
 
@@ -418,5 +443,6 @@ module.exports = {
   bookHotel,
   addReview,
   addDateToUser,
-  getAvailableRooms
+  getAvailableRooms,
+  addRating
 }
