@@ -1,26 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SnoozeHeader from "../general/SnoozeHeader";
 import image from "../../assets/sampleprofile.png";
-import { 
-  Box, 
-  Button, 
-  Heading, 
+import {
+  Box,
+  Button,
+  Heading,
   Input,
   Stack,
   Image,
   FormControl,
   Tag,
-  FormLabel
+  FormLabel,
 } from "@chakra-ui/react";
-
-
 
 const EditProfile = ({ user }) => {
   const userData = useContext(UserContext);
-  console.log(userData)
+  console.log(userData);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
@@ -30,61 +28,57 @@ const EditProfile = ({ user }) => {
   };
 
   function handleClick() {
-    navigate('/profilepage');
+    navigate("/profilepage");
   }
 
   useEffect(() => {
-    if (userData.firstName)
-    {
-      setFirstName(userData.firstName)
-      setLastName(userData.lastName)
+    if (userData.firstName) {
+      setFirstName(userData.firstName);
+      setLastName(userData.lastName);
     }
-  }, [userData])
+  }, [userData]);
   return (
     <>
-    <SnoozeHeader />
-    <Heading align='center' fontSize={25} mt={7}>
-      Edit Profile
-    </Heading>
-    <Box align='center'>
-      <Image
-      mt={4}
-      borderRadius='full'
-      boxSize='130px'
-      src={image}
-      alt=''
-      />
-      <Button colorScheme='messenger' variant='link'>
-        Edit picture or avatar
-      </Button>
-    </Box>
+      <SnoozeHeader />
+      <Heading align="center" fontSize={25} mt={7}>
+        Edit Profile
+      </Heading>
+      <Box align="center">
+        <Image mt={4} borderRadius="full" boxSize="130px" src={image} alt="" />
+        <Button colorScheme="messenger" variant="link">
+          Edit picture or avatar
+        </Button>
+      </Box>
 
-    <FormControl onSubmit={handleSave}>
-    <Stack spacing={8}  align='center' mt={10} >
-      {/* need to figure out how to change name */}
-      <div>
-        <FormLabel>First Name</FormLabel>
-        <Input size='lg'  w={500}
-        type='text'
-        value={firstName} 
-        onChange={(event) => setFirstName(event.target.value)}
-        />
-      </div>
-      {/* need to figure out how to update in profile page after change */}
-      <div>
-        <FormLabel>Last Name</FormLabel>
-        <Input size='lg'  w={500}
-        type='text'
-        value={lastName} 
-        onChange={(event) => setLastName(event.target.value)}
-        />
-      </div>
-      <Button onClick={handleClick} mt={7} colorScheme='green'>
+      <FormControl onSubmit={handleSave}>
+        <Stack spacing={8} align="center" mt={10}>
+          {/* need to figure out how to change name */}
+          <div>
+            <FormLabel>First Name</FormLabel>
+            <Input
+              size="lg"
+              w={500}
+              type="text"
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
+            />
+          </div>
+          {/* need to figure out how to update in profile page after change */}
+          <div>
+            <FormLabel>Last Name</FormLabel>
+            <Input
+              size="lg"
+              w={500}
+              type="text"
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
+            />
+          </div>
+          <Button onClick={handleClick} mt={7} colorScheme="green">
             Save
-      </Button>
-    </Stack>
-    </FormControl>
-   
+          </Button>
+        </Stack>
+      </FormControl>
     </>
   );
 };
