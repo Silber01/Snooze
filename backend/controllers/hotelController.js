@@ -188,10 +188,12 @@ const bookHotel = async (req, res) => {
     const dataCheck = await Hotel.find({
       _id: hotelID,
       "rooms._id": roomID,
-      "rooms.datesBooked.firstDate": { $lte: lastDate },
-      "rooms.datesBooked.lastDate": { $gte: firstDate },
+      "rooms.datesBooked.firstDate": { $lte: new Date(lastDate) },
+      "rooms.datesBooked.lastDate": { $gte: new Date(firstDate) },
+    },{
+      "rooms.$":1,
     });
-
+    console.log(dataCheck[0].rooms[0])
     if (dataCheck.length != 0) {
       return res
         .status(400)
