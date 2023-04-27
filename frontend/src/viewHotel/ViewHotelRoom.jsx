@@ -71,8 +71,10 @@ function ViewHotelRoom() {
   let [ratingCount, setRatingCount] = useState(0)
   let [reviews, setReviews] = useState([])
   let [chosenRoom, setChosenRoom] = useState(null)
+
+
   async function fetchData(hotelID) {
-    let apiCall = apiUrl + "/api/hotel/" + hotelID;
+    let apiCall = apiUrl + "/api/hotel/getHotel?hotelID=" + hotelID;
     const response = await fetch(apiCall);
     const data = await response.json();
     setHotel(data);
