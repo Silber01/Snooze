@@ -21,14 +21,14 @@ router.get("/", getHotels);
 //GET a single hotel
 router.get("/:id", getHotel);
 
-// POST a new hotel
-router.post("/", createHotel);
+// // POST a new hotel
+// router.post("/", createHotel);
 
-// DELETE a hotel
-router.delete("/:id", deleteHotel);
+// // DELETE a hotel
+// router.delete("/:id", deleteHotel);
 
-// UPDATE a hotel
-router.patch("/:id", updateHotel);
+// // UPDATE a hotel
+// router.patch("/:id", updateHotel);
 
 // merge from will
 
