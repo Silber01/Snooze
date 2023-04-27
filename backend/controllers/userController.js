@@ -54,22 +54,22 @@ const signupUser = async (req, res) => {
  */
 const setProfile = async (req, res) => {
   try {
-  var authorization = req.headers.authorization.split(" ")[1]
-  const [, auth,] = authorization.split(".")
-  var userId = atob(auth)
-  userId = userId.substring(8, 32);
+    var authorization = req.headers.authorization.split(" ")[1]
+    const [, auth,] = authorization.split(".")
+    var userId = atob(auth)
+    userId = userId.substring(8, 32);
 
-  const { imgsrc, email, firstName, lastName, password } = req.body
-  console.log(req.body)
-  if (password) {
-    if (!validator.isStrongPassword(password)) {
-      res.status(400).json("Not strong enough password.")
-    } else {
-      const salt = await bcrypt.genSalt(10)
-      const hash = await bcrypt.hash(password, salt)
+    const { imgsrc, email, firstName, lastName, password } = req.body
+    console.log(req.body)
+    if (password) {
+      if (!validator.isStrongPassword(password)) {
+        res.status(400).json("Not strong enough password.")
+      } else {
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
+      }
+
     }
-
-  }
 
 
     const user = await User.findOneAndUpdate({ _id: userId }, req.body)
@@ -173,30 +173,32 @@ const changeBooking = async (req, res) => {
     let hotelID, roomID, oldFirstDate, oldLastDate
 
     if (!mongoose.isValidObjectId(userBookingID)) {
-      res.status(400).json("Invalid user booking id.")
+      throw{status: 400, message: "Invalid ObjectID"}
     }
 
     const userFind = await User.findOne({ _id: userId, "bookings._id": userBookingID })
 
     if (!userFind) {
-      res.status(400).json("userBookingID not found.")
+      throw{status: 404, message: "userBookingID not Found"}
     } else {
       hotelID = userFind.bookings[0].hotelID
       roomID = userFind.bookings[0].roomID
       oldFirstDate = userFind.bookings[0].firstDate
       oldLastDate = userFind.bookings[0].lastDate
+
+      const dataCheck = await Hotel.find({
+        _id: hotelID,
+        'rooms._id': roomID,
+        'rooms.datesBooked.firstDate': { $lte: lastDate },
+        'rooms.datesBooked.lastDate': { $gte: firstDate }
+      })
+  
+      if (dataCheck.length != 0) {
+        throw{status: 400, message: "Dates conflict with a booked room."}
+      }
     }
 
-    const dataCheck = await Hotel.find({
-      _id: hotelID,
-      'rooms._id': roomID,
-      'rooms.datesBooked.firstDate': { $lte: lastDate },
-      'rooms.datesBooked.lastDate': { $gte: firstDate }
-    })
 
-    if (dataCheck.length != 0) {
-      return res.status(400).json({ error: 'Date conflicts with a booked room.' })
-    }
 
     const user = await User.findOneAndUpdate({ _id: userId, "bookings._id": userBookingID },
       {
@@ -206,28 +208,25 @@ const changeBooking = async (req, res) => {
         }
       })
 
-    if (!user) {
-      res.status(400).json("Booking not found while updating.")
-    } else {
-      const hotel = await Hotel.updateOne(
-        { _id: hotelID, "rooms._id": roomID },
-        {
-          $set: {
-            'rooms.$[].datesBooked.$[xxx].firstDate': firstDate,
-            'rooms.$[].datesBooked.$[yyy].lastDate': lastDate
-          }
-        },
-        {
-          arrayFilters: [
-            { "xxx.firstDate": oldFirstDate },
-            { "yyy.lastDate": oldLastDate }
-          ]
+    const hotel = await Hotel.updateOne(
+      { _id: hotelID, "rooms._id": roomID },
+      {
+        $set: {
+          'rooms.$[].datesBooked.$[xxx].firstDate': firstDate,
+          'rooms.$[].datesBooked.$[yyy].lastDate': lastDate
         }
-      )
-      res.status(200).json(hotel)
-    }
-  } catch (err) {
-    console.log(err)
+      },
+      {
+        arrayFilters: [
+          { "xxx.firstDate": oldFirstDate },
+          { "yyy.lastDate": oldLastDate }
+        ]
+      }
+    )
+    res.status(200).json(hotel)
+
+  } catch (error) {
+    res.status(error.status).json(error.message)
   }
 
 }

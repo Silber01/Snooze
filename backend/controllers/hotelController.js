@@ -293,8 +293,6 @@ module.exports = {
   getAllHotels,
   getHotels,
   getHotel,
-  deleteHotel,
-  updateHotel,
   getRoom,
   bookHotel,
   addReview,
