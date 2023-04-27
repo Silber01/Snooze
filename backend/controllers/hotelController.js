@@ -19,10 +19,10 @@ const getAllHotels = async (req, res) => {
  */
 const getHotels = async (req, res) => {
   try {
-    const location = req.body.location || "";
-    const minRating = req.body.minRating || 0;
-    const minPrice = req.body.minPrice || 0;
-    const maxPrice = req.body.maxPrice || 99999;
+    const location = req.query.location || "";
+    const minRating = parseInt(req.query.minRating) || 0;
+    const minPrice = parseInt(req.query.minPrice) || 0;
+    const maxPrice = parseInt(req.query.maxPrice) || 99999;
 
     const matchObj = {};
     if (location.length > 0) {
@@ -105,7 +105,8 @@ const getHotels = async (req, res) => {
  */
 const getHotel = async (req, res) => {
   try {
-    const { hotelID } = req.body;
+    const hotelID = req.query.hotelID;
+
     if (!mongoose.Types.ObjectId.isValid(hotelID)) {
       return res.status(404).json({ error: "No such hotel" });
     }
@@ -132,8 +133,8 @@ const getAvailableRooms = async (req, res) => {};
  */
 const getRoom = async (req, res) => {
   try {
-    const { hotelID } = req.body;
-    const { roomID } = req.body;
+    const  hotelID  = req.query.hotelID;
+    const  roomID  = req.query.roomID;
 
     if (
       !mongoose.Types.ObjectId.isValid(hotelID) ||
@@ -185,14 +186,16 @@ const bookHotel = async (req, res) => {
       return res.status(400).json({ error: "First Date is before today." });
     }
 
-    const dataCheck = await Hotel.find({
+    
+        const dataCheck = await Hotel.find({
       _id: hotelID,
       "rooms._id": roomID,
-      "rooms.datesBooked.firstDate": { $lte: new Date(lastDate) },
-      "rooms.datesBooked.lastDate": { $gte: new Date(firstDate) },
+      "rooms.datesBooked": { $elemMatch:{$lte:{firstDate, firstDate}} },
     },{
-      "rooms.$":1,
+      "rooms.datesBooked.$":1,
     });
+
+
     console.log(dataCheck[0].rooms[0])
     if (dataCheck.length != 0) {
       return res
