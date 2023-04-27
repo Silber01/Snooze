@@ -3,8 +3,14 @@ const {
   createHotel,
   getHotel,
   getHotels,
+  getAllHotels,
   deleteHotel,
   updateHotel,
+  getRoom,
+  bookHotel,
+  addReview,
+  getAvailableRooms,
+  addRating,
 } = require("../controllers/hotelController");
 
 const router = express.Router();
@@ -23,5 +29,27 @@ router.delete("/:id", deleteHotel);
 
 // UPDATE a hotel
 router.patch("/:id", updateHotel);
+
+// merge from will
+
+// GET search hotels
+router.get("/search", getHotels);
+
+//GET a single hotel
+router.get("/gethotel", getHotel);
+
+//GET a single room
+router.get("/getroom", getRoom);
+
+//Book a Hotel Room
+router.patch("/booking", bookHotel);
+
+//Add Review
+router.put("/review", addReview);
+
+//Add Rating
+router.put("/rating", addRating);
+
+module.exports = router;
 
 module.exports = router;
