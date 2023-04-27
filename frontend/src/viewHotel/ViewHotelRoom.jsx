@@ -1,5 +1,4 @@
 import React from "react";
-import "./ViewHotelRoom.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import SnoozeHeader from "../general/SnoozeHeader";
@@ -20,8 +19,10 @@ import {
   Text,
   Grid,
   Spacer,
-  Center
+  Center,
+  Divider
 } from "@chakra-ui/react";
+import Room from "./Room";
 
 function getRating(ratings) {
   let avg = 0;
@@ -68,17 +69,24 @@ function ViewHotelRoom() {
   let [rating, setRating] = useState(0)
   let [ratingCount, setRatingCount] = useState(0)
   let [reviews, setReviews] = useState([])
+  let [chosenRoom, setChosenRoom] = useState(null)
   async function fetchData(hotelID) {
     let apiCall = apiUrl + "/api/hotel/" + hotelID;
     const response = await fetch(apiCall);
     const data = await response.json();
-    console.log(data);
     setHotel(data);
   }
 
   useEffect(() => {
     fetchData(params.id);
   }, []);
+
+  useEffect(() => {
+    if (chosenRoom != null)
+    {
+      console.log("User has chosen room " + chosenRoom)
+    }
+  })
 
   useEffect(() => {
     if (hotel && hotel.ratings)
@@ -89,7 +97,6 @@ function ViewHotelRoom() {
     if (hotel && hotel.reviews)
     {
       setReviews(hotel.reviews)
-      console.log(reviews)
     }
   }, [hotel])
   if (!hotel)
@@ -99,7 +106,7 @@ function ViewHotelRoom() {
   else if (!hotel.name) {
     return <HotelNotFound />;
   }
-
+  
   return (
     <div className="ViewHotelRoom">
       <SnoozeHeader />
@@ -113,7 +120,7 @@ function ViewHotelRoom() {
                 <StarRating rating={rating}/>
                 <Text align="center">{rating} stars from {ratingCount} Visitors</Text>
               </Box>
-              {reviews.map((review, ind) => {
+              {reviews.slice(0, Math.min(4, reviews.length)).map((review, ind) => {
                 return <Review key={ind} review={review} />
               })}
               
@@ -123,6 +130,19 @@ function ViewHotelRoom() {
             </Box>
           </Grid>
         </Box>
+      </Center>
+      
+      <Center mt="10">
+      <Box width="90%" bg="mintgreen">
+      <Text fontSize="40" textAlign="center" fontWeight="bold">Rooms</Text>
+      {hotel.rooms.map((room, ind) => {
+        return (
+        <Center mt="5" mb="5">
+          <Room room={room} id={ind} setChosenRoom={setChosenRoom}/>
+        </Center>
+        )
+      })}
+      </Box>
       </Center>
     </div>
   );
