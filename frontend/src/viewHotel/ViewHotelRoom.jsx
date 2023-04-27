@@ -20,7 +20,8 @@ import {
   Grid,
   Spacer,
   Center,
-  Divider
+  Divider,
+  Input
 } from "@chakra-ui/react";
 import Room from "./Room";
 
@@ -106,7 +107,6 @@ function ViewHotelRoom() {
   else if (!hotel.name) {
     return <HotelNotFound />;
   }
-  
   return (
     <div className="ViewHotelRoom">
       <SnoozeHeader />

@@ -60,10 +60,38 @@ function HomePage(props) {
    console.log(hotels) 
   }, [hotels])
 
+
+  
   
 
   const searchRef = useRef();
+
+  const locationRef = useRef();
+  const checkInRef = useRef();
+  const checkOutRef = useRef();
+  const ratingRef = useRef();
   const [priceSlider, setPriceSlider] = useState([0, 2000]);
+
+  function search()
+  {
+    let location = locationRef.current.value;
+    let checkIn = checkInRef.current.value;
+    let checkOut = checkOutRef.current.value;
+    let minPrice = priceSlider[0]
+    let maxPrice = priceSlider[1]
+    let rating = ratingRef.current.value;
+
+    console.log(location)
+    console.log(checkIn)
+    console.log(checkOut)
+    console.log(minPrice)
+    console.log(maxPrice)
+    console.log(rating)
+    console.log(sessionStorage.getItem("checkInDate"))
+    console.log(sessionStorage.getItem("checkOutDate"))
+  }
+
+
 
   return (
     <div>
@@ -78,6 +106,7 @@ function HomePage(props) {
               variant="filled"
               placeholder="Location"
               marginRight={10}
+              ref={locationRef}
             />
             <Input
               type="date"
@@ -85,6 +114,9 @@ function HomePage(props) {
               variant="filled"
               placeholder="Check In Date"
               marginRight={10}
+              ref={checkInRef}
+              defaultValue={sessionStorage.getItem("checkInDate")}
+              onChange={() => {sessionStorage.setItem("checkInDate", checkInRef.current.value)}}
             />
             <Input
               type="date"
@@ -92,12 +124,15 @@ function HomePage(props) {
               variant="filled"
               placeholder="Check Out Date"
               marginRight={10}
+              ref={checkOutRef}
+              defaultValue={sessionStorage.getItem("checkOutDate")}
+              onChange={() => {sessionStorage.setItem("checkOutDate", checkOutRef.current.value)}}
             />
             <Button
               colorScheme="green"
               type="submit"
               onClick={() => {
-                searchRef;
+                search()
               }}
               width="40%"
             >
@@ -112,7 +147,7 @@ function HomePage(props) {
                 display="flex"
                 rightIcon={<ChevronDownIcon />}
               >
-                Sort By: Filter
+                Filter
               </MenuButton>
               <MenuList minH="350px" minW="350px" padding={25}>
                 <b>Price Range</b>
@@ -141,6 +176,7 @@ function HomePage(props) {
                     scale={5}
                     fillColor="gold"
                     strokeColor="grey"
+                    ref={ratingRef}
                   />
                 </Flex>
                 <Flex justifyContent="flex-end" pt={8}>
@@ -148,7 +184,7 @@ function HomePage(props) {
                     colorScheme="green"
                     type="submit"
                     onClick={() => {
-                      searchRef;
+                      console.log(checkInRef.current.value)
                     }}
                     width="40%"
                     padding={25}
