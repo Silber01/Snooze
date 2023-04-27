@@ -26,9 +26,25 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  bookings: {
-    type: Array,
-  },
+  bookings: [
+    {
+      hotelID: {
+        type: String,
+      },
+      roomID: {
+        type: String,
+      },
+      firstDate:{
+        type: Date,
+      },
+      lastDate: {
+        type: Date,
+      },
+      price: {
+        type: Number,
+      },
+    }
+  ],
   reviews:{
     type: Array,
   },

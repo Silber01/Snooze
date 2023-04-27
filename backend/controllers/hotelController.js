@@ -9,55 +9,6 @@ const getAllHotels = async (req, res) => {
   res.status(200).json(hotels)
 }
 
-/*
-run()
-async function run(){
-  const hotel = await Hotel.create ({
-    name: "Azure Rose Hotel ",
-    description: "Fancy Blue Hotel.",
-    imgsrc: "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png",
-    rooms:[
-      
-    {price:Math.floor(Math.random() * 10000), 
-    roomType:"Suite",
-    roomNum:Math.floor(Math.random() * 999), 
-    beds: Math.floor(Math.random() * 5), 
-    hasWifi: true, 
-    imgsrc: "image", 
-    datesBooked:[
-      {firstDate:"2023-04-07",lastDate:"2023-04-10"},
-      {firstDate:"2023-04-13",lastDate:"2023-04-17"},
-    ]},
-
-    {price:Math.floor(Math.random() * 10000), 
-        roomType:"Suite",
-        roomNum:Math.floor(Math.random() * 999), 
-        beds: Math.floor(Math.random() * 5 + 1), 
-        hasWifi: true, 
-        imgsrc: "image", 
-        datesBooked:[
-          {firstDate:"2023-04-07",lastDate:"2023-04-10"},
-          {firstDate:"2023-04-13",lastDate:"2023-04-17"},
-        ]},
-    ],
-    ratings:{1:Math.floor(Math.random()* 1000), 2:Math.floor(Math.random()* 1000), 3:Math.floor(Math.random()*1000), 4:Math.floor(Math.random()*1000), 5:Math.floor(Math.random()*1000)},
-    reviews:[
-      {user:"test user", review: "abc", rating:4},
-      {user:"test user", review: "abc", rating:4},
-      {user:"test user", review: "abc", rating:4}
-    ],
-    location:{
-      address:"test",
-      city:"Milpitas",
-      province:"California",
-      country:"United States"
-    },
-  })
-  await hotel.save()
-  console.log(hotel)
-}
-*/
-
 
 /**
  * Searches by location and filters by minRating and price Interval.
@@ -69,13 +20,13 @@ async function run(){
  */
 const getHotels = async (req, res) => {
   try {
-    const location = req.body.location
+    const location = req.body.location || ""
     const minRating = req.body.minRating || 0
     const minPrice = req.body.minPrice || 0
     const maxPrice = req.body.maxPrice || 99999
 
     const matchObj = {}
-    if (location.length > 0) {
+    if (!location && location.length > 0) {
       matchObj["$search"] =
       {
         index: "hotelSearch",
@@ -148,20 +99,27 @@ const getHotels = async (req, res) => {
   }
 }
 
-// get a single hotel
+/**
+ * Get a single hotel
+ * @param  hotelID
+ */
 const getHotel = async (req, res) => {
-  const { hotelID } = req.body
-  if (!mongoose.Types.ObjectId.isValid(hotelID)) {
-    return res.status(404).json({ error: 'No such hotel' })
+  try{
+    const { hotelID } = req.body
+    if (!mongoose.Types.ObjectId.isValid(hotelID)) {
+      return res.status(404).json({ error: 'No such hotel' })
+    }
+  
+    const hotel = await Hotel.findById(hotelID)
+  
+    if (!hotel) {
+      return res.status(404).json({ error: 'No such hotel' })
+    }
+  
+    res.status(200).json(hotel)
+  } catch (err){
+    console.log(err)
   }
-
-  const hotel = await Hotel.findById(hotelID)
-
-  if (!hotel) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-
-  res.status(200).json(hotel)
 }
 
 // get available room
@@ -169,39 +127,39 @@ const getAvailableRooms = async (req, res) => {
 
 }
 
-// get a single hotel room
+/**
+ * get a single hotel room
+ * @param hotelID
+ * @param roomID
+ */
 const getRoom = async (req, res) => {
-  const { hotelID } = req.body
-  const { roomID } = req.body
-
-  if (!mongoose.Types.ObjectId.isValid(hotelID) || !mongoose.Types.ObjectId.isValid(roomID)) {
-    return res.status(404).json({ error: 'No such hotel' })
+  try{
+    const { hotelID } = req.body
+    const { roomID } = req.body
+  
+    if (!mongoose.Types.ObjectId.isValid(hotelID) || !mongoose.Types.ObjectId.isValid(roomID)) {
+      return res.status(404).json({ error: 'No such hotel' })
+    }
+    console.log("valid args")
+  
+    const hotel = await Hotel.find({ _id: hotelID, rooms: { $elemMatch: { _id: roomID } } }, { "rooms.$": 1 })
+  
+    res.status(200).json(hotel)
+  } catch(err){
+    console.log(err)
   }
-  console.log("valid args")
 
-  const hotel = await Hotel.find({ _id: hotelID, rooms: { $elemMatch: { _id: roomID } } }, { "rooms.$": 1 })
-
-  res.status(200).json(hotel)
 }
 
-// delete a hotel
-const deleteHotel = async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-
-  const hotel = await Hotel.findOneAndDelete({ _id: id })
-
-  if (!hotel) {
-    return res.status(400).json({ error: 'No such hotel' })
-  }
-
-  res.status(200).json(hotel)
-}
-
-//Book a Hotel Room
+/**
+ * Book a Hotel Room.
+ * 
+ * @param tokenHeader
+ * @param hotelID
+ * @param roomID
+ * @param firstDate
+ * @param lastDate
+ */
 const bookHotel = async (req, res) => {
   try {
     const { hotelID } = req.body
@@ -263,6 +221,7 @@ const bookHotel = async (req, res) => {
     body.roomID = roomID
     const findPrice = await Hotel.findOne({ _id: hotelID, rooms: { $elemMatch: { _id: roomID } } }, { "rooms.$": 1 })
     body.price = findPrice.rooms[0].price
+    body._id = new mongoose.Types.ObjectId()
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(404).json({ error: 'Error finding user.' })
@@ -281,33 +240,19 @@ const bookHotel = async (req, res) => {
   }
 }
 
-// update a hotel
-const updateHotel = async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-
-  const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
-    ...req.body
-  })
-
-  if (!hotel) {
-    return res.status(400).json({ error: 'No such hotel' })
-  }
-
-  res.status(200).json(hotel)
-}
-
+/**
+ * Adds a review
+ * @param tokenHeader
+ * @param hotelID
+ */
 const addReview = async (req, res) => {
   var authorization = req.headers.authorization.split(' ')[1]
   const [, auth,] = authorization.split(".")
   var userIds = atob(auth);
   userIds = userIds.substring(8, 32);
   var body = req.body;
-  const id = body.hotelId;
-  delete body.hotelId;
+  const id = body.hotelID;
+  delete body.hotelID;
   body.userId = userIds;
 
   const userReview = await Hotel.findById({ _id: id }).find({ 'reviews': { $elemMatch: { userId: userIds } } });
@@ -331,8 +276,8 @@ const addRating = async (req, res) => {
   var userId = atob(auth);
   userId = userId.substring(8, 32);
   var body = req.body
-  const id = body.hotelId;
-  delete body.hotelId;
+  const id = body.hotelID;
+  delete body.hotelID;
   body.userId = userId;
 
   const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {

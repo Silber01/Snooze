@@ -25,17 +25,6 @@ router.get('/gethotel', getHotel)
 //GET a single room
 router.get('/getroom', getRoom)
 
-
-
-// POST a new hotel
-//router.post('/', createHotel)
-
-// DELETE a hotel
-//router.delete('/:id', deleteHotel)
-
-// UPDATE a hotel
-//router.patch('/:id', updateHotel)
-
 //Book a Hotel Room
 router.patch('/booking', bookHotel)
 
