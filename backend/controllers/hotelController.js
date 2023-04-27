@@ -26,7 +26,7 @@ const getHotels = async (req, res) => {
     const maxPrice = req.body.maxPrice || 99999
 
     const matchObj = {}
-    if (!location && location.length > 0) {
+    if (location.length > 0) {
       matchObj["$search"] =
       {
         index: "hotelSearch",
@@ -104,20 +104,20 @@ const getHotels = async (req, res) => {
  * @param  hotelID
  */
 const getHotel = async (req, res) => {
-  try{
+  try {
     const { hotelID } = req.body
     if (!mongoose.Types.ObjectId.isValid(hotelID)) {
       return res.status(404).json({ error: 'No such hotel' })
     }
-  
+
     const hotel = await Hotel.findById(hotelID)
-  
+
     if (!hotel) {
       return res.status(404).json({ error: 'No such hotel' })
     }
-  
+
     res.status(200).json(hotel)
-  } catch (err){
+  } catch (err) {
     console.log(err)
   }
 }
@@ -133,19 +133,19 @@ const getAvailableRooms = async (req, res) => {
  * @param roomID
  */
 const getRoom = async (req, res) => {
-  try{
+  try {
     const { hotelID } = req.body
     const { roomID } = req.body
-  
+
     if (!mongoose.Types.ObjectId.isValid(hotelID) || !mongoose.Types.ObjectId.isValid(roomID)) {
       return res.status(404).json({ error: 'No such hotel' })
     }
     console.log("valid args")
-  
+
     const hotel = await Hotel.find({ _id: hotelID, rooms: { $elemMatch: { _id: roomID } } }, { "rooms.$": 1 })
-  
+
     res.status(200).json(hotel)
-  } catch(err){
+  } catch (err) {
     console.log(err)
   }
 

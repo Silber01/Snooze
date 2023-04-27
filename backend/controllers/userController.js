@@ -173,13 +173,13 @@ const changeBooking = async (req, res) => {
     let hotelID, roomID, oldFirstDate, oldLastDate
 
     if (!mongoose.isValidObjectId(userBookingID)) {
-      throw{status: 400, message: "Invalid ObjectID"}
+      throw { status: 400, message: "Invalid ObjectID" }
     }
 
     const userFind = await User.findOne({ _id: userId, "bookings._id": userBookingID })
 
     if (!userFind) {
-      throw{status: 404, message: "userBookingID not Found"}
+      throw { status: 404, message: "userBookingID not Found" }
     } else {
       hotelID = userFind.bookings[0].hotelID
       roomID = userFind.bookings[0].roomID
@@ -192,9 +192,9 @@ const changeBooking = async (req, res) => {
         'rooms.datesBooked.firstDate': { $lte: lastDate },
         'rooms.datesBooked.lastDate': { $gte: firstDate }
       })
-  
+
       if (dataCheck.length != 0) {
-        throw{status: 400, message: "Dates conflict with a booked room."}
+        throw { status: 400, message: "Dates conflict with a booked room." }
       }
     }
 

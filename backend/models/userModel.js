@@ -14,7 +14,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  imgsrc:{
+  imgsrc: {
     type: String,
     default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
   },
@@ -34,7 +34,7 @@ const userSchema = new Schema({
       roomID: {
         type: String,
       },
-      firstDate:{
+      firstDate: {
         type: Date,
       },
       lastDate: {
@@ -45,18 +45,18 @@ const userSchema = new Schema({
       },
     }
   ],
-  reviews:{
+  reviews: {
     type: Array,
   },
-  rewardPoints:{
-    type:Number,
+  rewardPoints: {
+    type: Number,
     default: 0
   }
-  
+
 })
 
 // static signup method
-userSchema.statics.signup = async function(email, password, firstName, lastName) {
+userSchema.statics.signup = async function (email, password, firstName, lastName) {
 
   // validation
   if (!email || !password || !firstName || !lastName) {
@@ -84,7 +84,7 @@ userSchema.statics.signup = async function(email, password, firstName, lastName)
 }
 
 // static login method
-userSchema.statics.login = async function(email, password) {
+userSchema.statics.login = async function (email, password) {
 
   if (!email || !password) {
     throw Error('All fields must be filled')
