@@ -21,18 +21,17 @@ function App() {
     email: null,
   })
 
-  async function fetchData(email, token) {
+  async function fetchData(email) {
     let apiUrl = import.meta.env.VITE_API_URL
     const response = await fetch(apiUrl + "/api/user/getUser/" + email);
     const data = await response.json()
-    data.token = token
     setAllUserData(data);
   }
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"))
     if (user) {
-      fetchData(user.email, user.token)
+      fetchData(user.email)
     }
     else
       setAllUserData("NOT LOGGED IN")
@@ -56,19 +55,24 @@ function App() {
               <Route path=":id" element={<ViewHotelRoom />} />
             </Route>
             <Route exact path="/home" element={<HomePage />} />
+
+            <Route 
+              exact path="/profilepage" 
+              element={<ProfilePage user={allUserData} />} />
+            
             <Route
               exact
-              path="/profilepage"
-              element={<ProfilePage user={allUserData} />}
-            />
-            <Route
-              exact
-              path="/editprofile"
+              path="/profilepage/:id"
               element={<EditProfile user={allUserData} />}
             />
+            {/* <Route
+              exact
+              path="/editprofile"
+              element={<EditProfile user={allUserData} />} /> */}
+            
             <Route exact path="/forgotpassword" element={<ForgotPw />} />
             <Route exact path="/editpassword" element={<EditPassword />} />
-            <Route exact path="/payment" element={<Payment user={allUserData} />} />
+            {/* <Route exact path="/payment" element={<Payment user={allUserData} />} /> */}
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>
