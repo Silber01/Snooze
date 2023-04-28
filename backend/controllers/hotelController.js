@@ -2,6 +2,8 @@ const Hotel = require("../models/hotelModel");
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
 
+const gen = require("./script.js")
+
 // get all hotels
 const getAllHotels = async (req, res) => {
   const hotels = await Hotel.find({}).sort({ createdAt: -1 });
@@ -16,6 +18,7 @@ const getAllHotels = async (req, res) => {
  * @param minRating
  * @param minPrice
  * @param maxPrice
+ * @param sort
  */
 const getHotels = async (req, res) => {
   try {
@@ -70,7 +73,9 @@ const getHotels = async (req, res) => {
           name: 1,
           description: 1,
           imgsrc: 1,
-          ratings: {
+          ratings:1,
+          ratingcalc: 
+        {
             $divide: [
               {
                 $sum: [
@@ -90,7 +95,8 @@ const getHotels = async (req, res) => {
                 ],
               },
             ],
-          },
+              },
+    
           reviews: 1,
           location: 1,
           rooms: {
@@ -110,10 +116,15 @@ const getHotels = async (req, res) => {
       },
       {
         $match: {
-          ratings: { $gte: minRating },
+          ratingcalc: { $gte: minRating },
           "rooms.price": { $gte: minPrice },
           "rooms.price": { $lte: maxPrice },
         },
+      },
+      {
+        $project:{
+          ratingcalc:0
+        }
       },
       sortObj
     ])
@@ -355,6 +366,13 @@ const addRating = async (req, res) => {
   res.status(200).json(hotel);
 };
 
+const generateHotel = async(req, res) => {
+  let name = gen.generateName();
+  console.log(name)
+
+  res.status(200).json(name)
+}
+
 module.exports = {
   getAllHotels,
   getHotels,
@@ -364,4 +382,5 @@ module.exports = {
   addReview,
   getAvailableRooms,
   addRating,
+  generateHotel
 };
