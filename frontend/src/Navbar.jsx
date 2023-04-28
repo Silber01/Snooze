@@ -2,8 +2,9 @@ import { Flex, Button, Text } from "@chakra-ui/react";
 
 function Navbar() {
   return (
-    <Flex align="center" justify="space-between" bg="gray.200" p="3">
-      <Text fontSize="2xl" fontWeight="bold" w="100%">
+    //c1dcc6
+    <Flex align="center" justify="space-between" bg="#c1dcc6" p="3">
+      <Text fontSize="4xl" fontWeight="bold" w="100%">
         Snooze
       </Text>
       <Flex align="center" justify="center">

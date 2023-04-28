@@ -1,4 +1,12 @@
-import { Box, Button, Text, Image, Grid, GridItem, Center } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Text,
+  Image,
+  Grid,
+  GridItem,
+  Center,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import StarRating from "./StarRating";
 
@@ -38,44 +46,39 @@ function handleRedirect(navigate, id) {
   navigate("/hotel/" + id);
 }
 
-function GetBookButton(props)
-{
-  if (props.isValid)
-  {
-    return ( 
+function GetBookButton(props) {
+  if (props.isValid) {
+    return (
       <Button
-          colorScheme="green"
-          onClick={() => {
-            handleRedirect(props.navigate, props.id);
-          }}
-        >
-          Book
-        </Button>
-    )
+        colorScheme="green"
+        onClick={() => {
+          handleRedirect(props.navigate, props.id);
+        }}
+      >
+        Book
+      </Button>
+    );
   }
   return (
-    <Button
-          colorScheme="gray"
-          color="#888888"
-        >
-          Book
-        </Button>
-  )
+    <Button colorScheme="gray" color="#888888">
+      Book
+    </Button>
+  );
 }
 
 function Hotel(props) {
-  let hotel = props.hotel
-  let canBook = props.canBook
-  console.log(hotel)
+  let hotel = props.hotel;
+  let canBook = props.canBook;
+  console.log(hotel);
   const navigate = useNavigate();
   let rating = getRating(hotel.ratings);
   return (
     <Box
       border="1px"
-      borderColor="black"
+      borderColor="#9A9A9A"
       w={["90vw", "80vw", "400px"]}
       h={["90vw", "80vw", "400px"]}
-      bg="gray.200"
+      bg="white.200"
       m="3"
       borderRadius="md"
       display="flex"
@@ -94,16 +97,13 @@ function Hotel(props) {
       <Text fontWeight="bold">{hotel.name}</Text>
       <Text>{getLocation(hotel.location)}</Text>
       <Grid templateColumns="5fr 1fr" mt="4">
-      <StarRating rating={rating} />
-      <Center>
-        <Box>
-          <Text fontWeight="bold">{rating}</Text>
-        </Box>
-      </Center>
+        <StarRating rating={rating} />
+        <Center>
+          <Box>
+            <Text fontWeight="bold">{rating}</Text>
+          </Box>
+        </Center>
       </Grid>
-      
-
-      
 
       <Grid mt={4} templateColumns="2fr 1fr" gap={1}>
         <Box margin="auto">
@@ -114,8 +114,8 @@ function Hotel(props) {
             ${getStartingPrice(hotel.rooms)}
           </Text>
         </Box>
-        
-        < GetBookButton isValid={canBook} id={hotel._id} navigate={navigate}/>
+
+        <GetBookButton isValid={canBook} id={hotel._id} navigate={navigate} />
       </Grid>
     </Box>
   );

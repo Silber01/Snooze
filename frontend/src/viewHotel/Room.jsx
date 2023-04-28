@@ -29,11 +29,10 @@ function getAvailability(bookedDates, startDate, endDate) {
 
 function availabilityText(bookedDates, startDate, endDate, validDates) {
   if (getAvailability(bookedDates, startDate, endDate)) {
-    if (!validDates)
-    {
+    if (!validDates) {
       return (
         <HStack>
-          <Icon as={MdWarning} boxSize="10" color="red"/>
+          <Icon as={MdWarning} boxSize="10" color="red" />
           <Text fontSize="20" color="red">
             Your inputted dates are invalid.
           </Text>
@@ -92,7 +91,14 @@ function Room(props) {
           </Box>
           <Box />
           <Box>
-            <Text>{availabilityText(room.bookedDates, sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate"), props.validDates)}</Text>
+            <Text>
+              {availabilityText(
+                room.bookedDates,
+                sessionStorage.getItem("checkInDate"),
+                sessionStorage.getItem("checkOutDate"),
+                props.validDates
+              )}
+            </Text>
           </Box>
         </Grid>
       </Box>

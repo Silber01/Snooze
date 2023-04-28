@@ -26,11 +26,10 @@ function ProfilePage(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userContext == "NOT LOGGED IN")
-    {
-      navigate("/")
+    if (userContext == "NOT LOGGED IN") {
+      navigate("/");
     }
-  }, [userContext])
+  }, [userContext]);
 
   function handleClick() {
     navigate("/editprofile");
