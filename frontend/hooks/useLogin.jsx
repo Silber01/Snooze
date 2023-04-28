@@ -39,7 +39,7 @@ export const useLogin = () => {
       // update loading state
       setIsLoading(false);
       console.log("LOGIN SUCCESSFUL");
-      window.location.href = "http://localhost:3000/editprofile";
+      window.location.href = "http://localhost:3000/home";
     }
   };
 
