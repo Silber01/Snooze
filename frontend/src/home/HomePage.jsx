@@ -48,6 +48,14 @@ function HomePage(props) {
     setHotels(data);
   }
 
+  async function searchHotels(location, minPrice, maxPrice, rating)
+  {
+    let apiUrl = import.meta.env.VITE_API_URL;
+    const response = await fetch(apiUrl + "/api/hotel/search/?location=" + location + "&minRating=" + rating + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice);
+    const data = await response.json();
+    setHotels(data);
+  }
+
   useEffect(() => {
     fetchHotels();
   }, []);
@@ -81,6 +89,8 @@ function HomePage(props) {
     console.log(rating);
     console.log(sessionStorage.getItem("checkInDate"));
     console.log(sessionStorage.getItem("checkOutDate"));
+    searchHotels(location, minPrice, maxPrice, rating)
+    console.log(hotels)
   }
 
   function checkValidDates() {
