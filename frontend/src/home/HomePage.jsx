@@ -26,6 +26,9 @@ import {
   RangeSliderTrack,
   RangeSliderFilledTrack,
   RangeSliderThumb,
+  Grid,
+  Select,
+  Text
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import Ratings from "../ratings/Ratings";
@@ -48,10 +51,11 @@ function HomePage(props) {
     setHotels(data);
   }
 
-  async function searchHotels(location, minPrice, maxPrice, rating)
+  async function searchHotels(location, minPrice, maxPrice, rating, sort)
   {
     let apiUrl = import.meta.env.VITE_API_URL;
-    const response = await fetch(apiUrl + "/api/hotel/search/?location=" + location + "&minRating=" + rating + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice);
+    const response = await fetch(apiUrl + "/api/hotel/search/?location=" + location + "&minRating=" + 
+    rating + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&sort=" + sort);
     const data = await response.json();
     setHotels(data);
   }
@@ -70,6 +74,7 @@ function HomePage(props) {
   const checkInRef = useRef();
   const checkOutRef = useRef();
   const ratingRef = useRef();
+  const sortRef = useRef();
   const [priceSlider, setPriceSlider] = useState([0, 2000]);
   const [validDates, setValidDates] = useState(true);
 
@@ -80,6 +85,7 @@ function HomePage(props) {
     let minPrice = priceSlider[0];
     let maxPrice = priceSlider[1];
     let rating = ratingRef.current.value;
+    let sort = sortRef.current.value
 
     console.log(location);
     console.log(checkIn);
@@ -89,7 +95,7 @@ function HomePage(props) {
     console.log(rating);
     console.log(sessionStorage.getItem("checkInDate"));
     console.log(sessionStorage.getItem("checkOutDate"));
-    searchHotels(location, minPrice, maxPrice, rating)
+    searchHotels(location, minPrice, maxPrice, rating, sort)
     console.log(hotels)
   }
 
@@ -105,8 +111,16 @@ function HomePage(props) {
       <NavBar />
       <div className="searchBarWrapper">
         <div className="SearchBarContainer">
-          Search for a Hotel
-          <Flex>
+          <Grid templateRows="0fr 1fr">
+          <Grid templateColumns="2fr 2fr 2fr 2fr 1fr 1fr" gap="5" mb="2">
+            <Text textAlign="center">Hotel Location</Text>
+            <Text textAlign="center">Check In Date</Text>
+            <Text textAlign="center">Check Out Date</Text>
+            <Text textAlign="center"></Text>
+            <Text textAlign="center">Sort by</Text>
+            <Text textAlign="center"></Text>
+          </Grid>
+          <Grid templateColumns="2fr 2fr 2fr 2fr 1fr 1fr" gap="5">
             <Input
               size="lg"
               variant="filled"
@@ -145,6 +159,7 @@ function HomePage(props) {
                 checkValidDates();
               }}
             />
+            
             <Button
               background="#c6c1dc"
               type="submit"
@@ -157,8 +172,14 @@ function HomePage(props) {
             >
               Search
             </Button>
-          </Flex>
-          <div className="filterButton">
+            <Select variant="filled" ref={sortRef}>
+            <option value='1' selected>Alphabetically</option>
+            <option value='2'>Rating</option>
+            <option value='3'>Price: Low to High</option>
+            <option value='4'>Price: High to Low</option>
+          </Select>
+          {/* Start Filter Code from Hell */}
+            <div className="filterButton">
             <Menu>
               <MenuButton
                 as={Button}
@@ -173,7 +194,7 @@ function HomePage(props) {
                 <RangeSlider
                   aria-label={["min", "max"]}
                   defaultValue={[0, 2000]}
-                  onChangeEnd={(val) => setPriceSlider(val)}
+                  onChange={(val) => setPriceSlider(val)}
                   min={0}
                   max={2000}
                 >
@@ -215,6 +236,9 @@ function HomePage(props) {
               </MenuList>
             </Menu>
           </div>
+          {/* End Filter Code from Hell */}
+          </Grid>
+          </Grid>
         </div>
       </div>
       {/*

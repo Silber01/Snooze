@@ -37,7 +37,8 @@ function getRating(ratings) {
 function getStartingPrice(rooms) {
   let minPrice = Infinity;
   rooms.forEach((room, ind) => {
-    minPrice = Math.min(minPrice, room.price);
+    if (room.price)
+      minPrice = Math.min(minPrice, room.price);
   });
   return minPrice;
 }
@@ -90,7 +91,7 @@ function Hotel(props) {
       <Image
         src={hotel.imgsrc}
         width="90%"
-        height="60%"
+        height="200px"
         borderRadius="20px"
         objectFit="cover"
       />
