@@ -38,7 +38,35 @@ function handleRedirect(navigate, id) {
   navigate("/hotel/" + id);
 }
 
-function Hotel({ hotel }) {
+function GetBookButton(props)
+{
+  if (props.isValid)
+  {
+    return ( 
+      <Button
+          colorScheme="green"
+          onClick={() => {
+            handleRedirect(props.navigate, props.id);
+          }}
+        >
+          Book
+        </Button>
+    )
+  }
+  return (
+    <Button
+          colorScheme="gray"
+          color="#888888"
+        >
+          Book
+        </Button>
+  )
+}
+
+function Hotel(props) {
+  let hotel = props.hotel
+  let canBook = props.canBook
+  console.log(hotel)
   const navigate = useNavigate();
   let rating = getRating(hotel.ratings);
   return (
@@ -86,14 +114,8 @@ function Hotel({ hotel }) {
             ${getStartingPrice(hotel.rooms)}
           </Text>
         </Box>
-        <Button
-          colorScheme="green"
-          onClick={() => {
-            handleRedirect(navigate, hotel._id);
-          }}
-        >
-          Book
-        </Button>
+        
+        < GetBookButton isValid={canBook} id={hotel._id} navigate={navigate}/>
       </Grid>
     </Box>
   );

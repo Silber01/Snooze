@@ -19,6 +19,7 @@ import {
   MdCheck,
   MdQuestionMark,
   MdSettings,
+  MdWarning,
   MdWifi,
 } from "react-icons/md";
 
@@ -26,8 +27,19 @@ function getAvailability(bookedDates, startDate, endDate) {
   return true;
 }
 
-function availabilityText(bookedDates, startDate, endDate) {
+function availabilityText(bookedDates, startDate, endDate, validDates) {
   if (getAvailability(bookedDates, startDate, endDate)) {
+    if (!validDates)
+    {
+      return (
+        <HStack>
+          <Icon as={MdWarning} boxSize="10" color="red"/>
+          <Text fontSize="20" color="red">
+            Your inputted dates are invalid.
+          </Text>
+        </HStack>
+      );
+    }
     if (!startDate || !endDate) {
       return (
         <HStack>
@@ -51,7 +63,6 @@ function availabilityText(bookedDates, startDate, endDate) {
 }
 
 function Room(props) {
-  console.log(props.room);
   let room = props.room;
   return (
     <Grid templateColumns="1fr 1fr 1fr" width="90%" bg="indiepink">
@@ -81,7 +92,7 @@ function Room(props) {
           </Box>
           <Box />
           <Box>
-            <Text>{availabilityText(1, 2, null)}</Text>
+            <Text>{availabilityText(room.bookedDates, sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate"), props.validDates)}</Text>
           </Box>
         </Grid>
       </Box>

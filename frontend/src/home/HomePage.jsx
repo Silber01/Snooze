@@ -6,6 +6,7 @@ import hotelData from "../../hotelDataAll.json";
 import { UserContext } from "../../context/UserContext";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
+import { dateToUnix } from "../intervals";
 
 import {
   Box,
@@ -71,6 +72,7 @@ function HomePage(props) {
   const checkOutRef = useRef();
   const ratingRef = useRef();
   const [priceSlider, setPriceSlider] = useState([0, 2000]);
+  const [validDates, setValidDates] = useState(true)
 
   function search()
   {
@@ -91,6 +93,11 @@ function HomePage(props) {
     console.log(sessionStorage.getItem("checkOutDate"))
   }
 
+
+  function checkValidDates()
+  {
+    setValidDates(dateToUnix(sessionStorage.getItem("checkInDate")) <= dateToUnix(sessionStorage.getItem("checkOutDate"))); 
+  }
 
 
   return (
@@ -115,8 +122,11 @@ function HomePage(props) {
               placeholder="Check In Date"
               marginRight={10}
               ref={checkInRef}
+              isInvalid={!validDates}
               defaultValue={sessionStorage.getItem("checkInDate")}
-              onChange={() => {sessionStorage.setItem("checkInDate", checkInRef.current.value)}}
+              onChange={() => {sessionStorage.setItem("checkInDate", checkInRef.current.value)
+              checkValidDates();
+              }}
             />
             <Input
               type="date"
@@ -125,8 +135,12 @@ function HomePage(props) {
               placeholder="Check Out Date"
               marginRight={10}
               ref={checkOutRef}
+              isInvalid={!validDates}
               defaultValue={sessionStorage.getItem("checkOutDate")}
-              onChange={() => {sessionStorage.setItem("checkOutDate", checkOutRef.current.value)}}
+              onChange={() => {
+                sessionStorage.setItem("checkOutDate", checkOutRef.current.value);
+                checkValidDates();
+              }}
             />
             <Button
               colorScheme="green"
@@ -204,6 +218,7 @@ function HomePage(props) {
           <Hotel
             key={index}
             hotel={hotel}
+            canBook={validDates}
           />
         ))}
       </Flex>

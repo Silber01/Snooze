@@ -1,12 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SnoozeHeader from "../general/SnoozeHeader";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useParams } from "react-router-dom";
+import { dateToUnix } from "../intervals";
 import HotelNotFound from "../components/HotelNotFound";
 import StarRating from "../components/StarRating";
+
 import {
   Box,
   Button,
@@ -71,6 +73,10 @@ function ViewHotelRoom() {
   let [ratingCount, setRatingCount] = useState(0)
   let [reviews, setReviews] = useState([])
   let [chosenRoom, setChosenRoom] = useState(null)
+  const [validDates, setValidDates] = useState(true)
+  
+  const checkInRef = useRef();
+  const checkOutRef = useRef();
 
 
   async function fetchData(hotelID) {
@@ -80,8 +86,14 @@ function ViewHotelRoom() {
     setHotel(data);
   }
 
+  function checkValidDates()
+  {
+    setValidDates(dateToUnix(sessionStorage.getItem("checkInDate")) <= dateToUnix(sessionStorage.getItem("checkOutDate")))
+  }
+
   useEffect(() => {
     fetchData(params.id);
+    
   }, []);
 
   useEffect(() => {
@@ -128,13 +140,48 @@ function ViewHotelRoom() {
         </Box>
       </Center>
       
+
+      <Center>
+      <Flex width="60%">
+        <Input
+          width="50%"
+          type="date"
+          size="md"
+          variant="filled"
+          placeholder="Check In Date"
+          marginRight={10}
+          isInvalid={!validDates}
+          defaultValue={sessionStorage.getItem("checkInDate")}
+          onChange={() => {sessionStorage.setItem("checkInDate", checkInRef.current.value)
+          checkValidDates();
+          }}
+          ref={checkInRef}
+        />
+        <Input
+          width="50%"
+          type="date"
+          size="md"
+          variant="filled"
+          placeholder="Check Out Date"
+          marginRight={10}
+          isInvalid={!validDates}
+          defaultValue={sessionStorage.getItem("checkOutDate")}
+          onChange={() => {
+            sessionStorage.setItem("checkOutDate", checkOutRef.current.value);
+            checkValidDates();
+          }}
+          ref={checkOutRef}
+        />
+      </Flex>
+      </Center> 
+      
       <Center mt="10">
       <Box width="90%" bg="mintgreen">
       <Text fontSize="40" textAlign="center" fontWeight="bold">Rooms</Text>
       {hotel.rooms.map((room, ind) => {
         return (
         <Center mt="5" mb="5">
-          <Room room={room} id={ind} setChosenRoom={setChosenRoom}/>
+          <Room room={room} key={ind} setChosenRoom={setChosenRoom} validDates={validDates}/>
         </Center>
         )
       })}
