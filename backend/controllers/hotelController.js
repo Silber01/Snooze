@@ -366,11 +366,13 @@ const addRating = async (req, res) => {
   res.status(200).json(hotel);
 };
 
+/**
+ * Route to generate hotels.
+ */
 const generateHotel = async(req, res) => {
-  let name = gen.generateName();
-  console.log(name)
+  const hotel = gen.run()
 
-  res.status(200).json(name)
+  res.status(200).json(hotel)
 }
 
 module.exports = {
