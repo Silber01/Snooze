@@ -25,6 +25,7 @@ import {
   Center,
   Divider,
   Input,
+  HStack
 } from "@chakra-ui/react";
 import Room from "./Room";
 import Payment from "../payment/Payment";
@@ -68,6 +69,7 @@ function ViewHotelRoom() {
   let apiUrl = import.meta.env.VITE_API_URL;
   let sampleHotel = "643df8f5fae1b05a854b4307";
   let [roomPrice, setRoomPrice] = useState(0);
+  let [roomType, setRoomType] = useState("")
 
   let [hotel, setHotel] = useState(null);
   const userData = useContext(UserContext);
@@ -223,6 +225,7 @@ function ViewHotelRoom() {
       console.log(element);
       if (element._id == chosenRoom) {
         setRoomPrice(element.price);
+        setRoomType(element.roomType);
       }
     });
   }
@@ -247,10 +250,12 @@ function ViewHotelRoom() {
           checkIn={sessionStorage.getItem("checkInDate")}
           checkOut={sessionStorage.getItem("checkOutDate")}
           hotel={hotel.name}
-          //inderpreet is working on it rn (come back to price)
+          roomType={roomType}
           price={roomPrice}
+          setChosenRoom={setChosenRoom}
         />
         {/*<ViewPayment />*/}
+       
       </div>
     );
   }

@@ -7,7 +7,7 @@ import hotelData from "../../hotelDataAll.json";
 import { UserContext } from "../../context/UserContext";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
-import { dateToUnix } from "../intervals";
+import { dateToUnix, intervalLength } from "../intervals";
 
 import {
   Box,
@@ -28,7 +28,8 @@ import {
   RangeSliderThumb,
   Grid,
   Select,
-  Text
+  Text,
+  filter
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import Ratings from "../ratings/Ratings";
@@ -64,9 +65,9 @@ function HomePage(props) {
     fetchHotels();
   }, []);
 
-  useEffect(() => {
-    console.log(hotels);
-  }, [hotels]);
+  // useEffect(() => {
+  //   console.log(hotels);
+  // }, [hotels]);
 
   const searchRef = useRef();
 
@@ -87,16 +88,16 @@ function HomePage(props) {
     let rating = ratingRef.current.value;
     let sort = sortRef.current.value
 
-    console.log(location);
-    console.log(checkIn);
-    console.log(checkOut);
-    console.log(minPrice);
-    console.log(maxPrice);
-    console.log(rating);
-    console.log(sessionStorage.getItem("checkInDate"));
-    console.log(sessionStorage.getItem("checkOutDate"));
+    // console.log(location);
+    // console.log(checkIn);
+    // console.log(checkOut);
+    // console.log(minPrice);
+    // console.log(maxPrice);
+    // console.log(rating);
+    // console.log(sessionStorage.getItem("checkInDate"));
+    // console.log(sessionStorage.getItem("checkOutDate"));
     searchHotels(location, minPrice, maxPrice, rating, sort)
-    console.log(hotels)
+    // console.log(hotels)
   }
 
   function checkValidDates() {
@@ -173,7 +174,7 @@ function HomePage(props) {
               Search
             </Button>
             <Select variant="filled" ref={sortRef}>
-            <option value='1' selected>Alphabetically</option>
+            <option value='1'>Alphabetically</option>
             <option value='2'>Rating</option>
             <option value='3'>Price: Low to High</option>
             <option value='4'>Price: High to Low</option>
@@ -225,7 +226,7 @@ function HomePage(props) {
                     textColor="white"
                     type="submit"
                     onClick={() => {
-                      console.log(checkInRef.current.value);
+                      search();
                     }}
                     width="40%"
                     padding={25}

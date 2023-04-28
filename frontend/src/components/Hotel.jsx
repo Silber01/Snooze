@@ -70,7 +70,7 @@ function GetBookButton(props) {
 function Hotel(props) {
   let hotel = props.hotel;
   let canBook = props.canBook;
-  console.log(hotel);
+  // console.log(hotel);
   const navigate = useNavigate();
   let rating = getRating(hotel.ratings);
   return (
