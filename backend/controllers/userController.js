@@ -126,30 +126,39 @@ const cancelBooking = async (req, res) => {
     if (!mongoose.isValidObjectId(userBookingID)) {
       res.status(400).json("Invalid user booking id.");
     }
+    const user = await User.find(
+      { _id: userId, "bookings": { $elemMatch: { _id: userBookingID } } },
+      {
+        "bookings.$": 1
+      },
+    );
 
-    const user = await User.findOneAndUpdate(
-      { _id: userId, "bookings._id": userBookingID },
+    const userUpdate = await User.updateOne(
+      { _id: userId, "bookings": { $elemMatch: { _id: userBookingID } } },
       {
         $pull: {
-          bookings: { _id: userBookingID },
-        },
-      }
-    );
+          'bookings': { "_id": userBookingID }
+        }
+      },
+    )
+
+    let arr = user?.[0].bookings?.[0]
 
     if (!user) {
       res.status(400).json("userBookingID not found.");
     } else {
-      const hotelID = user.bookings[0].hotelID;
-      const roomID = user.bookings[0].roomID;
-      const firstDate = user.bookings[0].firstDate;
-      const lastDate = user.bookings[0].lastDate;
-
+      const hotelID = arr.hotelID;
+      const roomID = arr.roomID;
+      const firstDate = arr.firstDate;
+      const lastDate = arr.lastDate;
+      console.log(firstDate)
       const hotel = await Hotel.updateOne(
         { _id: hotelID, "rooms._id": roomID },
         {
           $pull: {
             "rooms.$[].datesBooked": {
-              $and: [{ firstDate: firstDate }, { lastDate: lastDate }],
+              //$and: [{ firstDate: firstDate }, { lastDate: lastDate }],
+              firstDate: firstDate
             },
           },
         }
@@ -176,18 +185,39 @@ const changeBooking = async (req, res) => {
     var userId = atob(auth);
     userId = userId.substring(8, 32);
 
-    const { userBookingID, firstDate, lastDate } = req.body;
+    let { userBookingID, firstDate, lastDate } = req.body;
+
+    firstDate = new Date(firstDate)
+    lastDate = new Date(lastDate)
+
+    if (firstDate == "Invalid Date" || lastDate == "Invalid Date") {
+      throw { status: 400, message: "Invalid date supplied" };
+    }
+    if (lastDate.valueOf() <= firstDate.valueOf()) {
+      return res
+        .status(400)
+        .json({ error: "Last date is before or during first date." });
+    }
+    if (firstDate.valueOf() <= new Date().valueOf()) {
+      console.log(firstDate.valueOf)
+      console.log(new Date().valueOf())
+      return res.status(400).json({ error: "First Date is before today." });
+    }
+    if (lastDate.valueOf() <= new Date().valueOf()) {
+      return res.status(400).json({ error: "Last Date is before today." });
+    }
 
     let hotelID, roomID, oldFirstDate, oldLastDate;
-
     if (!mongoose.isValidObjectId(userBookingID)) {
       throw { status: 400, message: "Invalid ObjectID" };
     }
 
-    const userFind = await User.findOne({
-      _id: userId,
-      "bookings._id": userBookingID,
-    });
+    const userFind = await User.findOne(
+      { _id: userId, "bookings": { $elemMatch: { _id: userBookingID } } },
+      {
+        "bookings.$": 1
+      },
+    );
 
     if (!userFind) {
       throw { status: 404, message: "userBookingID not Found" };
@@ -197,15 +227,62 @@ const changeBooking = async (req, res) => {
       oldFirstDate = userFind.bookings[0].firstDate;
       oldLastDate = userFind.bookings[0].lastDate;
 
+      /**booking conflict */
+      if (!mongoose.Types.ObjectId.isValid(hotelID)) {
+        return res.status(404).json({ error: "No such hotel" });
+      }
+      if (lastDate == "Invalid Date" || firstDate == "Invalid Date") {
+        return res.status(400).json({ error: "Invalid First or Last Date." });
+      }
+      if (lastDate.valueOf() <= firstDate.valueOf()) {
+        return res
+          .status(400)
+          .json({ error: "Last date is before or during first date." });
+      }
+      if (firstDate.valueOf <= new Date().valueOf()) {
+        return res.status(400).json({ error: "First Date is before today." });
+      }
+
+      console.log(oldFirstDate)
+      console.log(oldLastDate)
+      console.log(firstDate)
+      console.log(lastDate)
+      var valid = true
       const dataCheck = await Hotel.find({
         _id: hotelID,
-        "rooms._id": roomID,
-        "rooms.datesBooked.firstDate": { $lte: lastDate },
-        "rooms.datesBooked.lastDate": { $gte: firstDate },
-      });
+        "rooms._id": roomID
+      },
+        {
+          "rooms.datesBooked.$": 1
+        }
+      );
 
-      if (dataCheck.length != 0) {
-        throw { status: 400, message: "Dates conflict with a booked room." };
+      const array = dataCheck[0].rooms[0].datesBooked
+      console.log(array)
+      if (firstDate > oldFirstDate && firstDate < oldLastDate && lastDate < oldLastDate && lastDate > oldFirstDate ){
+        valid = true
+        console.log("inside")
+      } else {
+        for (let i = 0; i < array.length; i++) {
+          if ( oldLastDate.valueOf() === array[i].lastDate.valueOf() && oldFirstDate.valueOf() === array[i].firstDate.valueOf()){
+            console.log("skip")
+          } else {
+            if (firstDate < array[i].firstDate && lastDate < array[i].firstDate ||
+              firstDate > array[i].lastDate && lastDate > array[i].lastDate)  {
+               console.log("valid condition")
+           } else {
+             valid = false
+             console.log("false condition")
+             console.log(array[i])
+           }
+          }
+        };
+      }
+
+      if (!valid) {
+        return res
+          .status(400)
+          .json({ error: "Date conflicts with a booked room." });
       }
     }
 

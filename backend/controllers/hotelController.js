@@ -23,9 +23,11 @@ const getHotels = async (req, res) => {
     const minRating = parseInt(req.query.minRating) || 0;
     const minPrice = parseInt(req.query.minPrice) || 0;
     const maxPrice = parseInt(req.query.maxPrice) || 99999;
+    const sort = parseInt(req.query.sort) || 0
+    const rule = parseInt(req.query.sort) || 1
 
     const matchObj = {};
-    if (location.length > 0) {
+    if (location.length > 0 || location != "") {
       matchObj["$search"] = {
         index: "hotelSearch",
         text: {
@@ -39,7 +41,28 @@ const getHotels = async (req, res) => {
       matchObj["$sort"] = { createdAt: -1 };
     }
 
+    const sortObj = {};
+    if (sort == 0 && (location.length == 0 || location == "")) {
+      sortObj["$sort"] = { createdAt: -1 }
+    } else if (sort == 0) {
+      sortObj["$sort"] = { score: { $meta: "textScore" } }
+    } else if (sort == 1) {
+      sortObj["$sort"] = { "name": 1 }
+    } else if (sort == 2) {
+      sortObj["$sort"] = { "name": -1 }
+    } else if (sort == 3) {
+      sortObj["$sort"] = { "rooms.price": 1 }
+    } else if (sort == 4) {
+      sortObj["$sort"] = { "rooms.price": -1 }
+    } else if (sort == 5) {
+      sortObj["$sort"] = { "ratings": 1 }
+    } else if (sort == 6) {
+      sortObj["$sort"] = { "ratings": -1 }
+    }
+   
+
     console.log(matchObj);
+    console.log(sortObj);
     const hotel = await Hotel.aggregate([
       matchObj,
       {
@@ -92,7 +115,8 @@ const getHotels = async (req, res) => {
           "rooms.price": { $lte: maxPrice },
         },
       },
-    ]);
+      sortObj
+    ])
     res.status(200).json(hotel);
   } catch (err) {
     console.log(err);
@@ -124,29 +148,29 @@ const getHotel = async (req, res) => {
 };
 
 // get available room
-const getAvailableRooms = async (req, res) => {};
+const getAvailableRooms = async (req, res) => { };
 
 /**
  * get a single hotel room
- * @param hotelID
  * @param roomID
  */
 const getRoom = async (req, res) => {
   try {
-    const  hotelID  = req.query.hotelID;
-    const  roomID  = req.query.roomID;
+    const roomID = req.query.roomID;
+    const hotelID = req.query.hotelID;
 
     if (
-      !mongoose.Types.ObjectId.isValid(hotelID) ||
       !mongoose.Types.ObjectId.isValid(roomID)
     ) {
-      return res.status(404).json({ error: "No such hotel" });
+      return res.status(404).json({ error: "No such room" });
     }
     console.log("valid args");
+    console.log(roomID)
 
     const hotel = await Hotel.find(
-      { _id: hotelID, rooms: { $elemMatch: { _id: roomID } } },
-      { "rooms.$": 1 }
+      { _id: hotelID, "rooms": { $elemMatch: { _id: roomID } } }, {
+      "rooms.$": 1
+    }
     );
 
     res.status(200).json(hotel);
@@ -171,6 +195,14 @@ const bookHotel = async (req, res) => {
     const firstDate = new Date(req.body.firstDate);
     const lastDate = new Date(req.body.lastDate);
 
+    var authorization = req.headers.authorization.split(" ")[1];
+    const [, auth] = authorization.split(".");
+    var userId = atob(auth);
+    userId = userId.substring(8, 32);
+    var body = req.body;
+    body.userId = userId;
+
+    /**booking conflict */
     if (!mongoose.Types.ObjectId.isValid(hotelID)) {
       return res.status(404).json({ error: "No such hotel" });
     }
@@ -182,33 +214,45 @@ const bookHotel = async (req, res) => {
         .status(400)
         .json({ error: "Last date is before or during first date." });
     }
-    if (firstDate.valueOf <= new Date().valueOf()) {
+    if (firstDate.valueOf() <= new Date().valueOf()) {
       return res.status(400).json({ error: "First Date is before today." });
     }
+    if (lastDate.valueOf() <= new Date().valueOf()) {
+      return res.status(400).json({ error: "Last Date is before today." });
+    }
 
-    
-        const dataCheck = await Hotel.find({
+
+    var valid = true
+    const dataCheck = await Hotel.find({
       _id: hotelID,
-      "rooms._id": roomID,
-      "rooms.datesBooked": { $elemMatch:{$lte:{firstDate, firstDate}} },
-    },{
-      "rooms.datesBooked.$":1,
-    });
+      "rooms._id": roomID
+    },
+      {
+        "rooms.datesBooked.$": 1
+      }
+    );
 
+    const array = dataCheck[0].rooms[0].datesBooked
+    for (let i = 0; i < array.length; i++) {
+      /*
+      if(array[i].userId == userId){
+        return res
+      .status(400)
+      .json({ error: "You already booked this room." });
+      }
+      */
+      if (lastDate >= array[i].firstDate && firstDate <= array[i].lastDate) {
+        valid = false
+        break;
+      }
+    };
 
-    console.log(dataCheck[0].rooms[0])
-    if (dataCheck.length != 0) {
+    if (!valid) {
       return res
         .status(400)
         .json({ error: "Date conflicts with a booked room." });
     }
 
-    var authorization = req.headers.authorization.split(" ")[1];
-    const [, auth] = authorization.split(".");
-    var userId = atob(auth);
-    userId = userId.substring(8, 32);
-    var body = req.body;
-    body.userId = userId;
     console.log("VALID. ADDING TO DB");
     const hotel = await Hotel.findOneAndUpdate(
       { _id: hotelID, "rooms._id": roomID },
