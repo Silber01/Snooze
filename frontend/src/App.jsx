@@ -21,17 +21,18 @@ function App() {
     email: null,
   })
 
-  async function fetchData(email) {
+  async function fetchData(email, token) {
     let apiUrl = import.meta.env.VITE_API_URL
     const response = await fetch(apiUrl + "/api/user/getUser/" + email);
     const data = await response.json()
+    data.token = token
     setAllUserData(data);
   }
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"))
     if (user) {
-      fetchData(user.email)
+      fetchData(user.email, user.token)
     }
     else
       setAllUserData("NOT LOGGED IN")

@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { dateToUnix } from "../intervals";
 import HotelNotFound from "../components/HotelNotFound";
 import StarRating from "../components/StarRating";
+import Hotel from "../components/Hotel";
 
 import {
   Box,
@@ -24,8 +25,10 @@ import {
   Center,
   Divider,
   Input,
+  HStack
 } from "@chakra-ui/react";
 import Room from "./Room";
+import Payment from "../payment/Payment";
 
 function getRating(ratings) {
   let avg = 0;
@@ -65,6 +68,8 @@ function ViewHotelRoom() {
   let params = useParams();
   let apiUrl = import.meta.env.VITE_API_URL;
   let sampleHotel = "643df8f5fae1b05a854b4307";
+  let [roomPrice, setRoomPrice] = useState(0);
+  let [roomType, setRoomType] = useState("")
 
   let [hotel, setHotel] = useState(null);
   const userData = useContext(UserContext);
@@ -110,6 +115,12 @@ function ViewHotelRoom() {
       setReviews(hotel.reviews);
     }
   }, [hotel]);
+
+  useEffect(() => {
+    if (hotel && hotel.rooms) {
+      findRoom();
+    }
+  }, [chosenRoom]);
 
   function ViewHotels() {
     return (
@@ -209,157 +220,15 @@ function ViewHotelRoom() {
       </>
     );
   }
-
-  function ViewPayment() {
-    return (
-      <>
-        <div className="Payment">
-          <Button
-            onClick={() => {
-              setChosenRoom(null);
-            }}
-          >
-            Back
-          </Button>
-          <p className="paymentDetails">Payment Details</p>
-          <hr></hr>
-
-          <form className="paymentChoice1">
-            <label>When would you like to pay?</label>
-            <br />
-            <input
-              type="radio"
-              id="payAtProperty"
-              name="paymentChoice"
-              value="Pay at the property"
-            />
-            <label for="payAtProperty">Pay at the Property</label>
-            <br />
-            <input
-              type="radio"
-              id="payNow"
-              name="paymentChoice"
-              value="Pay Now"
-            />
-            <label for="payAtProperty">Pay Now</label>
-            <br />
-          </form>
-
-          <form className="cardInfo">
-            <label className="formLabel" for="firstName">
-              First Name<span className="reqField">*</span>
-            </label>
-            <br />
-            <input id="firstName" />
-            <br />
-
-            <label className="formLabel" for="lastName">
-              Last Name<span className="reqField">*</span>
-            </label>
-            <br />
-            <input id="lastName" />
-            <br />
-
-            <label className="formLabel" for="cardNumber">
-              Card Number<span className="reqField">*</span>
-            </label>
-            <br />
-            <input id="cardNumber" placeholder="0000 0000 0000 0000" />
-            <br />
-
-            <label className="formLabel" for="expDateMM">
-              Expiration Date<span className="reqField">*</span>
-            </label>
-            <br />
-            <input id="expDateMM" placeholder="MM" />
-            <span className="expDateDivider">/</span>
-            <input id="expDateDD" placeholder="DD" />
-            <br />
-
-            <label className="formLabel" for="securityCode">
-              Security Code<span className="reqField">*</span>
-            </label>
-            <br />
-            <input id="securityCode" placeholder="000" />
-          </form>
-          <hr></hr>
-          <p className="billingAddress">Billing Address</p>
-
-          <form className="addressInfo">
-            <div className="addressInfoLine">
-              <label className="address1" for="firstName">
-                Address
-              </label>
-              <input
-                id="address1"
-                type="address"
-                placeholder="Address Line 1"
-              />
-              <br />
-            </div>
-            <div className="addressInfoLine">
-              <label className="address1" for="firstName"></label>
-              <input
-                id="address2"
-                type="address"
-                placeholder="Address Line 2"
-              />
-              <br />
-            </div>
-            <div className="addressInfoLine">
-              <label className="address1" for="firstName">
-                City
-              </label>
-              <input id="city" type="city" placeholder="City" />
-              <br />
-            </div>
-            <div className="addressInfoLine">
-              <label className="address1" for="firstName">
-                State
-              </label>
-              <input id="state" type="state" placeholder="State" />
-              <br />
-            </div>
-            <div className="addressInfoLine">
-              <label className="address1" for="firstName">
-                Zip Code
-              </label>
-              <input id="zipCode" type="zipCode" placeholder="Zip Code" />
-              <br />
-            </div>
-            <div className="addressInfoLine">
-              <label className="address1" for="firstName">
-                Country
-              </label>
-              <input id="country" type="country" placeholder="Country" />
-              <br />
-            </div>
-            {/* No phone entry */}
-          </form>
-
-          <p className="pricedetails">Price Details</p>
-
-          <form className="addressInfo">
-            <input type="duration" placeholder="1 room x 1 night" />
-            <input type="taxes&fees" placeholder="Taxes and Fees" />
-            <input type="pointsEarned" placeholder="Points Earned" />
-            <input type="totalprice" placeholder="Total Price" />
-          </form>
-
-          <button className="update">Update</button>
-
-          <form className="durationInfo">
-            <input type="checkin" placeholder="Check-In" />
-            <input type="checkout" placeholder="Check-Out" />
-          </form>
-
-          <button className="back">Back</button>
-          <button className="confirmbooking">Confirm Booking</button>
-        </div>
-      </>
-    );
+  function findRoom() {
+    hotel.rooms.forEach((element) => {
+      console.log(element);
+      if (element._id == chosenRoom) {
+        setRoomPrice(element.price);
+        setRoomType(element.roomType);
+      }
+    });
   }
-
   if (!hotel) {
     return <></>;
   } else if (!hotel.name) {
@@ -376,7 +245,17 @@ function ViewHotelRoom() {
     return (
       <div>
         <SnoozeHeader />
-        <ViewPayment />
+        <Payment
+          room={chosenRoom}
+          checkIn={sessionStorage.getItem("checkInDate")}
+          checkOut={sessionStorage.getItem("checkOutDate")}
+          hotel={hotel.name}
+          roomType={roomType}
+          price={roomPrice}
+          setChosenRoom={setChosenRoom}
+        />
+        {/*<ViewPayment />*/}
+       
       </div>
     );
   }
