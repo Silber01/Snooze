@@ -1,148 +1,146 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./Payment.css";
 import { useNavigate } from "react-router-dom";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Flex,
+  Input,
+  VStack,
+  Heading,
+  Button,
+  Divider,
+  HStack,
+} from "@chakra-ui/react";
 import SnoozeHeader from "../general/SnoozeHeader";
 
 export default function Payment(props) {
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const cardNumberRef = useRef();
+  const expDateRef = useRef();
+  const secCodeRef = useRef();
+
+  const addressOneRef = useRef();
+  const addressTwoRef = useRef();
+  const cityRef = useRef();
+  const stateRef = useRef();
+  const zipCodeRef = useRef();
+  const countryRef = useRef();
+
+  const handleSubmit = async () => {
+    console.log(
+      "paying",
+      firstNameRef.current.value,
+      lastNameRef.current.value,
+      cardNumberRef.current.value,
+      expDateRef.current.value,
+      secCodeRef.current.value,
+
+      addressOneRef.current.value,
+      addressTwoRef.current.value,
+      cityRef.current.value,
+      stateRef.current.value,
+      zipCodeRef.current.value,
+      countryRef.current.value
+    );
+  };
+
   return (
     <>
       <SnoozeHeader />
 
-      <div className="Payment">
-        <p className="paymentDetails">Payment Details</p>
-        <hr></hr>
+      <Flex
+        my={20}
+        w={"100%"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
+        gap={8}
+      >
+        <VStack
+          w={"25%"}
+          p={10}
+          justifyContent={"center"}
+          alignItems={"center"}
+          gap={2}
+          border={"5px solid #9A9A9A"}
+          borderRadius={30}
+        >
+          <Heading textColor="#33333">Payment Details</Heading>
+          <FormControl isRequired>
+            <FormLabel m={0}>First Name</FormLabel>
+            <Input ref={firstNameRef} type="text" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>Last Name</FormLabel>
+            <Input ref={lastNameRef} type="text" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>Card Number</FormLabel>
+            <Input ref={cardNumberRef} type="number" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>Expiration Date</FormLabel>
+            <Input ref={expDateRef} w={"50%"} placeholder="MM" type="month" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>Security Code</FormLabel>
+            <Input ref={secCodeRef} w={"35%"} placeholder="123" type="number" />
+          </FormControl>
+        </VStack>
+        <Divider orientation="horizontal" w={3} />
+        <VStack
+          w={"25%"}
+          p={10}
+          justifyContent={"center"}
+          alignItems={"center"}
+          gap={2}
+          border={"5px solid #9A9A9A"}
+          borderRadius={30}
+        >
+          <Heading textColor="#33333">Billing Address</Heading>
+          <FormControl isRequired>
+            <FormLabel m={0}>Address</FormLabel>
+            <Input ref={addressOneRef} placeholder="Address Line 1" />
+            <Input ref={addressTwoRef} top={2} placeholder="Address Line 2" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>City</FormLabel>
+            <Input ref={cityRef} placeholder="City" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>State</FormLabel>
+            <Input ref={stateRef} placeholder="State" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>Zip Code</FormLabel>
+            <Input ref={zipCodeRef} placeholder="Zip Code" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel m={0}>Country</FormLabel>
+            <Input ref={countryRef} placeholder="Country" />
+          </FormControl>
+        </VStack>
 
-        <form className="paymentChoice1">
-          <label>When would you like to pay?</label>
-          <br />
-          <input
-            type="radio"
-            id="payAtProperty"
-            name="paymentChoice"
-            value="Pay at the property"
-          />
-          <label for="payAtProperty">Pay at the Property</label>
-          <br />
-          <input
-            type="radio"
-            id="payNow"
-            name="paymentChoice"
-            value="Pay Now"
-          />
-          <label for="payAtProperty">Pay Now</label>
-          <br />
-        </form>
+        <HStack gap={4}>
+          <Button size="lg" backgroundColor="gr" top={10}>
+            Back
+          </Button>
 
-        {/* We're just gonna assume we're using cards
-                <form className = 'paymentChoice2'>
-                    <input type="text" placeholder='Card'/>
-                    <input type="text" placeholder='Google Pay'/>
-                    <input type="text" placeholder='PayPal'/>
-                </form> */}
-
-        <form className="cardInfo">
-          <label className="formLabel" for="firstName">
-            First Name<span className="reqField">*</span>
-          </label>
-          <br />
-          <input id="firstName" />
-          <br />
-
-          <label className="formLabel" for="lastName">
-            Last Name<span className="reqField">*</span>
-          </label>
-          <br />
-          <input id="lastName" />
-          <br />
-
-          <label className="formLabel" for="cardNumber">
-            Card Number<span className="reqField">*</span>
-          </label>
-          <br />
-          <input id="cardNumber" placeholder="0000 0000 0000 0000" />
-          <br />
-
-          <label className="formLabel" for="expDateMM">
-            Expiration Date<span className="reqField">*</span>
-          </label>
-          <br />
-          <input id="expDateMM" placeholder="MM" />
-          <span className="expDateDivider">/</span>
-          <input id="expDateDD" placeholder="DD" />
-          <br />
-
-          <label className="formLabel" for="securityCode">
-            Security Code<span className="reqField">*</span>
-          </label>
-          <br />
-          <input id="securityCode" placeholder="000" />
-        </form>
-        <hr></hr>
-        <p className="billingAddress">Billing Address</p>
-
-        <form className="addressInfo">
-          <div className="addressInfoLine">
-            <label className="address1" for="firstName">
-              Address
-            </label>
-            <input id="address1" type="address" placeholder="Address Line 1" />
-            <br />
-          </div>
-          <div className="addressInfoLine">
-            <label className="address1" for="firstName"></label>
-            <input id="address2" type="address" placeholder="Address Line 2" />
-            <br />
-          </div>
-          <div className="addressInfoLine">
-            <label className="address1" for="firstName">
-              City
-            </label>
-            <input id="city" type="city" placeholder="City" />
-            <br />
-          </div>
-          <div className="addressInfoLine">
-            <label className="address1" for="firstName">
-              State
-            </label>
-            <input id="state" type="state" placeholder="State" />
-            <br />
-          </div>
-          <div className="addressInfoLine">
-            <label className="address1" for="firstName">
-              Zip Code
-            </label>
-            <input id="zipCode" type="zipCode" placeholder="Zip Code" />
-            <br />
-          </div>
-          <div className="addressInfoLine">
-            <label className="address1" for="firstName">
-              Country
-            </label>
-            <input id="country" type="country" placeholder="Country" />
-            <br />
-          </div>
-          {/* No phone entry */}
-        </form>
-
-        <p className="pricedetails">Price Details</p>
-
-        <form className="addressInfo">
-          <input type="duration" placeholder="1 room x 1 night" />
-          <input type="taxes&fees" placeholder="Taxes and Fees" />
-          <input type="pointsEarned" placeholder="Points Earned" />
-          <input type="totalprice" placeholder="Total Price" />
-        </form>
-
-        <button className="update">Update</button>
-
-        <form className="durationInfo">
-          <input type="checkin" placeholder="Check-In" />
-          <input type="checkout" placeholder="Check-Out" />
-        </form>
-
-        <button className="back">Back</button>
-        <button className="confirmbooking">Confirm Booking</button>
-      </div>
+          <Button
+            onClick={handleSubmit}
+            backgroundColor="#c6c1dc"
+            textColor="white"
+            top={10}
+            size="lg"
+          >
+            Confirm Booking
+          </Button>
+        </HStack>
+      </Flex>
     </>
   );
 }
