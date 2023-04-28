@@ -64,7 +64,13 @@ function availabilityText(bookedDates, startDate, endDate, validDates) {
 function Room(props) {
   let room = props.room;
   return (
-    <Grid templateColumns="1fr 1fr 1fr" width="90%" bg="indiepink">
+    <Grid
+      templateColumns="1fr 1fr 1fr"
+      width="90%"
+      bg="indiepink"
+      border="3px solid"
+      borderColor="white"
+    >
       <Box p="5">
         <Image
           width="100%"
@@ -126,10 +132,11 @@ function Room(props) {
             <Button
               width="40%"
               height="80px"
-              border="5px solid"
+              border="3px solid"
               borderRadius="20px"
-              colorScheme="green"
+              backgroundColor="#c6c1dc"
               borderColor="white"
+              textColor="white"
               onClick={() => {
                 props.setChosenRoom(room._id);
               }}
