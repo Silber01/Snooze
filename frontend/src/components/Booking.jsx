@@ -61,7 +61,7 @@ function Booking({
           )}
           {!isCurrent && (
             <Button colorScheme="green" mt={4} mr={2}>
-              View Ratings & Reviews
+              Add Review
             </Button>
           )}
         </Box>
