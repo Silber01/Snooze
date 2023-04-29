@@ -53,12 +53,14 @@ function Review(props) {
   let user = props.review.user;
   let review = props.review.review;
   return (
-    <Box bg="white" width="50%" mb="5">
+    <Box border="Gray.500" rounded="xl" width="90%" mb="5" borderWidth={4}>
       <Text>{user}</Text>
-      <Box width="100px">
+      <Box width="100px" ml={2} mt={2}>
         <StarRating rating={rating} />
       </Box>
-      <p>{review}</p>
+      <Text p={2} mt={2}>
+        {review}
+      </Text>
     </Box>
   );
 }
@@ -139,16 +141,17 @@ function ViewHotelRoom() {
                 <Text mb="2">{hotel.description}</Text>
                 <Box width="225px" mb="10">
                   <StarRating rating={rating} />
-                  <Text align="center">
+                  <Text mt={2} align="center">
                     {rating} stars from {ratingCount} Visitors
                   </Text>
                 </Box>
+
                 {reviews
                   .slice(0, Math.min(4, reviews.length))
                   .map((review, ind) => {
                     return <Review key={ind} review={review} />;
                   })}
-              </Box>
+                </Box>
               <Box height="600px">
                 <Image
                   src={hotel.imgsrc}
