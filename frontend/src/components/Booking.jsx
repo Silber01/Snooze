@@ -34,7 +34,7 @@ function Booking({ hotelId, roomId, checkInDate, checkOutDate, price }) {
   };
 
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
+    <Box maxW="lg" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
       {bookingConfirmed && (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
           <Text fontWeight="bold" mb={2}>
