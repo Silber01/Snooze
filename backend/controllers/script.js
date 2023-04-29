@@ -8,8 +8,8 @@ function getRandomInt(min, max) {
 
 function generateName() {
     var hotelName = ["King's", "Sunset", "Marina", "Jade", "Northern", "Golden", "Mellow", "Silver", "Santa", "Peaceful", "Serene", "Bronze", "Sapphire", "Onyx", "Azure", "Muse", "Leisure", "Utopia", "Drizzle", "Seaside", "Market", "Loch", "Flower", "Cosmos", "Petal", "Sunset", "Pacific", "Snowy", "Exhalted", "Angel", "Maple"]
-    var hotelName2 = ["Springs", "Heights", "View", "Haven", "Tower", "Keep", "Point", "Peaks", "Lake", "Temple", "Square", "Blues", "Dome", "Willow", "Manor", "Ridge", "Majesty", "Court", "Park"]
-    var peopleName = ["Hilton", "Marriot", "Claridge's", "Omni Severin", "Taj", "Stanley", "Maria"]
+    var hotelName2 = ["Plaza", "Bali","Springs", "Heights", "View", "Haven", "Tower", "Keep", "Point", "Peaks", "Lake", "Temple", "Square", "Blues", "Dome", "Willow", "Manor", "Ridge", "Majesty", "Court", "Park"]
+    var peopleName = ["Hilton", "Marriot", "Claridge's", "Omni Severin", "Taj", "Stanley", "Maria", "The Ritz-Carlton", "Waldorf", "Caruso", "The St. Regi", "The Beverly Hills"]
     var hotelType = ["Hotel", "Motel", "Resort", "Resort & Spa", "Inn", "Suites", "Bed and Breakfast", "Hostel"]
 
     let x = getRandomInt(0, 100)
@@ -109,8 +109,6 @@ function generateRoom(){
         hasWifi: true,
         imgsrc: "https://www.thespruce.com/thmb/2_Q52GK3rayV1wnqm6vyBvgI3Ew=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg",
         datesBooked: [
-            { firstDate: "2023-04-07", lastDate: "2023-04-10" },
-            { firstDate: "2023-04-13", lastDate: "2023-04-17" },
         ]
     }
     return room
@@ -176,12 +174,12 @@ function generateReviewList(){
 }
 
 function generateLocation(){
-    var address = ["106 W 12th St", "2996 Sawayn Cliff", "51146 Antwon Mountain", "974 Aaliyah Place", "80127 Adela Common", "1582 Strother Street", "Riverside, Estaka, Bonifacio Street",
+    var address = ["252/23 Soi Kang Bank Krungthep Pradipat Samsaen Nai Phaya Thai","3680 Passaic Street","2825 St. Paul Street","2520 Higginsville Road","106 W 12th St", "2996 Sawayn Cliff", "51146 Antwon Mountain", "974 Aaliyah Place", "80127 Adela Common", "1582 Strother Street", "Riverside, Estaka, Bonifacio Street",
     "Mabini Hall, General Solano Street, Malacanang", "AV CUAUHTEMOC 195, PROGRESO, 39350", "IGNACIO PEREZ EDIFICIO ORBITA 28 SUR OFICINA 209, CENTRO, 76000", "64-3, Daeneung ri 2, Beobwon-eup", 
-    "P.O Box 39873"]
-    var city = ["Kansas City", "McClurefurt", "Sengerborough", "Virginiaberg", "Orphaport", "Birmingham", "Dipolog", "Manila", "Guerrero", "Queretaro", "Paju-si", "Dubai"]
-    var province = ["Missorui", "Ohio", "Oklahoma", "California", "Kentucky", "Alabama", "Zamboanga del Norte", "Metro Manila", "Acapulco", "Querétaro", "Gyeonggi-do", "Dubai"]
-    var country = ["United States", "United States", "United States", "United States", "United States", "United States", "Philippines", "Philippines", "México", "México", "Korea", 
+    "Far East Mans","P.O Box 39873"]
+    var city = ["Bangkok","Fort Lee","Tsim Sha Tsui","Niagara Falls", "Halifax","Kansas City", "McClurefurt", "Sengerborough", "Virginiaberg", "Orphaport", "Birmingham", "Dipolog", "Manila", "Guerrero", "Queretaro", "Paju-si", "Dubai"]
+    var province = ["Bangkok","New Jersey","Hong Kong","Ontario","Nova Scotia","Missorui", "Ohio", "Oklahoma", "California", "Kentucky", "Alabama", "Zamboanga del Norte", "Metro Manila", "Acapulco", "Querétaro", "Gyeonggi-do", "Dubai"]
+    var country = ["Thailand","United States","Hong Kong","Canada", "Canada","United States", "United States", "United States", "United States", "United States", "United States", "Philippines", "Philippines", "México", "México", "Korea", 
     "Emirates"]
 
     var locationObj = {}

@@ -198,12 +198,12 @@ const changeBooking = async (req, res) => {
         .status(400)
         .json({ error: "Last date is before or during first date." });
     }
-    if (firstDate.valueOf() <= new Date().valueOf()) {
+    if (firstDate.valueOf() < new Date().valueOf()) {
       console.log(firstDate.valueOf)
       console.log(new Date().valueOf())
       return res.status(400).json({ error: "First Date is before today." });
     }
-    if (lastDate.valueOf() <= new Date().valueOf()) {
+    if (lastDate.valueOf() < new Date().valueOf()) {
       return res.status(400).json({ error: "Last Date is before today." });
     }
 
@@ -231,17 +231,6 @@ const changeBooking = async (req, res) => {
       if (!mongoose.Types.ObjectId.isValid(hotelID)) {
         return res.status(404).json({ error: "No such hotel" });
       }
-      if (lastDate == "Invalid Date" || firstDate == "Invalid Date") {
-        return res.status(400).json({ error: "Invalid First or Last Date." });
-      }
-      if (lastDate.valueOf() <= firstDate.valueOf()) {
-        return res
-          .status(400)
-          .json({ error: "Last date is before or during first date." });
-      }
-      if (firstDate.valueOf <= new Date().valueOf()) {
-        return res.status(400).json({ error: "First Date is before today." });
-      }
 
       console.log(oldFirstDate)
       console.log(oldLastDate)
@@ -259,22 +248,22 @@ const changeBooking = async (req, res) => {
 
       const array = dataCheck[0].rooms[0].datesBooked
       console.log(array)
-      if (firstDate > oldFirstDate && firstDate < oldLastDate && lastDate < oldLastDate && lastDate > oldFirstDate ){
+      if (firstDate > oldFirstDate && firstDate < oldLastDate && lastDate < oldLastDate && lastDate > oldFirstDate) {
         valid = true
         console.log("inside")
       } else {
         for (let i = 0; i < array.length; i++) {
-          if ( oldLastDate.valueOf() === array[i].lastDate.valueOf() && oldFirstDate.valueOf() === array[i].firstDate.valueOf()){
+          if (oldLastDate.valueOf() === array[i].lastDate.valueOf() && oldFirstDate.valueOf() === array[i].firstDate.valueOf()) {
             console.log("skip")
           } else {
             if (firstDate < array[i].firstDate && lastDate < array[i].firstDate ||
-              firstDate > array[i].lastDate && lastDate > array[i].lastDate)  {
-               console.log("valid condition")
-           } else {
-             valid = false
-             console.log("false condition")
-             console.log(array[i])
-           }
+              firstDate > array[i].lastDate && lastDate > array[i].lastDate) {
+              console.log("valid condition")
+            } else {
+              valid = false
+              console.log("false condition")
+              console.log(array[i])
+            }
           }
         };
       }
@@ -316,6 +305,109 @@ const changeBooking = async (req, res) => {
     res.status(error.status).json(error.message);
   }
 };
+
+const checkUpdate = async (req, res) => {
+  try {
+    var authorization = req.headers.authorization.split(" ")[1];
+    const [, auth] = authorization.split(".");
+    var userId = atob(auth);
+    userId = userId.substring(8, 32);
+
+    let { userBookingID, firstDate, lastDate } = req.query;
+
+    firstDate = new Date(firstDate)
+    lastDate = new Date(lastDate)
+
+    if (firstDate == "Invalid Date" || lastDate == "Invalid Date") {
+      throw { status: 400, message: "Invalid date supplied" };
+    }
+    if (lastDate.valueOf() <= firstDate.valueOf()) {
+      return res
+        .status(400)
+        .json({ error: "Last date is before or during first date." });
+    }
+    if (firstDate.valueOf() < new Date().valueOf()) {
+      console.log(firstDate.valueOf)
+      console.log(new Date().valueOf())
+      return res.status(400).json({ error: "First Date is before today." });
+    }
+    if (lastDate.valueOf() < new Date().valueOf()) {
+      return res.status(400).json({ error: "Last Date is before today." });
+    }
+
+    let hotelID, roomID, oldFirstDate, oldLastDate;
+    if (!mongoose.isValidObjectId(userBookingID)) {
+      throw { status: 400, message: "Invalid ObjectID" };
+    }
+
+    const userFind = await User.findOne(
+      { _id: userId, "bookings": { $elemMatch: { _id: userBookingID } } },
+      {
+        "bookings.$": 1
+      },
+    );
+
+    if (!userFind) {
+      throw { status: 404, message: "userBookingID not Found" };
+    } else {
+      hotelID = userFind.bookings[0].hotelID;
+      roomID = userFind.bookings[0].roomID;
+      oldFirstDate = userFind.bookings[0].firstDate;
+      oldLastDate = userFind.bookings[0].lastDate;
+
+      /**booking conflict */
+      if (!mongoose.Types.ObjectId.isValid(hotelID)) {
+        return res.status(404).json({ error: "No such hotel" });
+      }
+
+      console.log(oldFirstDate)
+      console.log(oldLastDate)
+      console.log(firstDate)
+      console.log(lastDate)
+      var valid = true
+      const dataCheck = await Hotel.find({
+        _id: hotelID,
+        "rooms._id": roomID
+      },
+        {
+          "rooms.datesBooked.$": 1
+        }
+      );
+
+      const array = dataCheck[0].rooms[0].datesBooked
+      console.log(array)
+      if (firstDate > oldFirstDate && firstDate < oldLastDate && lastDate < oldLastDate && lastDate > oldFirstDate) {
+        valid = true
+        console.log("inside")
+      } else {
+        for (let i = 0; i < array.length; i++) {
+          if (oldLastDate.valueOf() === array[i].lastDate.valueOf() && oldFirstDate.valueOf() === array[i].firstDate.valueOf()) {
+            console.log("skip")
+          } else {
+            if (firstDate < array[i].firstDate && lastDate < array[i].firstDate ||
+              firstDate > array[i].lastDate && lastDate > array[i].lastDate) {
+              console.log("valid condition")
+            } else {
+              valid = false
+              console.log("false condition")
+              console.log(array[i])
+            }
+          }
+        };
+      }
+
+      if (!valid) {
+        return res
+          .status(400)
+          .json(false);
+      }
+    }
+    res.status(200).json(true)
+  } catch (err) {
+    console.log(err)
+  }
+
+}
 //update points of a user
 const updatePoints = async (req, res) => {
   var authorization = req.headers.authorization.split(" ")[1];
@@ -338,4 +430,5 @@ module.exports = {
   getBookings,
   changeBooking,
   cancelBooking,
+  checkUpdate
 };

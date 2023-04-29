@@ -12,6 +12,7 @@ const {
   getBookings,
   changeBooking,
   cancelBooking,
+  checkUpdate,
 } = require("../controllers/userController");
 
 // login route
@@ -24,6 +25,8 @@ router.post("/signup", signupUser);
 router.get("/getUser/:email", getUser);
 
 // merge from will
+
+router.get("/checkUpdate", checkUpdate);
 
 //get bookings
 router.get("/getbookings", getBookings);
