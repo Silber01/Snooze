@@ -5,7 +5,7 @@ import SnoozeHeader from "../general/SnoozeHeader";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useParams } from "react-router-dom";
-import { dateToUnix, intervalLength } from "../intervals";
+import { dateToUnix, intervalLength, isNotPast } from "../intervals";
 import HotelNotFound from "../components/HotelNotFound";
 import StarRating from "../components/StarRating";
 import Hotel from "../components/Hotel";
@@ -95,7 +95,7 @@ function ViewHotelRoom() {
   function checkValidDates() {
     let checkIn = sessionStorage.getItem("checkInDate")
     let checkOut = sessionStorage.getItem("checkOutDate")
-    if (Boolean(checkIn != null && checkOut != null && (intervalLength(checkIn, checkOut) > 0)))
+    if (Boolean(checkIn != null && checkOut != null && isNotPast(checkIn) && isNotPast(checkOut) && (intervalLength(checkIn, checkOut) > 0)))
     {
       setValidDates(true)
       setDuration(intervalLength(sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate")))
@@ -105,24 +105,21 @@ function ViewHotelRoom() {
       setValidDates(false)
       setDuration(0)
     }
-    
-
-    
-
   }
 
   useEffect(() => {
     fetchData(params.id);
     checkValidDates()
     setDuration(intervalLength(sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate")))
+    isNotPast("1111-12-12")
   }, []);
 
 
-  useEffect(() => {
-    if (chosenRoom != null) {
-      console.log("User has chosen room " + chosenRoom);
-    }
-  });
+  // useEffect(() => {
+  //   if (chosenRoom != null) {
+  //     console.log("User has chosen room " + chosenRoom);
+  //   }
+  // });
 
   useEffect(() => {
     if (hotel && hotel.ratings) {
@@ -139,6 +136,35 @@ function ViewHotelRoom() {
       findRoom();
     }
   }, [chosenRoom]);
+
+  function roomsForText()
+  {
+    let checkIn = sessionStorage.getItem("checkInDate")
+    let checkOut = sessionStorage.getItem("checkOutDate")
+    if (!checkIn || !checkOut)
+      return "Rooms"
+    
+    return "Rooms for " + checkIn.replaceAll("-", "/") + " - " + checkOut.replaceAll("-", "/")
+  }
+
+  function ErrorText(){
+    let checkIn = sessionStorage.getItem("checkInDate")
+    let checkOut = sessionStorage.getItem("checkOutDate")
+    if (!isNotPast(checkIn) || !isNotPast(checkOut))
+    {
+      return <Text color="red" fontSize="20">You can't make reservations for the past!</Text>
+    }
+    else if (duration <= 0)
+    {
+      return <Text color="red" fontSize="20">Your check-in time must be before your check-out time.</Text>
+    }
+    else if (!validDates)
+    {
+      return <Text color="red" fontSize="20">You already have a booking during this time!</Text>
+    }
+    return <></>
+
+  }
 
   function ViewHotels() {
     return (
@@ -189,10 +215,6 @@ function ViewHotelRoom() {
               marginRight={10}
               isInvalid={!validDates}
               defaultValue={sessionStorage.getItem("checkInDate")}
-              onChange={() => {
-                sessionStorage.setItem("checkInDate", checkInRef.current.value);
-                checkValidDates();
-              }}
               ref={checkInRef}
             />
             <Input
@@ -205,22 +227,27 @@ function ViewHotelRoom() {
               marginRight={10}
               isInvalid={!validDates}
               defaultValue={sessionStorage.getItem("checkOutDate")}
-              onChange={() => {
-                sessionStorage.setItem(
-                  "checkOutDate",
-                  checkOutRef.current.value
-                );
-                checkValidDates();
-              }}
               ref={checkOutRef}
             />
+            <Button size="lg" top={5} onClick={() => {
+              sessionStorage.setItem("checkInDate", checkInRef.current.value)
+              sessionStorage.setItem("checkOutDate", checkOutRef.current.value)
+              checkValidDates()
+            }}>
+              Set
+            </Button>
           </Flex>
         </Center>
+        <Box width="100%" mt="8">
+          <Center>
+            <ErrorText />
+          </Center>
+        </Box>
 
         <Center mt="10">
           <Box width="90%" bg="mintgreen">
             <Text fontSize="40" textAlign="center" fontWeight="bold">
-              Rooms
+              {roomsForText()}
             </Text>
             {hotel.rooms.map((room, ind) => {
               return (

@@ -81,12 +81,7 @@ function RoomPrice({ price, duration }) {
 
 function Room(props) {
   let [isColliding, setIsColliding] = useState(false);
-  async function checkCollision(
-    hotelID,
-    roomID,
-    firstDate,
-    lastDate
-  ) {
+  async function checkCollision(hotelID, roomID, firstDate, lastDate) {
     let apiUrl = import.meta.env.VITE_API_URL;
     const response = await fetch(
       apiUrl +
@@ -105,32 +100,31 @@ function Room(props) {
   }
 
   function availabilityText() {
-    let validDates = props.validDates
-    let startDate = sessionStorage.getItem("checkInDate")
-    let endDate = sessionStorage.getItem("checkOutDate")
+    let validDates = props.validDates;
+    let startDate = sessionStorage.getItem("checkInDate");
+    let endDate = sessionStorage.getItem("checkOutDate");
+    if (!startDate || !endDate) {
+      return (
+        <HStack>
+          <Icon as={MdQuestionMark} boxSize="10" />
+          <Text fontSize="20">
+            Input your check-in and check-out times to see if this room is
+            available
+          </Text>
+        </HStack>
+      );
+    }
+    if (!validDates) {
+      return (
+        <HStack>
+          <Icon as={MdWarning} boxSize="10" color="red" />
+          <Text fontSize="20" color="red">
+            Your inputted dates are invalid.
+          </Text>
+        </HStack>
+      );
+    }
     if (!isColliding) {
-      console.log("valid hotel!");
-      if (!validDates) {
-        return (
-          <HStack>
-            <Icon as={MdWarning} boxSize="10" color="red" />
-            <Text fontSize="20" color="red">
-              Your inputted dates are invalid.
-            </Text>
-          </HStack>
-        );
-      }
-      if (!startDate || !endDate) {
-        return (
-          <HStack>
-            <Icon as={MdQuestionMark} boxSize="10" />
-            <Text fontSize="20">
-              Input your check-in and check-out times to see if this room is
-              available
-            </Text>
-          </HStack>
-        );
-      }
       return (
         <HStack>
           <Icon as={MdCheck} boxSize="10" color="green" />
@@ -151,12 +145,14 @@ function Room(props) {
   }
 
   useEffect(() => {
-    checkCollision(props.hotelID,
+    checkCollision(
+      props.hotelID,
       room._id,
       sessionStorage.getItem("checkInDate"),
       sessionStorage.getItem("checkOutDate"),
-      props.validDates)
-  }, [props.duration])
+      props.validDates
+    );
+  }, [props.duration]);
 
   let room = props.room;
   return (
@@ -193,9 +189,7 @@ function Room(props) {
           </Box>
           <Box />
           <Box>
-            <Text>
-              {availabilityText()}
-            </Text>
+            <Text>{availabilityText()}</Text>
           </Box>
         </Grid>
       </Box>
