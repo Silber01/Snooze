@@ -80,6 +80,7 @@ function ViewHotelRoom() {
   let [reviews, setReviews] = useState([]);
   let [chosenRoom, setChosenRoom] = useState(null);
   const [validDates, setValidDates] = useState(true);
+  let [duration, setDuration] = useState(0)
 
   const checkInRef = useRef();
   const checkOutRef = useRef();
@@ -94,15 +95,26 @@ function ViewHotelRoom() {
   function checkValidDates() {
     let checkIn = sessionStorage.getItem("checkInDate")
     let checkOut = sessionStorage.getItem("checkOutDate")
-    setValidDates(
-      Boolean(checkIn != null && checkOut != null && (intervalLength(checkIn, checkOut) > 0))
+    if (Boolean(checkIn != null && checkOut != null && (intervalLength(checkIn, checkOut) > 0)))
+    {
+      setValidDates(true)
+      setDuration(intervalLength(sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate")))
+    }
+    else
+    {
+      setValidDates(false)
+      setDuration(0)
+    }
+    
 
-    );
+    
+
   }
 
   useEffect(() => {
     fetchData(params.id);
     checkValidDates()
+    setDuration(intervalLength(sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate")))
   }, []);
 
 
@@ -214,7 +226,9 @@ function ViewHotelRoom() {
               return (
                 <Center mt="5" mb="5">
                   <Room
+                    hotelID={hotel._id}
                     room={room}
+                    duration={duration}
                     key={ind}
                     setChosenRoom={setChosenRoom}
                     validDates={validDates}

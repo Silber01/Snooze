@@ -1,3 +1,5 @@
+import { intervalLength } from "../intervals";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -23,63 +25,24 @@ import {
   MdWifi,
 } from "react-icons/md";
 
-function getAvailability(bookedDates, startDate, endDate) {
-  return true;
-}
-
-function availabilityText(bookedDates, startDate, endDate, validDates) {
-  if (getAvailability(bookedDates, startDate, endDate)) {
-    if (!validDates) {
-      return (
-        <HStack>
-          <Icon as={MdWarning} boxSize="10" color="red" />
-          <Text fontSize="20" color="red">
-            Your inputted dates are invalid.
-          </Text>
-        </HStack>
-      );
-    }
-    if (!startDate || !endDate) {
-      return (
-        <HStack>
-          <Icon as={MdQuestionMark} boxSize="10" />
-          <Text fontSize="20">
-            Input your check-in and check-out times to see if this room is
-            available
-          </Text>
-        </HStack>
-      );
-    }
+function BookButton({ validDates, isColliding, setChosenRoom, roomID }) {
+  if (!validDates || isColliding) {
     return (
-      <HStack>
-        <Icon as={MdCheck} boxSize="10" color="green" />
-        <Text fontSize="20" color="green">
-          This room is available for your stay.
-        </Text>
-      </HStack>
+      <Button
+        width="40%"
+        height="80px"
+        border="3px solid"
+        borderRadius="20px"
+        backgroundColor="#999999"
+        borderColor="white"
+        textColor="white"
+        cursor="not-allowed"
+      >
+        Book
+      </Button>
     );
   }
-}
-
-function BookButton( {validDates, setChosenRoom, roomID} ) {
-  if (!validDates)
-  {
-    return ( 
-      <Button
-      width="40%"
-      height="80px"
-      border="3px solid"
-      borderRadius="20px"
-      backgroundColor="#999999"
-      borderColor="white"
-      textColor="white"
-      cursor="not-allowed"
-    >
-      Book
-    </Button>
-    )
-  }
-  return ( 
+  return (
     <Button
       width="40%"
       height="80px"
@@ -94,10 +57,107 @@ function BookButton( {validDates, setChosenRoom, roomID} ) {
     >
       Book
     </Button>
-  )
+  );
+}
+
+function RoomPrice({ price, duration }) {
+  if (duration > 0) {
+    return (
+      <>
+        <Text mt="3" textAlign="center">
+          ${(price * duration * 1.15).toFixed(2)} for {duration} days
+        </Text>
+        <Text textAlign="center">(+taxes and fees)</Text>
+      </>
+    );
+  }
+  return (
+    <>
+      <Text></Text>
+      <Text></Text>
+    </>
+  );
 }
 
 function Room(props) {
+  let [isColliding, setIsColliding] = useState(false);
+  async function checkCollision(
+    hotelID,
+    roomID,
+    firstDate,
+    lastDate
+  ) {
+    let apiUrl = import.meta.env.VITE_API_URL;
+    const response = await fetch(
+      apiUrl +
+        "/api/hotel/checkHotel?hotelID=" +
+        hotelID +
+        "&roomID=" +
+        roomID +
+        "&firstDate=" +
+        firstDate +
+        "&lastDate=" +
+        lastDate
+    );
+    const data = await response.json();
+    console.log(data);
+    setIsColliding(!Boolean(data.valid && data.valid == true));
+  }
+
+  function availabilityText() {
+    let validDates = props.validDates
+    let startDate = sessionStorage.getItem("checkInDate")
+    let endDate = sessionStorage.getItem("checkOutDate")
+    if (!isColliding) {
+      console.log("valid hotel!");
+      if (!validDates) {
+        return (
+          <HStack>
+            <Icon as={MdWarning} boxSize="10" color="red" />
+            <Text fontSize="20" color="red">
+              Your inputted dates are invalid.
+            </Text>
+          </HStack>
+        );
+      }
+      if (!startDate || !endDate) {
+        return (
+          <HStack>
+            <Icon as={MdQuestionMark} boxSize="10" />
+            <Text fontSize="20">
+              Input your check-in and check-out times to see if this room is
+              available
+            </Text>
+          </HStack>
+        );
+      }
+      return (
+        <HStack>
+          <Icon as={MdCheck} boxSize="10" color="green" />
+          <Text fontSize="20" color="green">
+            This room is available for your stay.
+          </Text>
+        </HStack>
+      );
+    }
+    return (
+      <HStack>
+        <Icon as={MdWarning} boxSize="10" color="red" />
+        <Text fontSize="20" color="red">
+          This room is booked during this stay.
+        </Text>
+      </HStack>
+    );
+  }
+
+  useEffect(() => {
+    checkCollision(props.hotelID,
+      room._id,
+      sessionStorage.getItem("checkInDate"),
+      sessionStorage.getItem("checkOutDate"),
+      props.validDates)
+  }, [props.duration])
+
   let room = props.room;
   return (
     <Grid
@@ -134,12 +194,7 @@ function Room(props) {
           <Box />
           <Box>
             <Text>
-              {availabilityText(
-                room.bookedDates,
-                sessionStorage.getItem("checkInDate"),
-                sessionStorage.getItem("checkOutDate"),
-                props.validDates
-              )}
+              {availabilityText()}
             </Text>
           </Box>
         </Grid>
@@ -156,16 +211,18 @@ function Room(props) {
               </Flex>
             </Center>
             <Box>
-              <Text mt="3" textAlign="center">
-                ${(room.price * 3 * 1.15).toFixed(2)} for 3 days
-              </Text>
-              <Text textAlign="center">(+taxes and fees)</Text>
+              <RoomPrice price={room.price} duration={props.duration} />
             </Box>
           </>
 
           <></>
           <Center>
-            <BookButton validDates={props.validDates} setChosenRoom={props.setChosenRoom} roomID={room._id}/>
+            <BookButton
+              validDates={props.validDates}
+              isColliding={isColliding}
+              setChosenRoom={props.setChosenRoom}
+              roomID={room._id}
+            />
           </Center>
         </Grid>
       </Box>

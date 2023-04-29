@@ -48,10 +48,7 @@ export default function Payment({ hotelID, roomID, checkIn, checkOut, hotel, pri
 
   const handleSubmit = async () => {
       //Post booking to userData and roomData
-      console.log(hotelID)
-      console.log(roomID)
-      console.log(checkIn)
-      console.log(checkOut)
+      
       await bookHotelRoom(hotelID, roomID, checkIn, checkOut)
       
     setHasConfirmed(true)
