@@ -5,6 +5,8 @@ import { UserContext } from "../../context/UserContext";
 import { useState, useEffect } from "react";
 import image from "../../assets/sampleprofile.png";
 import Rewardpoints from "./Rewardpoints";
+import Booking from "../components/Booking";
+import { isNotPast } from "../intervals";
 import {
   Box,
   Button,
@@ -19,12 +21,13 @@ import {
 
 function ProfilePage(props) {
   const userContext = useContext(UserContext);
+  console.log(userContext);
+  const bookings = userContext.bookings;
+
   const name = `${props.user.firstName} ${props.user.lastName}`;
   const { email } = props;
 
-  // console.log(userContext);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (userContext == "NOT LOGGED IN") {
       navigate("/");
@@ -35,6 +38,26 @@ function ProfilePage(props) {
     navigate("/profilepage/" + id);
   }
 
+  let [currentBookings, setCurrentBookings] = useState([]);
+  let [pastBookings, setPastBookings] = useState([]);
+
+  useEffect(() => {
+    const cur =
+      bookings?.filter((booking) => {
+        const currentDate = booking.lastDate.slice(0, 10);
+        return isNotPast(currentDate);
+      }) ?? [];
+
+    const past =
+      bookings?.filter((booking) => {
+        const currentDate = booking.lastDate.slice(0, 10);
+        return !isNotPast(currentDate);
+      }) ?? [];
+
+    setCurrentBookings(cur);
+    setPastBookings(past);
+  }, [bookings]);
+
   return (
     <>
       <Image w={150} p={3} ml={3} src="../../assets/SnoozeLogo.svg"></Image>
@@ -42,16 +65,21 @@ function ProfilePage(props) {
       <Box bg="mintgreen" p={4} align="center">
         <Image borderRadius="full" boxSize="130px" src={image} alt="" />
         {/* have to make onclick route to editprofile */}
-        <Button onClick={() => {
-          handleClick(props.user._id);}} mt={4} colorScheme="gray">
+        <Button
+          onClick={() => {
+            handleClick(props.user._id);
+          }}
+          mt={4}
+          colorScheme="gray"
+        >
           Edit Profile
         </Button>
       </Box>
 
-      <Heading ml={20} mt={10} size="lg">
+      <Heading ml={20} mt={10} size="lg" align="center">
         Personal Info
       </Heading>
-      <Box p={4} ml={40} mt={4} fontSize="2xl" fontWeight={500}>
+      <Box p={4} ml={40} mt={4} fontSize="2xl" fontWeight={500} align="center">
         <Text>Name: {name}</Text>
         <Text mt={5}>Email: {props.user.email}</Text>
       </Box>
@@ -59,17 +87,32 @@ function ProfilePage(props) {
       <Heading ml={20} mt={12} size="lg">
         Current Bookings
       </Heading>
-      <Box bg="indiepink" mt={5} ml={40} w="55em" h="20em">
-        {/* have to input bookings data */}
-      </Box>
+      {/* {"These are the acutal current bookings. Keep this."} */}
+      {currentBookings &&
+        currentBookings.map((booking, index) => (
+          <div key={booking.id}>
+            <Booking
+              hotelId={booking.hotelID}
+              checkInDate={booking.firstDate}
+              checkOutDate={booking.lastDate}
+            />
+          </div>
+        ))}
 
       <Heading ml={20} mt={12} size="lg">
         Past Bookings
       </Heading>
-      <Box bg="indiepink" mt={5} ml={40} w="55em" h="20em">
-        {/* have to input bookings data */}
-      </Box>
-
+      {/* current bookings, when we figure out past bookings change this" */}
+      {pastBookings &&
+        pastBookings.map((booking, index) => (
+          <div key={booking.id}>
+            <Booking
+              hotelId={booking.hotelID}
+              checkInDate={booking.firstDate}
+              checkOutDate={booking.lastDate}
+            />
+          </div>
+        ))}
       <Heading ml={20} mt={12} size="lg">
         Rewards
       </Heading>
