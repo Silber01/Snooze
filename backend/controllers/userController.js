@@ -323,10 +323,10 @@ const updatePoints = async (req, res) => {
   var userId = atob(auth);
   userId = userId.substring(8, 32);
   if (parseInt(JSON.stringify(req.body.rewardsPoints)) < 0) {
-    res.status(400).json("Invalid rewards points");
+    res.status(400).json({valid: false});
   } else {
     const user = await User.findOneAndUpdate({ _id: userId }, req.body);
-    res.status(200).json("sucess");
+    res.status(200).json({valid: false});
   }
 };
 module.exports = {
