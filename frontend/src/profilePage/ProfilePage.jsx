@@ -31,8 +31,8 @@ function ProfilePage(props) {
     }
   }, [userContext]);
 
-  function handleClick() {
-    navigate("/editprofile");
+  function handleClick(id) {
+    navigate("/profilepage/" + id);
   }
 
   return (
@@ -42,7 +42,8 @@ function ProfilePage(props) {
       <Box bg="mintgreen" p={4} align="center">
         <Image borderRadius="full" boxSize="130px" src={image} alt="" />
         {/* have to make onclick route to editprofile */}
-        <Button onClick={handleClick} mt={4} colorScheme="gray">
+        <Button onClick={() => {
+          handleClick(props.user._id);}} mt={4} colorScheme="gray">
           Edit Profile
         </Button>
       </Box>

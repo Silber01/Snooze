@@ -45,14 +45,10 @@ const EditProfile = ({ user }) => {
       </Heading>
       <Box align="center">
         <Image mt={4} borderRadius="full" boxSize="130px" src={image} alt="" />
-        <Button colorScheme="messenger" variant="link">
-          Edit picture or avatar
-        </Button>
       </Box>
 
       <FormControl onSubmit={handleSave}>
-        <Stack spacing={8} align="center" mt={10}>
-          {/* need to figure out how to change name */}
+        <Stack spacing={8} align="center" mt={20}>
           <div>
             <FormLabel>First Name</FormLabel>
             <Input
@@ -63,7 +59,6 @@ const EditProfile = ({ user }) => {
               onChange={(event) => setFirstName(event.target.value)}
             />
           </div>
-          {/* need to figure out how to update in profile page after change */}
           <div>
             <FormLabel>Last Name</FormLabel>
             <Input
