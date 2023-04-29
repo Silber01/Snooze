@@ -9,132 +9,41 @@ const getAllHotels = async (req, res) => {
   res.status(200).json(hotels)
 }
 
-/*
-run()
-async function run(){
-  const hotel = await Hotel.create ({
-    name: "Azure Rose Hotel ",
-    description: "Fancy Blue Hotel.",
-    imgsrc: "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png",
-    rooms:[
-      
-    {price:Math.floor(Math.random() * 10000), 
-    roomType:"Suite",
-    roomNum:Math.floor(Math.random() * 999), 
-    beds: Math.floor(Math.random() * 5), 
-    hasWifi: true, 
-    imgsrc: "image", 
-    datesBooked:[
-      {firstDate:"2023-04-07",lastDate:"2023-04-10"},
-      {firstDate:"2023-04-13",lastDate:"2023-04-17"},
-    ]},
-
-    {price:Math.floor(Math.random() * 10000), 
-        roomType:"Suite",
-        roomNum:Math.floor(Math.random() * 999), 
-        beds: Math.floor(Math.random() * 5 + 1), 
-        hasWifi: true, 
-        imgsrc: "image", 
-        datesBooked:[
-          {firstDate:"2023-04-07",lastDate:"2023-04-10"},
-          {firstDate:"2023-04-13",lastDate:"2023-04-17"},
-        ]},
-    ],
-    ratings:{1:Math.floor(Math.random()* 1000), 2:Math.floor(Math.random()* 1000), 3:Math.floor(Math.random()*1000), 4:Math.floor(Math.random()*1000), 5:Math.floor(Math.random()*1000)},
-    reviews:[
-      {user:"test user", review: "abc", rating:4},
-      {user:"test user", review: "abc", rating:4},
-      {user:"test user", review: "abc", rating:4}
-    ],
-    location:{
-      address:"test",
-      city:"Milpitas",
-      province:"California",
-      country:"United States"
-    },
-  })
-  await hotel.save()
-  console.log(hotel)
-}
-*/
-
-
-
-
-// get hotels
-// Currently logs the query map. Needs to be removed later.
 
 /**
- * Handles hotel query from get request.
+ * Searches by location and filters by minRating and price Interval.
  * 
- * @param page        //page number
- * @param limit       //page limit
- * @param name        //hotel name
- * @param country     //country name
- * @param province    //province name
- * @param city        //city name
- * @param ratings     //minimum ratings
- * @param startPrice  //starting price
- * @param endPrice    //endPrice
- * @param sort        //sort param
- *     
- * //Sorting Rules
-     * ID 1 = Price Sort Descending
-     * ID 2 = Price Sort Ascending
-     * ID 3 = Rating sort Descending
-     * ID 4 = Rating sort Ascending
- * 
- * Ex:
- * http://localhost:4000/api/hotel/search?page=1&limit=10&country=Philip&province=Manila&sort=2
+ * @param location
+ * @param minRating
+ * @param minPrice
+ * @param maxPrice
  */
 const getHotels = async (req, res) => {
   try {
+    const location = req.body.location || ""
+    const minRating = req.body.minRating || 0
+    const minPrice = req.body.minPrice || 0
+    const maxPrice = req.body.maxPrice || 99999
 
-    //Define Page Limits and Query Params
-    const page = parseInt(req.body.page) - 1 || 0
-    const limit = parseInt(req.body.limit) || 10
-    const nameQuery = req.body.name
-    const countryQuery = req.body.country
-    const provinceQuery = req.body.province
-    const cityQuery = req.body.city
-    const ratingQuery = parseInt(req.body.rating)
-    const startPriceQuery = parseInt(req.body.startPrice) || 0
-    const endPriceQuery = parseInt(req.body.endPrice) || 999999
-    const sortQuery = parseInt(req.body.sort) || 1
-    //const firstDateQuery = new Date(req.query.firstDate)
-    //const lastDateQuery = new Date(req.query.lastDate)
+    const matchObj = {}
+    if (location.length > 0) {
+      matchObj["$search"] =
+      {
+        index: "hotelSearch",
+        text: {
+          query: location,
+          path: {
+            wildcard: "*"
+          }
+        }
+      }
+    } else {
+      matchObj["$sort"] = { createdAt: -1 }
+    }
 
-    //Create Match Query Map
-    const dynamicQueryObj = {}
-    if (nameQuery && nameQuery != '') { dynamicQueryObj['name'] = { $regex: nameQuery, $options: 'i' } }
-    if (countryQuery && countryQuery != '') { dynamicQueryObj['location.country'] = { $regex: countryQuery, $options: 'i' } }
-    if (cityQuery && cityQuery != '') { dynamicQueryObj['location.city'] = { $regex: cityQuery, $options: 'i' } }
-    if (provinceQuery && provinceQuery != '') { dynamicQueryObj['location.province'] = { $regex: provinceQuery, $options: 'i' } }
-    if (ratingQuery && ratingQuery != null) { dynamicQueryObj['ratings'] = { $gte: ratingQuery } }
-    if (startPriceQuery && startPriceQuery != null || endPriceQuery && endPriceQuery != null) { dynamicQueryObj['rooms.price'] = { $gte: startPriceQuery, $lte: endPriceQuery } }
-
-    //let priceProjRule = {rooms:{$elemMatch:{price: {$lte: endPriceQuery, $gte: startPriceQuery}}}}
-
-    let sortRule = {}
-    //Sorting Rules
-    /**
-     * ID 1 = Price Sort Descending
-     * ID 2 = Price Sort Ascending
-     * ID 3 = Rating sort Descending
-     * ID 4 = Rating sort Ascending
-     */
-    if (sortQuery == 1) { sortRule = { 'rooms.price': 1 } }
-    else if (sortQuery == 2) { sortRule = { 'rooms.price': -1 } }
-    else if (sortQuery == 3) { sortRule = { 'ratings': 1 } }
-    else if (sortQuery == 4) { sortRule = { 'ratings': -1 } }
-    //if (firstDateQuery && firstDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.firstDate'] =  {$not: {$gte: firstDateQuery}}}
-    //if (lastDateQuery && lastDateQuery != 'Invalid Date'){dynamicQueryObj['rooms.datesBooked.lastDate'] =  lastDateQuery}
-
-    console.log(dynamicQueryObj)
-    console.log(sortRule)
-
-    //SELECT * location.city, location.province, location.country, ratings, rooms.price
-    const hotels = await Hotel.aggregate([
+    console.log(matchObj)
+    const hotel = await Hotel.aggregate([
+      matchObj,
       {
         $project: {
           name: 1,
@@ -168,60 +77,49 @@ const getHotels = async (req, res) => {
               input: "$rooms",
               as: "room",
               cond: {
-                $and: [{ $gte: ["$$room.price", startPriceQuery] },
-                { $lte: ["$$room.price", endPriceQuery] }]
+                $and: [{ $gte: ["$$room.price", minPrice] },
+                { $lte: ["$$room.price", maxPrice] }]
               }
             }
-          }
+          },
+          score: { $meta: "searchScore" }
         },
       },
       {
-        $unwind: "$rooms"
-      },
-      {
-        $match: dynamicQueryObj
-      },
-      {
-        '$sort': sortRule,
-      },
-      {
-        $group: {
-          _id: "$_id",
-          name: { $first: "$name" },
-          description: { $first: "$description" },
-          imgsrc: { $first: "$imgsrc" },
-          ratings: { $first: "$ratings" },
-          reviews: { $first: "$reviews" },
-          location: { $first: "$location" },
-          rooms: { $push: "$rooms" }
+        $match: {
+          ratings: { $gte: minRating },
+          "rooms.price": { $gte: minPrice },
+          "rooms.price": { $lte: maxPrice }
         }
-      },
+      }
     ])
-      .sort(sortRule)
-      .skip(page * limit)
-      .limit(limit)
-
-    res.status(200).json(hotels)
+    res.status(200).json(hotel)
   } catch (err) {
     console.log(err)
   }
 }
 
-// get a single hotel
+/**
+ * Get a single hotel
+ * @param  hotelID
+ */
 const getHotel = async (req, res) => {
-  const { id } = req.params
+  try {
+    const { hotelID } = req.body
+    if (!mongoose.Types.ObjectId.isValid(hotelID)) {
+      return res.status(404).json({ error: 'No such hotel' })
+    }
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such hotel' })
+    const hotel = await Hotel.findById(hotelID)
+
+    if (!hotel) {
+      return res.status(404).json({ error: 'No such hotel' })
+    }
+
+    res.status(200).json(hotel)
+  } catch (err) {
+    console.log(err)
   }
-
-  const hotel = await Hotel.findById(id)
-
-  if (!hotel) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-
-  res.status(200).json(hotel)
 }
 
 // get available room
@@ -229,165 +127,124 @@ const getAvailableRooms = async (req, res) => {
 
 }
 
-// get a single hotel room
+/**
+ * get a single hotel room
+ * @param hotelID
+ * @param roomID
+ */
 const getRoom = async (req, res) => {
-  const { id } = req.params
-  const { roomid } = req.params
-  console.log(roomid)
-
-  if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(roomid)) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-  console.log("valid args")
-
-  const hotel = await Hotel.find(
-    { _id: id, rooms: { $elemMatch: { _id: roomid } } }, { name: 1, location: 1, "rooms.$": 1 }
-  )
-
-  res.status(200).json(hotel)
-}
-
-// create new hotel
-const createHotel = async (req, res) => {
-  const { name, location, rooms } = req.body
-
-  let emptyFields = []
-
-  if (!name) {
-    emptyFields.push('name')
-  }
-  if (!location) {
-    emptyFields.push('location')
-  }
-  if (!rooms) {
-    emptyFields.push('rooms')
-  }
-  if (emptyFields.length > 0) {
-    return res.status(400).json({ error: 'Please fill in all the fields', emptyFields })
-  }
-
-  // add doc to db
   try {
-    const hotel = await Hotel.create({ name, location, rooms })
+    const { hotelID } = req.body
+    const { roomID } = req.body
+
+    if (!mongoose.Types.ObjectId.isValid(hotelID) || !mongoose.Types.ObjectId.isValid(roomID)) {
+      return res.status(404).json({ error: 'No such hotel' })
+    }
+    console.log("valid args")
+
+    const hotel = await Hotel.find({ _id: hotelID, rooms: { $elemMatch: { _id: roomID } } }, { "rooms.$": 1 })
+
     res.status(200).json(hotel)
-  } catch (error) {
-    res.status(400).json({ error: error.message })
+  } catch (err) {
+    console.log(err)
   }
+
 }
 
-// delete a hotel
-const deleteHotel = async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-
-  const hotel = await Hotel.findOneAndDelete({ _id: id })
-
-  if (!hotel) {
-    return res.status(400).json({ error: 'No such hotel' })
-  }
-
-  res.status(200).json(hotel)
-}
-
-// update a hotel
-const updateHotel = async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-
-  const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
-    ...req.body
-  })
-
-  if (!hotel) {
-    return res.status(400).json({ error: 'No such hotel' })
-  }
-
-  res.status(200).json(hotel)
-}
-
-//Book a Hotel Room
+/**
+ * Book a Hotel Room.
+ * 
+ * @param tokenHeader
+ * @param hotelID
+ * @param roomID
+ * @param firstDate
+ * @param lastDate
+ */
 const bookHotel = async (req, res) => {
-  const { id } = req.params
-  const { roomid } = req.params
+  try {
+    const { hotelID } = req.body
+    const { roomID } = req.body
+    const firstDate = new Date(req.body.firstDate)
+    const lastDate = new Date(req.body.lastDate)
 
-  console.log(req.params)
-  console.log("logging")
-  console.log(req.body)
-
-  const firstDate = new Date(req.body.firstDate)
-  const lastDate = new Date(req.body.lastDate)
-  console.log(firstDate)
-  console.log(lastDate)
-  if (lastDate.valueOf() <= firstDate.valueOf()) {
-    return res.status(400).json({ error: 'Last date is before first date.' })
-  }
-  if (firstDate.valueOf <= new Date().valueOf()) {
-    return res.status(400).json({ error: 'Invalid start date.' })
-  }
-  const dataCheck = await Hotel.find({
-    _id: id,
-    'rooms._id': roomid,
-    'rooms.datesBooked.firstDate': { $lte: lastDate },
-    'rooms.datesBooked.lastDate': { $gte: firstDate }
-
-  })
-  console.log(dataCheck)
-  if (dataCheck.length != 0) {
-    return res.status(400).json({ error: 'Date conflicts with a booked room.' })
-  }
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such hotel' })
-  }
-
-
-  var authorization = req.headers.authorization.split(" ")[1]
-  const [, auth,] = authorization.split(".")
-  var userId = atob(auth)
-  userId = userId.substring(8, 32);
-  var body = req.body;
-  body.userId = userId;
-  console.log("VALID. ADDING TO DB")
-  const hotel = await Hotel.findOneAndUpdate({ _id: id }, {
-    $push: {
-      "rooms.$[i].datesBooked": body
+    if (!mongoose.Types.ObjectId.isValid(hotelID)) {
+      return res.status(404).json({ error: 'No such hotel' })
     }
-  },
-    {
-      arrayFilters: [
-        { "i._id": roomid }
-      ]
+    if (lastDate == "Invalid Date" || firstDate == "Invalid Date") {
+      return res.status(400).json({ error: 'Invalid First or Last Date.' })
     }
-  )
+    if (lastDate.valueOf() <= firstDate.valueOf()) {
+      return res.status(400).json({ error: 'Last date is before or during first date.' })
+    }
+    if (firstDate.valueOf <= new Date().valueOf()) {
+      return res.status(400).json({ error: 'First Date is before today.' })
+    }
+
+    const dataCheck = await Hotel.find({
+      _id: hotelID,
+      'rooms._id': roomID,
+      'rooms.datesBooked.firstDate': { $lte: lastDate },
+      'rooms.datesBooked.lastDate': { $gte: firstDate }
+    })
+
+    if (dataCheck.length != 0) {
+      return res.status(400).json({ error: 'Date conflicts with a booked room.' })
+    }
 
 
-  if (!hotel) {
-    return res.status(400).json({ error: 'No such hotel' })
+
+    var authorization = req.headers.authorization.split(" ")[1]
+    const [, auth,] = authorization.split(".")
+    var userId = atob(auth)
+    userId = userId.substring(8, 32);
+    var body = req.body;
+    body.userId = userId;
+    console.log("VALID. ADDING TO DB")
+    const hotel = await Hotel.findOneAndUpdate({ _id: hotelID, "rooms._id": roomID }, {
+      $push: {
+        "rooms.$[i].datesBooked": body
+      }
+    },
+      {
+        arrayFilters: [
+          { "i._id": roomID }
+        ]
+      },
+    )
+
+    if (!hotel) {
+      return res.status(400).json({ error: 'Failed to update hotel' })
+    }
+
+    body = req.body
+    body.hotelID = hotelID
+    body.roomID = roomID
+    const findPrice = await Hotel.findOne({ _id: hotelID, rooms: { $elemMatch: { _id: roomID } } }, { "rooms.$": 1 })
+    body.price = findPrice.rooms[0].price
+    body._id = new mongoose.Types.ObjectId()
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(404).json({ error: 'Error finding user.' })
+    }
+
+    //Adds to user db.
+    const user = await User.findOneAndUpdate({ _id: userId }, {
+      $push: {
+        bookings: body
+      }
+    })
+
+    res.status(200).json("update sucessful")
+  } catch (err) {
+    console.log(err)
   }
-
-  //const hotel = await Hotel.find({_id: id, 'rooms._id': roomid}, { "rooms.datesBooked.firstDate": 1, "rooms.datesBooked.lastDate": 1})
-
-  res.status(200).json(hotel)
 }
 
-const addDateToUser = async (req, res) => {
-  let id = "64478e4a70afb823ebb4fb94";
-  const user = await User.updateOne({ _id: id }, {
-    $push: {
-      "datesBooked": req.body
-    }
-  }
-  )
-
-  res.status(200).json("Updated User")
-}
-
+/**
+ * Adds a review
+ * @param tokenHeader
+ * @param hotelID
+ */
 const addReview = async (req, res) => {
   var authorization = req.headers.authorization.split(' ')[1]
   const [, auth,] = authorization.split(".")
@@ -423,8 +280,8 @@ const addRating = async (req, res) => {
   var userId = atob(auth);
   userId = userId.substring(8, 32);
   var body = req.body
-  const id = body.hotelId;
-  delete body.hotelId;
+  const id = body.hotelID;
+  delete body.hotelID;
   body.userId = userId;
 
   const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
@@ -440,13 +297,9 @@ module.exports = {
   getAllHotels,
   getHotels,
   getHotel,
-  createHotel,
-  deleteHotel,
-  updateHotel,
   getRoom,
   bookHotel,
   addReview,
-  addDateToUser,
   getAvailableRooms,
-  addRating
+  addRating,
 }

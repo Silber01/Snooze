@@ -1,7 +1,7 @@
 const express = require('express')
 
 // controller functions
-const { loginUser, signupUser, editProfile, updatePoints } = require('../controllers/userController')
+const { loginUser, signupUser, editProfile, updatePoints, getBookings, changeBooking, cancelBooking } = require('../controllers/userController')
 
 const router = express.Router()
 
@@ -11,11 +11,19 @@ router.post('/login', loginUser)
 // signup route
 router.post('/signup', signupUser)
 
+//get bookings
+router.get('/getbookings', getBookings)
+
+//change bookings
+router.patch('/changebooking', changeBooking)
+
+//cancel bookings
+router.patch('/cancelbooking', cancelBooking)
+
 //edit profile
-router.post('/editProfile', editProfile)
+router.patch('/editprofile', editProfile)
 
 //update points
-router.put('/updatePoints', updatePoints)
+router.put('/updatepoints', updatePoints)
 
-//edit 
 module.exports = router
