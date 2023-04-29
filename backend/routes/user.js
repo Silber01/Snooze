@@ -41,5 +41,3 @@ router.patch("/editprofile", editProfile);
 router.put("/updatepoints", updatePoints);
 
 module.exports = router;
-
-module.exports = router;

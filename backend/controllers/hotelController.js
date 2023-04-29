@@ -2,7 +2,7 @@ const Hotel = require("../models/hotelModel");
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
 
-const gen = require("./script.js")
+const gen = require("./script.js");
 
 // get all hotels
 const getAllHotels = async (req, res) => {
@@ -26,8 +26,8 @@ const getHotels = async (req, res) => {
     const minRating = parseInt(req.query.minRating) || 0;
     const minPrice = parseInt(req.query.minPrice) || 0;
     const maxPrice = parseInt(req.query.maxPrice) || 99999;
-    const sort = parseInt(req.query.sort) || 0
-    const rule = parseInt(req.query.sort) || 1
+    const sort = parseInt(req.query.sort) || 0;
+    const rule = parseInt(req.query.sort) || 1;
 
     const matchObj = {};
     if (location.length > 0 || location != "") {
@@ -46,23 +46,22 @@ const getHotels = async (req, res) => {
 
     const sortObj = {};
     if (sort == 0 && (location.length == 0 || location == "")) {
-      sortObj["$sort"] = { createdAt: -1 }
+      sortObj["$sort"] = { createdAt: -1 };
     } else if (sort == 0) {
-      sortObj["$sort"] = { score: { $meta: "textScore" } }
+      sortObj["$sort"] = { score: { $meta: "textScore" } };
     } else if (sort == 1) {
-      sortObj["$sort"] = { "name": 1 }
+      sortObj["$sort"] = { name: 1 };
     } else if (sort == 2) {
-      sortObj["$sort"] = { "name": -1 }
+      sortObj["$sort"] = { name: -1 };
     } else if (sort == 3) {
-      sortObj["$sort"] = { "rooms.price": 1 }
+      sortObj["$sort"] = { "rooms.price": 1 };
     } else if (sort == 4) {
-      sortObj["$sort"] = { "rooms.price": -1 }
+      sortObj["$sort"] = { "rooms.price": -1 };
     } else if (sort == 5) {
-      sortObj["$sort"] = { "ratings": 1 }
+      sortObj["$sort"] = { ratings: 1 };
     } else if (sort == 6) {
-      sortObj["$sort"] = { "ratings": -1 }
+      sortObj["$sort"] = { ratings: -1 };
     }
-   
 
     console.log(matchObj);
     console.log(sortObj);
@@ -73,9 +72,8 @@ const getHotels = async (req, res) => {
           name: 1,
           description: 1,
           imgsrc: 1,
-          ratings:1,
-          ratingcalc: 
-        {
+          ratings: 1,
+          ratingcalc: {
             $divide: [
               {
                 $sum: [
@@ -95,8 +93,8 @@ const getHotels = async (req, res) => {
                 ],
               },
             ],
-              },
-    
+          },
+
           reviews: 1,
           location: 1,
           rooms: {
@@ -122,12 +120,12 @@ const getHotels = async (req, res) => {
         },
       },
       {
-        $project:{
-          ratingcalc:0
-        }
+        $project: {
+          ratingcalc: 0,
+        },
       },
-      sortObj
-    ])
+      sortObj,
+    ]);
     res.status(200).json(hotel);
   } catch (err) {
     console.log(err);
@@ -159,7 +157,7 @@ const getHotel = async (req, res) => {
 };
 
 // get available room
-const getAvailableRooms = async (req, res) => { };
+const getAvailableRooms = async (req, res) => {};
 
 /**
  * get a single hotel room
@@ -170,18 +168,17 @@ const getRoom = async (req, res) => {
     const roomID = req.query.roomID;
     const hotelID = req.query.hotelID;
 
-    if (
-      !mongoose.Types.ObjectId.isValid(roomID)
-    ) {
+    if (!mongoose.Types.ObjectId.isValid(roomID)) {
       return res.status(404).json({ error: "No such room" });
     }
     console.log("valid args");
-    console.log(roomID)
+    console.log(roomID);
 
     const hotel = await Hotel.find(
-      { _id: hotelID, "rooms": { $elemMatch: { _id: roomID } } }, {
-      "rooms.$": 1
-    }
+      { _id: hotelID, rooms: { $elemMatch: { _id: roomID } } },
+      {
+        "rooms.$": 1,
+      }
     );
 
     res.status(200).json(hotel);
@@ -232,18 +229,18 @@ const bookHotel = async (req, res) => {
       return res.status(400).json({ error: "Last Date is before today." });
     }
 
-
-    var valid = true
-    const dataCheck = await Hotel.find({
-      _id: hotelID,
-      "rooms._id": roomID
-    },
+    var valid = true;
+    const dataCheck = await Hotel.find(
       {
-        "rooms.datesBooked.$": 1
+        _id: hotelID,
+        "rooms._id": roomID,
+      },
+      {
+        "rooms.datesBooked.$": 1,
       }
     );
 
-    const array = dataCheck[0].rooms[0].datesBooked
+    const array = dataCheck[0].rooms[0].datesBooked;
     for (let i = 0; i < array.length; i++) {
       /*
       if(array[i].userId == userId){
@@ -253,10 +250,10 @@ const bookHotel = async (req, res) => {
       }
       */
       if (lastDate >= array[i].firstDate && firstDate <= array[i].lastDate) {
-        valid = false
+        valid = false;
         break;
       }
-    };
+    }
 
     if (!valid) {
       return res
@@ -306,6 +303,56 @@ const bookHotel = async (req, res) => {
     );
 
     res.status(200).json("update sucessful");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const checkHotel = async (req, res) => {
+  try {
+    const { hotelID } = req.query;
+    const { roomID } = req.query;
+    const firstDate = new Date(req.query.firstDate);
+    const lastDate = new Date(req.query.lastDate);
+
+    if (!mongoose.Types.ObjectId.isValid(hotelID)) {
+      return res.status(404).json({ error: "No such hotel" });
+    }
+    if (lastDate == "Invalid Date" || firstDate == "Invalid Date") {
+      return res.status(400).json({ error: "Invalid First or Last Date." });
+    }
+    if (lastDate.valueOf() <= firstDate.valueOf()) {
+      return res
+        .status(400)
+        .json({ error: "Last date is before or during first date." });
+    }
+    if (firstDate.valueOf() <= new Date().valueOf()) {
+      return res.status(400).json({ error: "First Date is before today." });
+    }
+    if (lastDate.valueOf() <= new Date().valueOf()) {
+      return res.status(400).json({ error: "Last Date is before today." });
+    }
+
+    var valid = true;
+    const dataCheck = await Hotel.find(
+      {
+        _id: hotelID,
+        "rooms._id": roomID,
+      },
+      {
+        "rooms.datesBooked.$": 1,
+      }
+    );
+
+    const array = dataCheck[0].rooms[0].datesBooked;
+    for (let i = 0; i < array.length; i++) {
+      if (lastDate >= array[i].firstDate && firstDate <= array[i].lastDate) {
+        valid = false;
+        break;
+      }
+    }
+
+    res.status(200).json({ valid });
   } catch (err) {
     console.log(err);
   }
@@ -369,11 +416,10 @@ const addRating = async (req, res) => {
 /**
  * Route to generate hotels.
  */
-const generateHotel = async(req, res) => {
-  const hotel = gen.run()
-
-  res.status(200).json(hotel)
-}
+const generateHotel = async (req, res) => {
+  const hotel = gen.run();
+  res.status(200).json(hotel);
+};
 
 module.exports = {
   getAllHotels,
@@ -384,5 +430,6 @@ module.exports = {
   addReview,
   getAvailableRooms,
   addRating,
-  generateHotel
+  generateHotel,
+  checkHotel,
 };

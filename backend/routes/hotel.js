@@ -11,7 +11,8 @@ const {
   addReview,
   getAvailableRooms,
   addRating,
-  generateHotel
+  generateHotel,
+  checkHotel,
 } = require("../controllers/hotelController");
 
 const router = express.Router();
@@ -32,6 +33,8 @@ router.get("/getroom", getRoom);
 
 //Book a Hotel Room
 router.patch("/booking", bookHotel);
+
+router.get("/checkhotel", checkHotel);
 
 //Add Review
 router.put("/review", addReview);
