@@ -5,7 +5,7 @@ import SnoozeHeader from "../general/SnoozeHeader";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useParams } from "react-router-dom";
-import { dateToUnix } from "../intervals";
+import { dateToUnix, intervalLength } from "../intervals";
 import HotelNotFound from "../components/HotelNotFound";
 import StarRating from "../components/StarRating";
 import Hotel from "../components/Hotel";
@@ -92,15 +92,19 @@ function ViewHotelRoom() {
   }
 
   function checkValidDates() {
+    let checkIn = sessionStorage.getItem("checkInDate")
+    let checkOut = sessionStorage.getItem("checkOutDate")
     setValidDates(
-      dateToUnix(sessionStorage.getItem("checkInDate")) <=
-        dateToUnix(sessionStorage.getItem("checkOutDate"))
+      Boolean(checkIn != null && checkOut != null && (intervalLength(checkIn, checkOut) > 0))
+
     );
   }
 
   useEffect(() => {
     fetchData(params.id);
+    checkValidDates()
   }, []);
+
 
   useEffect(() => {
     if (chosenRoom != null) {
@@ -249,7 +253,8 @@ function ViewHotelRoom() {
       <div>
         <SnoozeHeader />
         <Payment
-          room={chosenRoom}
+          hotelID={hotel._id}
+          roomID={chosenRoom}
           checkIn={sessionStorage.getItem("checkInDate")}
           checkOut={sessionStorage.getItem("checkOutDate")}
           hotel={hotel.name}
