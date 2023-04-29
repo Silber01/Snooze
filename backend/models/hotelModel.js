@@ -30,8 +30,14 @@ const hotelSchema = new Schema({
             min: 1,
             max: 5
         },
-        userId:{
+        name:{
             type: String
+        },
+        userId:{
+            type:String
+        },
+        hotelId:{
+            type:String
         }
     }],
     location: {

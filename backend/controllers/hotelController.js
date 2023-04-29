@@ -395,11 +395,10 @@ const addReview = async (req, res) => {
   userIds = userIds.substring(8, 32);
   var body = req.body;
   const id = body.hotelId;
-  delete body.hotelId;
   body.userId = userIds;
+  const id2 = body.userId;
 
   const userReview = await Hotel.findById({ _id: id }).find({ 'reviews': { $elemMatch: { userId: userIds } } });
-  console.log(JSON.stringify(userReview).includes("review"));
   if (JSON.stringify(userReview).includes("review")) {
     res.status(409).json("REVIEW ALREADY EXISTS");
   }
@@ -409,8 +408,13 @@ const addReview = async (req, res) => {
         "reviews": body
       }
     })
+    const user = await User.updateOne({_id: id2},{
+      $push:{
+        "reviews":body
+      }
+    })
+    res.status(200).json("success");
   }
-  res.status(200).json(userReview);
 }
 
 const addRating = async (req, res) => {
