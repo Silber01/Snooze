@@ -37,7 +37,7 @@ import Ratings from "../ratings/Ratings";
 
 function HomePage(props) {
   let [hotels, setHotels] = useState([]);
-
+  let [hasSearched, setHasSearched] = useState(false);
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
   useEffect(() => {
@@ -118,6 +118,7 @@ function HomePage(props) {
     // console.log(sessionStorage.getItem("checkOutDate"));
 
     // console.log(hotels)
+    setHasSearched(true);
   }
 
   function checkValidDates() {
@@ -290,9 +291,9 @@ function HomePage(props) {
             <Hotel key={index} hotel={hotel} canBook={validDates} />
           ))}
         </Flex>
-      ) : (
+      ) : hasSearched ? (
         <HotelNotFound displayNavbar={false} displayReturnToHome={false} />
-      )}
+      ) : null}
     </div>
   );
 }
