@@ -42,19 +42,18 @@ function ProfilePage(props) {
   let [pastBookings, setPastBookings] = useState([]);
 
   useEffect(() => {
-    let cur = [];
-    let past = [];
-    if (bookings) {
-      for (let i = 0; i < bookings.length; i++) {
-        let currentDate = bookings[i].lastDate.slice(0, 10);
-        console.log(currentDate);
-        if (isNotPast(currentDate)) {
-          cur.push(bookings[i]);
-        } else {
-          past.push(bookings[i]);
-        }
-      }
-    }
+    const cur =
+      bookings?.filter((booking) => {
+        const currentDate = booking.lastDate.slice(0, 10);
+        return isNotPast(currentDate);
+      }) ?? [];
+
+    const past =
+      bookings?.filter((booking) => {
+        const currentDate = booking.lastDate.slice(0, 10);
+        return !isNotPast(currentDate);
+      }) ?? [];
+
     setCurrentBookings(cur);
     setPastBookings(past);
   }, [bookings]);
