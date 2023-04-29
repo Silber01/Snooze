@@ -111,7 +111,6 @@ function ViewHotelRoom() {
     fetchData(params.id);
     checkValidDates()
     setDuration(intervalLength(sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate")))
-    isNotPast("1111-12-12")
   }, []);
 
 

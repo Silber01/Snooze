@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { Box, Text, Button, Image } from "@chakra-ui/react";
+import { Box, Text, Button, Image, Grid, Heading } from "@chakra-ui/react";
+
+
+function makeDateString(datestr)
+{
+  let newDate = new Date(datestr)
+  newDate.setDate(newDate.getDate() + 1)
+  return newDate.toLocaleDateString()
+}
 
 function Booking({
   hotelId,
@@ -9,8 +17,9 @@ function Booking({
   price,
   isCurrent,
 }) {
-  checkInDate = new Date(checkInDate).toLocaleDateString();
-  checkOutDate = new Date(checkOutDate).toLocaleDateString();
+  
+  checkInDate = makeDateString(checkInDate)
+  checkOutDate = makeDateString(checkOutDate)
   const [bookingConfirmed, setBookingConfirmed] = useState(true);
   const [hotelName, setHotelName] = useState("");
   const [imageURL, setImageURL] = useState("");
@@ -22,7 +31,6 @@ function Booking({
         `http://localhost:4000/api/hotel/getHotel?hotelID=${hotelId}`
       );
       data = await response.json();
-      console.log(data);
       // not sure how to find the room type
       const selectedRoom = data.rooms.find((room) => room._id === roomId);
 
@@ -41,16 +49,20 @@ function Booking({
   };
 
   return (
-    <Box maxW="lg" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
+    <Box borderWidth="1px" borderRadius="lg" borderColor="#999999" overflow="hidden" p={4} mr="40" bg="#eeeeee">
       {bookingConfirmed && (
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
-          <Text fontWeight="bold" mb={2}>
+        <Box borderWidth="1px" borderRadius="lg" borderColor="#999999" overflow="hidden" p={4}>
+          <Heading fontWeight="bold" mb={2}>
             {hotelName}
-          </Text>
-          <Image src={imageURL} alt={hotelName} />
-          <Text mb={2}>Hotel Room placeholder.</Text>
-          <Text mb={2}>Check-in Date: {checkInDate}</Text>
-          <Text mb={2}>Check-out Date: {checkOutDate}</Text>
+          </Heading>
+          <Grid templateColumns="2fr 1fr">
+          <Box>
+            <Text fontSize="25" mb={2}>Check-in Date: {checkInDate}</Text>
+            <Text fontSize="25" mb={2}>Check-out Date: {checkOutDate}</Text>
+            <Text fontSize="25" mb={2}>Price Paid: ${price}</Text>
+          </Box>
+          <Image src={imageURL} alt={hotelName} width="100%" height="400px" objectFit="cover" borderRadius="10px"/>
+          </Grid>
           <Button onClick={handleViewHotel} colorScheme="blue" mt={4} mr={2}>
             View Hotel
           </Button>

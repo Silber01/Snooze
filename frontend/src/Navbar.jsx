@@ -16,10 +16,13 @@ function Navbar() {
     <Flex align="center" justify="space-between" bg="#c1dcc6" p="3">
       <Image onClick={() => {goHome()}} src="../assets/SnoozeLogo.svg"></Image>
       <Flex align="center" justify="center">
-        
+      <Button onClick={goHome} bg="white" mr={4} variant="ghost">
+          Home
+        </Button>
         <Button onClick={handleClick} bg="white" mr={4} variant="ghost">
           Profile
         </Button>
+        
         
       </Flex>
     </Flex>
