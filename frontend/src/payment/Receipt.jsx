@@ -15,6 +15,7 @@ import {
   propNames,
   Box,
   Center,
+  Grid
 } from "@chakra-ui/react";
 
 function goHome(navigate) {
@@ -41,15 +42,15 @@ function Receipt({
     <Box>
       {/* the green "Your Room is Booked" box */}
       <Center mt="10">
-        <VStack gap={4} border={"5px solid #C1DCC6"} height="35%" width="100%">
-          <Text fontWeight="bold" fontSize="4xl" textColor="#33333">
+        <VStack border={"5px solid #C1DCC6"} height="35%" width="100%">
+          <Text fontWeight="bold" fontSize="3xl" textColor="#33333">
             Your Room is Booked!
           </Text>
 
-          <Text fontWeight="medium" fontSize="3xl" textColor="#33333">
+          <Text fontWeight="medium" fontSize="2xl" textColor="#33333">
             ORDER CONFIRMATION
           </Text>
-          <Text fontWeight="light" fontSize="3xl" textColor="#33333">
+          <Text fontWeight="light" fontSize="2xl" textColor="#33333">
             Thank you for booking with Snooze. An email with your full
             confimation order is on its way!
           </Text>
@@ -57,26 +58,24 @@ function Receipt({
       </Center>
       <Box>
         {/* order summary text only */}
-        <Center mt="10">
+        <Center mt="5">
           <Text fontWeight="medium" fontSize="3xl">
             ORDER SUMMARY
           </Text>
         </Center>
 
         {/* green payment box */}
-        <Center mt="10">
+        <Center mt="5">
           <Box backgroundColor="#C1DCC6" width="55%">
+            <Grid templateColumns="1fr 0.2fr 1fr">
             {/* left side, billing info */}
             <Center justifyContent="space-between">
-              <Box>
+              <Box p="10">
                 <Text fontWeight="bold" fontSize="4xl">
                   BILLING
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
-                  {firstName}
-                </Text>
-                <Text fontSize="3xl" fontWeight="medium">
-                  {lastName}
+                  {firstName} {lastName}
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
                   {address1}
@@ -85,13 +84,7 @@ function Receipt({
                   {address2}
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
-                  {city}
-                </Text>
-                <Text fontSize="3xl" fontWeight="medium">
-                  {state}
-                </Text>
-                <Text fontSize="3xl" fontWeight="medium">
-                  {zipCode}
+                  {city}, {state} {zipCode}
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
                   {country}
@@ -107,33 +100,27 @@ function Receipt({
               />
             </Center>
             {/* left side, billing info */}
-            <Center
-              justifyContent="flex-start"
-              position="absolute"
-              right={1000}
-              bottom={500}
-            >
-              <Box>
+              <Box p="10">
                 <Text fontWeight="bold" fontSize="4xl">
                   ORDER INFORMATION
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
-                  {hotel}
+                  Hotel: {hotel}
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
-                  {roomType}
+                  Room Type: {roomType}
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
-                  {checkIn}
+                  Check in: {checkIn}
                 </Text>
                 <Text fontSize="3xl" fontWeight="medium">
-                  {checkOut}
+                  Check out: {checkOut}
                 </Text>
-                <Text fontSize="3xl" fontWeight="medium">
-                  {pricePaid}
+                <Text fontSize="3xl" fontWeight="bold">
+                  ${pricePaid}
                 </Text>
               </Box>
-            </Center>
+            </Grid>
           </Box>
         </Center>
       </Box>

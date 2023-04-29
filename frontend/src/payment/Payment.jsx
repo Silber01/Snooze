@@ -45,10 +45,13 @@ export default function Payment({ hotelID, roomID, checkIn, checkOut, hotel, pri
   let apiUrl = import.meta.env.VITE_API_URL;
   const userContext = useContext(UserContext);
   const pricePaid = (price * daysSpent * 1.15).toFixed(2)
+  const reqRewardsPoints = pricePaid * 1000
+  const rewardsPointsEarned = pricePaid * 100
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (paidWithRewards) => {
       //Post booking to userData and roomData
-      
+      if (!paidWithRewards)
+        await updateRewardsPoints(userContext.rewardPoints + rewardsPointsEarned)
       await bookHotelRoom(hotelID, roomID, checkIn, checkOut)
       
     setHasConfirmed(true)
@@ -88,6 +91,29 @@ export default function Payment({ hotelID, roomID, checkIn, checkOut, hotel, pri
     }
   };
 
+  const updateRewardsPoints = async (newPoints) => {
+    const bearerToken = "Bearer " + userContext.token;
+    const response = await fetch("http://localhost:4000" + "/api/user/updatepoints", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json",
+      "Authorization": bearerToken
+     },
+      body: JSON.stringify({
+        rewardPoints: newPoints
+      }),
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      console.log("points updated")
+      userContext.rewardPoints = newPoints
+    }
+    if (!response.ok) {
+      console.log("error")
+      setError(true)
+    }
+  }
+
   
   function checkIfReady() {
     if (firstNameRef.current &&
@@ -120,12 +146,29 @@ export default function Payment({ hotelID, roomID, checkIn, checkOut, hotel, pri
     if (hasConfirmed)
       confirmText = "Processing..."
     if (isReady) {
-      return <Button backgroundColor="#c6c1dc" textColor="white" size="lg" onClick={() => {handleSubmit()}}>
+      return <Button backgroundColor="#c6c1dc" textColor="white" size="lg" onClick={() => {handleSubmit(false)}}>
       {confirmText}
     </Button>
     }
     return <Button backgroundColor="#aaaaaa" size="lg" cursor="not-allowed">
       Confirm Booking
+    </Button>
+  }
+
+  function RewardsButton() {
+    let points = userContext.rewardPoints
+    if (points < reqRewardsPoints)
+      return (<></>)
+    if (isReady) {
+      return <Button backgroundColor="#c6c1dc" textColor="white" size="lg" onClick={() => {
+        updateRewardsPoints(points - reqRewardsPoints)
+        handleSubmit(true)
+        }}>
+      Pay with {reqRewardsPoints} Reward Points
+    </Button>
+    }
+    return <Button backgroundColor="#aaaaaa" size="lg" cursor="not-allowed">
+      Pay with {reqRewardsPoints} Reward Points
     </Button>
   }
 
@@ -176,6 +219,7 @@ export default function Payment({ hotelID, roomID, checkIn, checkOut, hotel, pri
             <Text>Dates Booked: {checkIn} to {checkOut}</Text>
             <Text>${price}/day x {daysSpent} days + fees =</Text>
             <Text fontWeight="bold" fontSize="20">${pricePaid}</Text>
+            <Text>And Earn {rewardsPointsEarned} Reward Points!</Text>
 
         </VStack>
       </Center>
@@ -259,7 +303,7 @@ export default function Payment({ hotelID, roomID, checkIn, checkOut, hotel, pri
           Back
         </Button>
         <ConfirmButton />
-        
+        <RewardsButton />
       </HStack>
       </Center>
     </Box>

@@ -29,7 +29,7 @@ export const useSignup = () => {
       // update the auth context
       dispatch({ type: "LOGIN", payload: json });
       console.log("SIGNUP SUCCESSFUL");
-      window.location.href = "http://localhost:3000/editprofile";
+      window.location.href = "http://localhost:3000/home";
       // update loading state
       setIsLoading(false);
     }
