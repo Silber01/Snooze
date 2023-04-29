@@ -30,13 +30,18 @@ function App() {
   }
 
   useEffect(() => {
+    updateUser
+  }, [])
+
+
+  function updateUser() {
     let user = JSON.parse(localStorage.getItem("user"))
     if (user) {
       fetchData(user.email, user.token)
     }
     else
       setAllUserData("NOT LOGGED IN")
-  }, [])
+  }
 
 
   // useEffect(() => {
@@ -59,7 +64,7 @@ function App() {
 
             <Route 
               exact path="/profilepage" 
-              element={<ProfilePage user={allUserData} />} />
+              element={<ProfilePage user={allUserData} updateUser={updateUser} />} />
             
             <Route
               exact

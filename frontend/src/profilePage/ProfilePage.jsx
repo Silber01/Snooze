@@ -22,10 +22,10 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import SnoozeHeader from "../general/SnoozeHeader";
 
 function ProfilePage(props) {
   const userContext = useContext(UserContext);
-  console.log(userContext);
   const bookings = userContext.bookings;
 
   const name = `${props.user.firstName} ${props.user.lastName}`;
@@ -38,17 +38,10 @@ function ProfilePage(props) {
     }
   }, [userContext]);
 
-  function handleClick(id) {
-    navigate("/profilepage/" + id);
-  }
-
-  function groupBy(array, size) {
-    const groups = [];
-    for (let i = 0; i < array.length; i += size) {
-      groups.push(array.slice(i, i + size));
-    }
-    return groups;
-  }
+  useEffect(() => {
+    props.updateUser();
+    console.log(bookings)
+  }, [])
 
   let [currentBookings, setCurrentBookings] = useState([]);
   let [pastBookings, setPastBookings] = useState([]);
@@ -68,31 +61,40 @@ function ProfilePage(props) {
 
     setCurrentBookings(cur);
     setPastBookings(past);
+    console.log(cur)
+    console.log(past)
   }, [bookings]);
 
   return (
-    <Flex direction="column" align="center">
-      <Image w={150} p={3} src="../../assets/SnoozeLogo.svg" />
-
-      {/* <Box bg="mintgreen" p={4} borderRadius="lg" mt={8} align="center"> */}
-      {/* <Image borderRadius="full" boxSize="130px" src={image} alt="" mb={4} /> */}
-      {/* have to make onclick route to editprofile */}
-      <Button colorScheme="gray" onClick={() => handleClick(props.user._id)}>
-        Edit Profile
-      </Button>
-      {/* </Box> */}
-
-      <Box maxW="xl" mt={12} align="center">
-        <Heading size="lg" mb={4}>
+    <Box>
+      <Navbar />
+      <Grid templateColumns="2fr 1fr">
+      <Box maxW="xl" mt={12} p="10">
+        <Heading size="lg" mt={4} mb={4}>
           Personal Info
         </Heading>
-        <Box fontSize="2xl" fontWeight={500}>
+        <Box fontSize="xl" fontWeight="{500}">
           <Text>Name: {name}</Text>
           <Text mt={4}>Email: {props.user.email}</Text>
         </Box>
+        <Button mt={4} width="40%">Edit</Button>
       </Box>
-
-      <Box maxW="xl" mt={12} align="center">
+      <Box mt={12 }>
+      <Circle
+            size="20em"
+            borderColor="pink"
+            borderWidth="12px"
+            color="black"
+          >
+            <Text textAlign="center" fontWeight="bold" fontSize={22}>
+              {userContext.rewardPoints}
+              <br />
+              Reward points
+            </Text>
+          </Circle>
+          </Box>
+        </Grid>
+      <Box mt={12} p="10">
         <Heading size="lg" mb={4}>
           Current Bookings
         </Heading>
@@ -100,16 +102,18 @@ function ProfilePage(props) {
           currentBookings.map((booking, index) => (
             <Box key={booking.id} mb={4}>
               <Booking
+                key={index}
                 hotelId={booking.hotelID}
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
+                price={booking.price}
                 isCurrent={true}
               />
             </Box>
           ))}
       </Box>
 
-      <Box maxW="xl" mt={12} align="center">
+      <Box p="10">
         <Heading size="lg" mb={4}>
           Past Bookings
         </Heading>
@@ -117,35 +121,17 @@ function ProfilePage(props) {
           pastBookings.map((booking, index) => (
             <Box key={booking.id} mb={4}>
               <Booking
+                key={index}
                 hotelId={booking.hotelID}
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
+                price={booking.price}
+                isCurrent={false}
               />
             </Box>
           ))}
       </Box>
-
-      <Box maxW="xl" mt={12} align="center">
-        <Heading size="lg" mb={4}>
-          Rewards
-        </Heading>
-        <Box bg="darkGray" p={8} borderRadius="lg">
-          {/* have to figure out how to get reward points */}
-          <Circle
-            size="300px"
-            borderColor="pink"
-            borderWidth="12px"
-            color="black"
-          >
-            <Text textAlign="center" fontWeight="bold" fontSize={22}>
-              100000
-              <br />
-              Rewards points
-            </Text>
-          </Circle>
-        </Box>
-      </Box>
-    </Flex>
+    </Box>
   );
 }
 
