@@ -61,6 +61,42 @@ function availabilityText(bookedDates, startDate, endDate, validDates) {
   }
 }
 
+function BookButton( {validDates, setChosenRoom, roomID} ) {
+  if (!validDates)
+  {
+    return ( 
+      <Button
+      width="40%"
+      height="80px"
+      border="3px solid"
+      borderRadius="20px"
+      backgroundColor="#999999"
+      borderColor="white"
+      textColor="white"
+      cursor="not-allowed"
+    >
+      Book
+    </Button>
+    )
+  }
+  return ( 
+    <Button
+      width="40%"
+      height="80px"
+      border="3px solid"
+      borderRadius="20px"
+      backgroundColor="#c6c1dc"
+      borderColor="white"
+      textColor="white"
+      onClick={() => {
+        setChosenRoom(roomID);
+      }}
+    >
+      Book
+    </Button>
+  )
+}
+
 function Room(props) {
   let room = props.room;
   return (
@@ -129,20 +165,7 @@ function Room(props) {
 
           <></>
           <Center>
-            <Button
-              width="40%"
-              height="80px"
-              border="3px solid"
-              borderRadius="20px"
-              backgroundColor="#c6c1dc"
-              borderColor="white"
-              textColor="white"
-              onClick={() => {
-                props.setChosenRoom(room._id);
-              }}
-            >
-              Book
-            </Button>
+            <BookButton validDates={props.validDates} setChosenRoom={props.setChosenRoom} roomID={room._id}/>
           </Center>
         </Grid>
       </Box>

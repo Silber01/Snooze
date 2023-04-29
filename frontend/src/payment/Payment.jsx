@@ -25,13 +25,12 @@ import SnoozeHeader from "../general/SnoozeHeader";
 import { intervalLength } from "../intervals";
 import Receipt from "./Receipt";
 
-export default function Payment({ room, checkIn, checkOut, hotel, price, roomType, setChosenRoom}) {
+export default function Payment({ hotelID, roomID, checkIn, checkOut, hotel, price, roomType, setChosenRoom}) {
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const cardNumberRef = useRef();
   const expDateRef = useRef();
   const secCodeRef = useRef();
-
   const addressOneRef = useRef();
   const addressTwoRef = useRef();
   const cityRef = useRef();
@@ -42,18 +41,57 @@ export default function Payment({ room, checkIn, checkOut, hotel, price, roomTyp
   const [isReady, setIsReady] = useState(false)
   const [hasConfirmed, setHasConfirmed] = useState(false) //sets confirm booking to pending...
   const [hasPaid, setHasPaid] = useState(false) //prints receipt
-
+  const [error, setError] = useState(false)
+  let apiUrl = import.meta.env.VITE_API_URL;
   const userContext = useContext(UserContext);
   const pricePaid = (price * daysSpent * 1.15).toFixed(2)
 
   const handleSubmit = async () => {
       //Post booking to userData and roomData
+      console.log(hotelID)
+      console.log(roomID)
+      console.log(checkIn)
+      console.log(checkOut)
+      await bookHotelRoom(hotelID, roomID, checkIn, checkOut)
       
     setHasConfirmed(true)
-    setTimeout(() => {setHasPaid(true)}, 1200)
+    setTimeout(() => {
+      if (!error)
+        setHasPaid(true)
+      else {
+        console.log("uh oh!")
+      }
+    }, 1200)
     
   };
 
+  const bookHotelRoom = async (hotelID, roomID, firstDate, lastDate) => {
+    
+    const bearerToken = "Bearer " + userContext.token;
+    const response = await fetch("http://localhost:4000" + "/api/hotel/booking", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json",
+      "Authorization": bearerToken
+     },
+      body: JSON.stringify({
+        hotelID: hotelID,
+        roomID: roomID,
+        firstDate: firstDate,
+        lastDate: lastDate
+      }),
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      console.log("hotel booked!")
+    }
+    if (!response.ok) {
+      console.log("error")
+      setError(true)
+    }
+  };
+
+  
   function checkIfReady() {
     if (firstNameRef.current &&
       lastNameRef.current &&
@@ -78,14 +116,6 @@ export default function Payment({ room, checkIn, checkOut, hotel, price, roomTyp
     console.log(isReady)
 
   }
-
-  useEffect(() => {
-    console.log(room);
-    console.log(checkIn);
-    console.log(checkOut);
-    console.log(hotel);
-    console.log(price);
-  }, []);
 
 
   function ConfirmButton() {
