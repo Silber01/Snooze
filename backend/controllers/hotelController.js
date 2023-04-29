@@ -217,10 +217,8 @@ const bookHotel = async (req, res) => {
     if (lastDate == "Invalid Date" || firstDate == "Invalid Date") {
       return res.status(400).json({ error: "Invalid First or Last Date." });
     }
-    if (lastDate.valueOf() <= firstDate.valueOf()) {
-      return res
-        .status(400)
-        .json({ error: "Last date is before or during first date." });
+    if (lastDate.valueOf() < firstDate.valueOf()) {
+      return res.status(400).json({ error: "Last date is before." });
     }
     if (firstDate.valueOf() <= new Date().valueOf()) {
       return res.status(400).json({ error: "First Date is before today." });
@@ -321,10 +319,8 @@ const checkHotel = async (req, res) => {
     if (lastDate == "Invalid Date" || firstDate == "Invalid Date") {
       return res.status(400).json({ error: "Invalid First or Last Date." });
     }
-    if (lastDate.valueOf() <= firstDate.valueOf()) {
-      return res
-        .status(400)
-        .json({ error: "Last date is before or during first date." });
+    if (lastDate.valueOf() < firstDate.valueOf()) {
+      return res.status(400).json({ error: "Last date is before." });
     }
     if (firstDate.valueOf() <= new Date().valueOf()) {
       return res.status(400).json({ error: "First Date is before today." });
