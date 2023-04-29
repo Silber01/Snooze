@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { Box, Text, Button, Image } from "@chakra-ui/react";
 
-function Booking({ hotelId, roomId, checkInDate, checkOutDate, price }) {
+function Booking({
+  hotelId,
+  roomId,
+  checkInDate,
+  checkOutDate,
+  price,
+  isCurrent,
+}) {
   checkInDate = new Date(checkInDate).toLocaleDateString();
   checkOutDate = new Date(checkOutDate).toLocaleDateString();
   const [bookingConfirmed, setBookingConfirmed] = useState(true);
@@ -44,9 +51,19 @@ function Booking({ hotelId, roomId, checkInDate, checkOutDate, price }) {
           <Text mb={2}>Hotel Room placeholder.</Text>
           <Text mb={2}>Check-in Date: {checkInDate}</Text>
           <Text mb={2}>Check-out Date: {checkOutDate}</Text>
-          <Button onClick={handleViewHotel} colorScheme="blue" mt={4}>
+          <Button onClick={handleViewHotel} colorScheme="blue" mt={4} mr={2}>
             View Hotel
           </Button>
+          {isCurrent && (
+            <Button colorScheme="red" mt={4} mr={2}>
+              Cancel Booking
+            </Button>
+          )}
+          {!isCurrent && (
+            <Button colorScheme="green" mt={4} mr={2}>
+              View Ratings & Reviews
+            </Button>
+          )}
         </Box>
       )}
     </Box>

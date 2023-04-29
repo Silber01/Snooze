@@ -103,6 +103,7 @@ function ProfilePage(props) {
                 hotelId={booking.hotelID}
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
+                isCurrent={true}
               />
             </Box>
           ))}
