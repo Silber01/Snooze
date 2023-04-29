@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 // import './ProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
@@ -7,11 +7,15 @@ import image from "../../assets/sampleprofile.png";
 import Rewardpoints from "./Rewardpoints";
 import Booking from "../components/Booking";
 import { isNotPast } from "../intervals";
+import Navbar from "../Navbar";
 import {
+  SimpleGrid,
   Box,
   Button,
   Circle,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   Image,
   TabList,
@@ -38,6 +42,14 @@ function ProfilePage(props) {
     navigate("/profilepage/" + id);
   }
 
+  function groupBy(array, size) {
+    const groups = [];
+    for (let i = 0; i < array.length; i += size) {
+      groups.push(array.slice(i, i + size));
+    }
+    return groups;
+  }
+
   let [currentBookings, setCurrentBookings] = useState([]);
   let [pastBookings, setPastBookings] = useState([]);
 
@@ -59,69 +71,67 @@ function ProfilePage(props) {
   }, [bookings]);
 
   return (
-    <>
-      <Image w={150} p={3} ml={3} src="../../assets/SnoozeLogo.svg"></Image>
+    <Flex direction="column" align="center">
+      <Image w={150} p={3} src="../../assets/SnoozeLogo.svg" />
 
-      <Box bg="mintgreen" p={4} align="center">
-        <Image borderRadius="full" boxSize="130px" src={image} alt="" />
-        {/* have to make onclick route to editprofile */}
-        <Button
-          onClick={() => {
-            handleClick(props.user._id);
-          }}
-          mt={4}
-          colorScheme="gray"
-        >
-          Edit Profile
-        </Button>
+      {/* <Box bg="mintgreen" p={4} borderRadius="lg" mt={8} align="center"> */}
+      {/* <Image borderRadius="full" boxSize="130px" src={image} alt="" mb={4} /> */}
+      {/* have to make onclick route to editprofile */}
+      <Button colorScheme="gray" onClick={() => handleClick(props.user._id)}>
+        Edit Profile
+      </Button>
+      {/* </Box> */}
+
+      <Box maxW="xl" mt={12} align="center">
+        <Heading size="lg" mb={4}>
+          Personal Info
+        </Heading>
+        <Box fontSize="2xl" fontWeight={500}>
+          <Text>Name: {name}</Text>
+          <Text mt={4}>Email: {props.user.email}</Text>
+        </Box>
       </Box>
 
-      <Heading ml={20} mt={10} size="lg" align="center">
-        Personal Info
-      </Heading>
-      <Box p={4} ml={40} mt={4} fontSize="2xl" fontWeight={500} align="center">
-        <Text>Name: {name}</Text>
-        <Text mt={5}>Email: {props.user.email}</Text>
+      <Box maxW="xl" mt={12} align="center">
+        <Heading size="lg" mb={4}>
+          Current Bookings
+        </Heading>
+        {currentBookings &&
+          currentBookings.map((booking, index) => (
+            <Box key={booking.id} mb={4}>
+              <Booking
+                hotelId={booking.hotelID}
+                checkInDate={booking.firstDate}
+                checkOutDate={booking.lastDate}
+              />
+            </Box>
+          ))}
       </Box>
 
-      <Heading ml={20} mt={12} size="lg">
-        Current Bookings
-      </Heading>
-      {/* {"These are the acutal current bookings. Keep this."} */}
-      {currentBookings &&
-        currentBookings.map((booking, index) => (
-          <div key={booking.id}>
-            <Booking
-              hotelId={booking.hotelID}
-              checkInDate={booking.firstDate}
-              checkOutDate={booking.lastDate}
-            />
-          </div>
-        ))}
+      <Box maxW="xl" mt={12} align="center">
+        <Heading size="lg" mb={4}>
+          Past Bookings
+        </Heading>
+        {pastBookings &&
+          pastBookings.map((booking, index) => (
+            <Box key={booking.id} mb={4}>
+              <Booking
+                hotelId={booking.hotelID}
+                checkInDate={booking.firstDate}
+                checkOutDate={booking.lastDate}
+              />
+            </Box>
+          ))}
+      </Box>
 
-      <Heading ml={20} mt={12} size="lg">
-        Past Bookings
-      </Heading>
-      {/* current bookings, when we figure out past bookings change this" */}
-      {pastBookings &&
-        pastBookings.map((booking, index) => (
-          <div key={booking.id}>
-            <Booking
-              hotelId={booking.hotelID}
-              checkInDate={booking.firstDate}
-              checkOutDate={booking.lastDate}
-            />
-          </div>
-        ))}
-      <Heading ml={20} mt={12} size="lg">
-        Rewards
-      </Heading>
-      <Box bg="darkGray" mt={5} ml={40} w="35em" h="40em">
-        {/* have to figure out how to get reward points */}
-        <Flex justifyContent="center" alignItems="center">
+      <Box maxW="xl" mt={12} align="center">
+        <Heading size="lg" mb={4}>
+          Rewards
+        </Heading>
+        <Box bg="darkGray" p={8} borderRadius="lg">
+          {/* have to figure out how to get reward points */}
           <Circle
-            mt={10}
-            size="20em"
+            size="300px"
             borderColor="pink"
             borderWidth="12px"
             color="black"
@@ -132,9 +142,9 @@ function ProfilePage(props) {
               Rewards points
             </Text>
           </Circle>
-        </Flex>
+        </Box>
       </Box>
-    </>
+    </Flex>
   );
 }
 

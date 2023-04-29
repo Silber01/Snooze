@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Text, Button, Image } from "@chakra-ui/react";
 
 function Booking({ hotelId, roomId, checkInDate, checkOutDate, price }) {
   checkInDate = new Date(checkInDate).toLocaleDateString();
   checkOutDate = new Date(checkOutDate).toLocaleDateString();
   const [bookingConfirmed, setBookingConfirmed] = useState(true);
   const [hotelName, setHotelName] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const [roomType, setRoomType] = useState("");
   let data = {};
   useEffect(() => {
@@ -15,11 +16,13 @@ function Booking({ hotelId, roomId, checkInDate, checkOutDate, price }) {
       );
       data = await response.json();
       console.log(data);
+      // not sure how to find the room type
       const selectedRoom = data.rooms.find((room) => room._id === roomId);
 
       //   if (selectedRoom) {
       setBookingConfirmed(true);
       setHotelName(data.name);
+      setImageURL(data.imgsrc);
       //   setRoomType(selectedRoom.roomType);
     };
 
@@ -37,6 +40,7 @@ function Booking({ hotelId, roomId, checkInDate, checkOutDate, price }) {
           <Text fontWeight="bold" mb={2}>
             {hotelName}
           </Text>
+          <Image src={imageURL} alt={hotelName} />
           <Text mb={2}>Hotel Room placeholder.</Text>
           <Text mb={2}>Check-in Date: {checkInDate}</Text>
           <Text mb={2}>Check-out Date: {checkOutDate}</Text>
