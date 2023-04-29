@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import image from "../../assets/sampleprofile.png";
 import Navbar from "../Navbar";
 
-const HotelNotFound = () => {
+const HotelNotFound = ({
+  displayImage,
+  displayNavbar,
+  displayReturnToHome,
+}) => {
   return (
     <>
-      <Navbar />
+      {displayNavbar ? <Navbar /> : null}
       <Flex
         alignItems="center"
         justifyContent="center"
@@ -21,9 +25,11 @@ const HotelNotFound = () => {
         >
           Sorry, we couldn't find any hotels that match your search criteria.
         </Text>
-        <Image w={500} p={3} ml={3} src={image}></Image>
+        {displayImage ? <Image w={500} p={3} ml={3} src={image}></Image> : null}
         <Link to="/home">
-          <Button colorScheme="blue">Return to Home</Button>
+          {displayReturnToHome ? (
+            <Button colorScheme="blue">Return to Home</Button>
+          ) : null}
         </Link>
       </Flex>
     </>

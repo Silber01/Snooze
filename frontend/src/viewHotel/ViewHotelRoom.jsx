@@ -25,7 +25,7 @@ import {
   Center,
   Divider,
   Input,
-  HStack
+  HStack,
 } from "@chakra-ui/react";
 import Room from "./Room";
 import Payment from "../payment/Payment";
@@ -71,7 +71,7 @@ function ViewHotelRoom() {
   let apiUrl = import.meta.env.VITE_API_URL;
   let sampleHotel = "643df8f5fae1b05a854b4307";
   let [roomPrice, setRoomPrice] = useState(0);
-  let [roomType, setRoomType] = useState("")
+  let [roomType, setRoomType] = useState("");
 
   let [hotel, setHotel] = useState(null);
   const userData = useContext(UserContext);
@@ -80,7 +80,7 @@ function ViewHotelRoom() {
   let [reviews, setReviews] = useState([]);
   let [chosenRoom, setChosenRoom] = useState(null);
   const [validDates, setValidDates] = useState(true);
-  let [duration, setDuration] = useState(0)
+  let [duration, setDuration] = useState(0);
 
   const checkInRef = useRef();
   const checkOutRef = useRef();
@@ -93,26 +93,40 @@ function ViewHotelRoom() {
   }
 
   function checkValidDates() {
-    let checkIn = sessionStorage.getItem("checkInDate")
-    let checkOut = sessionStorage.getItem("checkOutDate")
-    if (Boolean(checkIn != null && checkOut != null && isNotPast(checkIn) && isNotPast(checkOut) && (intervalLength(checkIn, checkOut) > 0)))
-    {
-      setValidDates(true)
-      setDuration(intervalLength(sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate")))
-    }
-    else
-    {
-      setValidDates(false)
-      setDuration(0)
+    let checkIn = sessionStorage.getItem("checkInDate");
+    let checkOut = sessionStorage.getItem("checkOutDate");
+    if (
+      Boolean(
+        checkIn != null &&
+          checkOut != null &&
+          isNotPast(checkIn) &&
+          isNotPast(checkOut) &&
+          intervalLength(checkIn, checkOut) > 0
+      )
+    ) {
+      setValidDates(true);
+      setDuration(
+        intervalLength(
+          sessionStorage.getItem("checkInDate"),
+          sessionStorage.getItem("checkOutDate")
+        )
+      );
+    } else {
+      setValidDates(false);
+      setDuration(0);
     }
   }
 
   useEffect(() => {
     fetchData(params.id);
-    checkValidDates()
-    setDuration(intervalLength(sessionStorage.getItem("checkInDate"), sessionStorage.getItem("checkOutDate")))
+    checkValidDates();
+    setDuration(
+      intervalLength(
+        sessionStorage.getItem("checkInDate"),
+        sessionStorage.getItem("checkOutDate")
+      )
+    );
   }, []);
-
 
   // useEffect(() => {
   //   if (chosenRoom != null) {
@@ -136,33 +150,42 @@ function ViewHotelRoom() {
     }
   }, [chosenRoom]);
 
-  function roomsForText()
-  {
-    let checkIn = sessionStorage.getItem("checkInDate")
-    let checkOut = sessionStorage.getItem("checkOutDate")
-    if (!checkIn || !checkOut)
-      return "Rooms"
-    
-    return "Rooms for " + checkIn.replaceAll("-", "/") + " - " + checkOut.replaceAll("-", "/")
+  function roomsForText() {
+    let checkIn = sessionStorage.getItem("checkInDate");
+    let checkOut = sessionStorage.getItem("checkOutDate");
+    if (!checkIn || !checkOut) return "Rooms";
+
+    return (
+      "Rooms for " +
+      checkIn.replaceAll("-", "/") +
+      " - " +
+      checkOut.replaceAll("-", "/")
+    );
   }
 
-  function ErrorText(){
-    let checkIn = sessionStorage.getItem("checkInDate")
-    let checkOut = sessionStorage.getItem("checkOutDate")
-    if (!isNotPast(checkIn) || !isNotPast(checkOut))
-    {
-      return <Text color="red" fontSize="20">You can't make reservations for the past!</Text>
+  function ErrorText() {
+    let checkIn = sessionStorage.getItem("checkInDate");
+    let checkOut = sessionStorage.getItem("checkOutDate");
+    if (!isNotPast(checkIn) || !isNotPast(checkOut)) {
+      return (
+        <Text color="red" fontSize="20">
+          You can't make reservations for the past!
+        </Text>
+      );
+    } else if (duration <= 0) {
+      return (
+        <Text color="red" fontSize="20">
+          Your check-in time must be before your check-out time.
+        </Text>
+      );
+    } else if (!validDates) {
+      return (
+        <Text color="red" fontSize="20">
+          You already have a booking during this time!
+        </Text>
+      );
     }
-    else if (duration <= 0)
-    {
-      return <Text color="red" fontSize="20">Your check-in time must be before your check-out time.</Text>
-    }
-    else if (!validDates)
-    {
-      return <Text color="red" fontSize="20">You already have a booking during this time!</Text>
-    }
-    return <></>
-
+    return <></>;
   }
 
   function ViewHotels() {
@@ -188,7 +211,7 @@ function ViewHotelRoom() {
                   .map((review, ind) => {
                     return <Review key={ind} review={review} />;
                   })}
-                </Box>
+              </Box>
               <Box height="600px">
                 <Image
                   src={hotel.imgsrc}
@@ -228,11 +251,18 @@ function ViewHotelRoom() {
               defaultValue={sessionStorage.getItem("checkOutDate")}
               ref={checkOutRef}
             />
-            <Button size="lg" top={5} onClick={() => {
-              sessionStorage.setItem("checkInDate", checkInRef.current.value)
-              sessionStorage.setItem("checkOutDate", checkOutRef.current.value)
-              checkValidDates()
-            }}>
+            <Button
+              size="lg"
+              top={5}
+              onClick={() => {
+                sessionStorage.setItem("checkInDate", checkInRef.current.value);
+                sessionStorage.setItem(
+                  "checkOutDate",
+                  checkOutRef.current.value
+                );
+                checkValidDates();
+              }}
+            >
               Set
             </Button>
           </Flex>
@@ -279,7 +309,13 @@ function ViewHotelRoom() {
   if (!hotel) {
     return <></>;
   } else if (!hotel.name) {
-    return <HotelNotFound />;
+    return (
+      <HotelNotFound
+        displayNavbar={true}
+        displayReturnToHome={true}
+        displayImage={true}
+      />
+    );
   }
   if (!chosenRoom) {
     return (
@@ -303,7 +339,6 @@ function ViewHotelRoom() {
           setChosenRoom={setChosenRoom}
         />
         {/*<ViewPayment />*/}
-       
       </div>
     );
   }
