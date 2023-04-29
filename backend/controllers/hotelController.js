@@ -280,8 +280,8 @@ const addRating = async (req, res) => {
   var userId = atob(auth);
   userId = userId.substring(8, 32);
   var body = req.body
-  const id = body.hotelID;
-  delete body.hotelID;
+  const id = body.hotelId;
+  delete body.hotelId;
   body.userId = userId;
 
   const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
@@ -289,7 +289,7 @@ const addRating = async (req, res) => {
       [`ratings.${body.rating}`]: 1
     }
   })
-  res.status(200).json(hotel);
+  res.status(200).json("success");
 }
 
 
