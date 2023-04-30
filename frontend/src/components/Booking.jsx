@@ -28,6 +28,7 @@ function Booking({
   bookingID,
 }) {
   const userContext = useContext(UserContext);
+
   checkInDate = makeDateString(checkInDate);
   checkOutDate = makeDateString(checkOutDate);
   const [bookingConfirmed, setBookingConfirmed] = useState(true);
@@ -92,6 +93,47 @@ function Booking({
     window.location.href = `http://localhost:3000/hotel/${hotelId}`;
   };
   const ratingRef = useRef();
+  const reviewRef = useRef();
+
+  const submitReview = async (ratingValue, reviewText) => {
+    console.log("token: ", userContext.token);
+    console.log("userId: ", userContext._id);
+    console.log("body: ", reviewText);
+    console.log("id: ", hotelId);
+    console.log("rating: ", ratingValue);
+
+    /** addRating
+     * hotelID: hotelId
+     * rating: ratingValue
+     */
+
+    /** addReview
+     * if returns REVIEW ALREADY EXISTS, do not render the review text box on this
+     * else: render the text box for the reivew and then make the api call with the review
+     */
+
+    // const bearerToken = "Bearer " + userContext.token;
+    // const response = await fetch("http://localhost:4000" + "api/hotel/rating", {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: bearerToken,
+    //   },
+    //   body: JSON.stringify({
+    //     body: reviewText,
+    //     id: hotelId,
+    //     userId: userContext.id,
+    //     rating: ratingValue,
+    //   }),
+    // });
+    // const json = await response.json();
+    // if (response.ok) {
+    //   console.log("rating added!");
+    // }
+    // if (!response.ok) {
+    //   console.log("error");
+    // }
+  };
 
   return (
     <Box
@@ -177,10 +219,11 @@ function Booking({
                     borderColor="#33333"
                     placeholder="Write a review here."
                     fontSize="3xl"
-                    w="80vw"
+                    w="70vw"
                     h="20vh"
                     size="lg"
                     type="text"
+                    ref={reviewRef}
                   />
                   <Ratings
                     size={48}
@@ -194,6 +237,12 @@ function Booking({
                     mt={4}
                     size="lg"
                     textColor="white"
+                    onClick={() =>
+                      submitReview(
+                        ratingRef.current.value,
+                        reviewRef.current.value
+                      )
+                    }
                   >
                     Submit Review
                   </Button>

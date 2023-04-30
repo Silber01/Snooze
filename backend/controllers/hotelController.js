@@ -120,11 +120,11 @@ const getHotels = async (req, res) => {
           "rooms.price": { $lte: maxPrice },
         },
       },
-      {$unwind:"$rooms"},
-      {"$sort":{ "rooms.price": 1 }},
+      { $unwind: "$rooms" },
+      { $sort: { "rooms.price": 1 } },
       {
         $group: {
-          ratingcalc:{ $first: "$ratingcalc"},
+          ratingcalc: { $first: "$ratingcalc" },
           _id: "$_id",
           name: { $first: "$name" },
           description: { $first: "$description" },
@@ -132,14 +132,13 @@ const getHotels = async (req, res) => {
           ratings: { $first: "$ratings" },
           reviews: { $first: "$reviews" },
           location: { $first: "$location" },
-          rooms: { $push: "$rooms" }
-        }
+          rooms: { $push: "$rooms" },
+        },
       },
       sortObj,
       {
-        $project: {ratingcalc: 0}
-      }
-      
+        $project: { ratingcalc: 0 },
+      },
     ]);
     res.status(200).json(hotel);
   } catch (err) {
