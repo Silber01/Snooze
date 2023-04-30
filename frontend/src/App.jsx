@@ -30,7 +30,7 @@ function App() {
   }
 
   useEffect(() => {
-    updateUser
+    updateUser()
   }, [])
 
 
@@ -60,7 +60,7 @@ function App() {
             <Route path="/hotel" element={<ViewHotelRoom />}>
               <Route path=":id" element={<ViewHotelRoom />} />
             </Route>
-            <Route exact path="/home" element={<HomePage />} />
+            <Route exact path="/home" element={<HomePage updateUser={updateUser}/>} />
 
             <Route 
               exact path="/profilepage" 

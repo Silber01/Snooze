@@ -95,9 +95,17 @@ function ViewHotelRoom() {
   }
 
   async function checkCollision(firstDate, lastDate) {
+    if (!firstDate || !lastDate)
+    {
+      return
+    }
+    console.log(userData)
     const bearerToken = "Bearer " + userData.token;
+    console.log(bearerToken)
+    const apiReq = apiUrl + "/api/user/checkCollisions?firstDate=" + firstDate + "&lastDate=" + lastDate
+    console.log("Api request: " + apiReq)
     const response = await fetch(
-      apiUrl + "/api/user/checkCollisions?firstDate=" + firstDate + "&lastDate=" + lastDate,
+      apiReq,
       {
         method: "GET",
         headers: {

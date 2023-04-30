@@ -55,7 +55,11 @@ function HomePage(props) {
   }
 
   async function checkCollision(firstDate, lastDate, setCollides) {
+    console.log(userContext)
+    if (!userContext.token || !firstDate || !lastDate)
+      return;
     const bearerToken = "Bearer " + userContext.token;
+    
     const response = await fetch(
       "http://localhost:4000" + "/api/user/checkCollisions?firstDate=" + firstDate + "&lastDate=" + lastDate,
       {
@@ -98,8 +102,11 @@ function HomePage(props) {
   }
 
   useEffect(() => {
+    console.log(props.updateUser)
+    props.updateUser();
     fetchHotels();
     checkValidDates();
+    console.log(userContext)
   }, []);
 
   // useEffect(() => {
