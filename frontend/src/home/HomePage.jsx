@@ -54,6 +54,30 @@ function HomePage(props) {
     setHotels(data);
   }
 
+  async function checkCollision(firstDate, lastDate, setCollides) {
+    const bearerToken = "Bearer " + userContext.token;
+    const response = await fetch(
+      "http://localhost:4000" + "/api/user/checkCollisions?firstDate=" + firstDate + "&lastDate=" + lastDate,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        }
+      }
+    );
+    const json = await response.json();
+    console.log(json)
+    if (json.valid) {
+      console.log("Does not collide");
+      setCollides(false)
+    }
+    else {
+      console.log("collides");
+      setCollides(true)
+    }
+  };
+
   async function searchHotels(location, minPrice, maxPrice, rating, sort) {
     let apiUrl = import.meta.env.VITE_API_URL;
     const response = await fetch(
@@ -92,6 +116,8 @@ function HomePage(props) {
   // const [errorMessage, setErrorMessage] = useState(""); was used to display an error message when booking dates were in the past
   const [priceSlider, setPriceSlider] = useState([0, 2000]);
   const [validDates, setValidDates] = useState(true);
+  const [collides, setCollides] = useState(false)
+  const [datesWrong, setDatesWrong] = useState(false)
 
   function search() {
     let location = locationRef.current.value;
@@ -118,23 +144,50 @@ function HomePage(props) {
     // console.log(hotels)
     setHasSearched(true);
   }
-
-  function checkValidDates() {
+  
+  function datesMakeSense() {
     let checkIn = checkInRef.current.value;
     let checkOut = checkOutRef.current.value;
-    setValidDates(
-      (intervalLength(checkIn, checkOut) > 0) && isNotPast(checkIn) && isNotPast(checkOut)
-    );
+    setDatesWrong(!((intervalLength(checkIn, checkOut) > 0) && isNotPast(checkIn) && isNotPast(checkOut)))
+  }
+
+  function checkValidDates() {
+    datesMakeSense()
+    checkCollision(checkInRef.current.value, checkOutRef.current.value, setCollides)
   }
 
   useEffect(() => {
-    let checkIn = checkInRef.current.value;
-    let checkOut = checkOutRef.current.value;
-    console.log(validDates)
-    console.log("interval length: " + intervalLength(checkIn, checkOut))
-    console.log(isNotPast(checkIn))
-    console.log(isNotPast(checkOut))
-  }, [validDates])
+    console.log(collides, datesWrong)
+    setValidDates(!collides && !datesWrong)
+  }, [collides, datesWrong])
+
+  // useEffect(() => {
+  //   let checkIn = checkInRef.current.value;
+  //   let checkOut = checkOutRef.current.value;
+  //   console.log(validDates)
+  //   console.log("interval length: " + intervalLength(checkIn, checkOut))
+  //   console.log(isNotPast(checkIn))
+  //   console.log(isNotPast(checkOut))
+  // }, [validDates])
+
+  function WarningText() {
+    if (datesWrong)
+    {
+      return (
+        <Text color="red" textAlign="center">The inputted dates are invalid.</Text>
+      )
+    }
+    if (collides)
+    {
+      return (
+        <Text color="red" textAlign="center">You already have a booking during this time!</Text>
+      )
+    }
+    
+    return (
+      <></>
+    )
+  }
 
   return (
     <div>
@@ -283,6 +336,10 @@ function HomePage(props) {
           </Grid>
         </div>
       </div>
+      <Box background="#c1dcc6" pb="5">
+        <WarningText />
+      </Box>
+      
       {/*
       <HomeBanner />
                   */}

@@ -61,7 +61,7 @@ function GetBookButton(props) {
     );
   }
   return (
-    <Button colorScheme="gray" color="#888888">
+    <Button colorScheme="gray" color="#888888" cursor="not-allowed">
       Book
     </Button>
   );
