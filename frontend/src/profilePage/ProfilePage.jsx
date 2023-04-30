@@ -75,6 +75,12 @@ function ProfilePage(props) {
     console.log(past);
   }, [bookings]);
 
+  function handleLogout() {
+    localStorage.clear();
+    navigate("/");
+    console.log("logging out");
+  }
+
   function handleEditClick() {
     setEditing(!isEditing);
   }
@@ -115,8 +121,8 @@ function ProfilePage(props) {
   function handleClick() {
     navigate("/profilepage");
   }
-  const [firstNameValid, setFirstNameValid] = useState(true)
-  const [lastNameValid, setLastNameValid] = useState(true)
+  const [firstNameValid, setFirstNameValid] = useState(true);
+  const [lastNameValid, setLastNameValid] = useState(true);
   return (
     <Box>
       <Navbar />
@@ -130,15 +136,25 @@ function ProfilePage(props) {
             <Text mt={4}>Email: {props.user.email}</Text>
           </Box>
 
-          <Button
-            onClick={() => {
-              handleEditClick();
-            }}
-            mt={4}
-            width="40%"
-          >
-            Edit profile
-          </Button>
+          <Stack spacing="16px">
+            <Button
+              onClick={() => {
+                handleEditClick();
+              }}
+              width="40%"
+            >
+              Edit profile
+            </Button>
+
+            <Button
+              onClick={() => {
+                handleLogout();
+              }}
+              width="40%"
+            >
+              Logout
+            </Button>
+          </Stack>
 
           {isEditing ? (
             <FormControl onSubmit={handleSave}>
@@ -153,8 +169,9 @@ function ProfilePage(props) {
                     defaultValue={props.user.firstName}
                     onChange={(event) => {
                       setFirstName(event.target.value.trim());
-                      setFirstNameValid(event.target.value != null &&
-                        event.target.value != "")
+                      setFirstNameValid(
+                        event.target.value != null && event.target.value != ""
+                      );
                     }}
                   />
                 </div>
@@ -168,8 +185,9 @@ function ProfilePage(props) {
                     defaultValue={props.user.lastName}
                     onChange={(event) => {
                       setLastName(event.target.value);
-                      setLastNameValid(event.target.value != null &&
-                        event.target.value != "")
+                      setLastNameValid(
+                        event.target.value != null && event.target.value != ""
+                      );
                     }}
                   />
                 </div>
@@ -179,9 +197,8 @@ function ProfilePage(props) {
                     mr={3}
                     colorScheme="green"
                     onClick={() => {
-                      if (firstNameValid && lastNameValid)
-                        saveEdit()}
-                    }
+                      if (firstNameValid && lastNameValid) saveEdit();
+                    }}
                   >
                     Save
                   </Button>
@@ -225,7 +242,14 @@ function ProfilePage(props) {
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
                 bookingID={booking._id}
-                price={(booking.price * intervalLength(booking.firstDate.substring(0,10), booking.lastDate.substring(0,10)) * 1.15).toFixed(2)}
+                price={(
+                  booking.price *
+                  intervalLength(
+                    booking.firstDate.substring(0, 10),
+                    booking.lastDate.substring(0, 10)
+                  ) *
+                  1.15
+                ).toFixed(2)}
                 isCurrent={true}
               />
             </Box>
