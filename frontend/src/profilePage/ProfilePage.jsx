@@ -17,6 +17,10 @@ import {
   Grid,
   GridItem,
   Heading,
+  Input,
+  FormControl,
+  FormLabel,
+  Stack,
   Image,
   TabList,
   Tabs,
@@ -26,12 +30,19 @@ import SnoozeHeader from "../general/SnoozeHeader";
 
 function ProfilePage(props) {
   const userContext = useContext(UserContext);
-
+  console.log(userContext);
   const bookings = userContext.bookings;
+
   const name = `${props.user.firstName} ${props.user.lastName}`;
   const { email } = props;
 
   const navigate = useNavigate();
+
+  let [isEditing, setEditing] = useState(false);
+
+  const [firstName, setFirstName] = useState(props.user.firstName);
+  const [lastName, setLastName] = useState(props.user.lastName);
+
   useEffect(() => {
     if (userContext == "NOT LOGGED IN") {
       navigate("/");
@@ -40,7 +51,6 @@ function ProfilePage(props) {
 
   useEffect(() => {
     props.updateUser();
-    console.log(bookings);
   }, []);
 
   let [currentBookings, setCurrentBookings] = useState([]);
@@ -65,8 +75,45 @@ function ProfilePage(props) {
     console.log(past);
   }, [bookings]);
 
-  function handleClick(id) {
-    navigate("/profilepage/" + id);
+  function handleEditClick() {
+    setEditing(!isEditing);
+  }
+
+  const handleSave = (event) => {
+    console.log("saved");
+    event.preventDefault();
+    setEditing(false);
+  };
+
+  const saveEdit = async () => {
+    const bearerToken = "Bearer " + userContext.token;
+    const response = await fetch(
+      "http://localhost:4000" + "/api/user/editprofile",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        },
+        body: JSON.stringify({
+          firstName: firstName != null ? firstName : props.user.firstName,
+          lastName: lastName != null ? lastName : props.user.lastName,
+        }),
+      }
+    );
+    const json = await response.json();
+    if (response.ok) {
+      console.log("profile updated!");
+    }
+    if (!response.ok) {
+      console.log("error");
+      setError(true);
+    }
+    window.location.reload(false);
+  };
+
+  function handleClick() {
+    navigate("/profilepage");
   }
 
   return (
@@ -81,10 +128,64 @@ function ProfilePage(props) {
             <Text>Name: {name}</Text>
             <Text mt={4}>Email: {props.user.email}</Text>
           </Box>
-          <Button onClick={() => {
-          handleClick(props.user._id);}} mt={4} width="40%">
-            Edit
+
+          <Button
+            onClick={() => {
+              handleEditClick();
+            }}
+            mt={4}
+            width="40%"
+          >
+            Edit profile
           </Button>
+
+          {isEditing ? (
+            <FormControl onSubmit={handleSave}>
+              <Stack spacing={8} align="center" mt={5}>
+                <div>
+                  <FormLabel>First Name</FormLabel>
+                  <Input
+                    size="lg"
+                    w={500}
+                    type="text"
+                    defaultValue={props.user.firstName}
+                    onChange={(event) => {
+                      setFirstName(event.target.value);
+                    }}
+                  />
+                </div>
+                <div>
+                  <FormLabel>Last Name</FormLabel>
+                  <Input
+                    size="lg"
+                    w={500}
+                    type="text"
+                    defaultValue={props.user.lastName}
+                    onChange={(event) => {
+                      setLastName(event.target.value);
+                    }}
+                  />
+                </div>
+                <Flex mt={7}>
+                  <Button
+                    type="button"
+                    mr={3}
+                    colorScheme="green"
+                    onClick={() => saveEdit()}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    type="button"
+                    colorScheme="red"
+                    onClick={() => setEditing(false)}
+                  >
+                    Cancel
+                  </Button>
+                </Flex>
+              </Stack>
+            </FormControl>
+          ) : null}
         </Box>
         <Box mt={12}>
           <Circle
