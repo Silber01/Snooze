@@ -7,7 +7,6 @@ const {
   bookHotel,
   addReview,
   getAvailableRooms,
-  addRating,
 } = require('../controllers/hotelController')
 
 const router = express.Router()
@@ -28,8 +27,5 @@ router.patch('/booking', bookHotel)
 
 //Add Review
 router.put('/review', addReview);
-
-//Add Rating
-router.put('/rating', addRating)
 
 module.exports = router

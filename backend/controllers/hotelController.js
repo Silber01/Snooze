@@ -286,5 +286,4 @@ module.exports = {
   bookHotel,
   addReview,
   getAvailableRooms,
-  addRating,
 }
