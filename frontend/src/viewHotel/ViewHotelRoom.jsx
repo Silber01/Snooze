@@ -221,6 +221,20 @@ function ViewHotelRoom() {
                   borderRadius="10px"
                 ></Image>
               </Box>
+              {/* review box */}
+              <Box width="90%" height="8%">
+                <Input
+                  borderColor="white"
+                  placeholder="Write a review here."
+                  w="50vw"
+                  h="15vh"
+                  size="lg"
+                  type="text"
+                />
+                <Button background="#c6c1dc" mt={2} size="md" textColor="white">
+                  Submit Review
+                </Button>
+              </Box>
             </Grid>
           </Box>
         </Center>

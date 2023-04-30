@@ -117,7 +117,6 @@ function HomePage(props) {
     // console.log(rating);
     // console.log(sessionStorage.getItem("checkInDate"));
     // console.log(sessionStorage.getItem("checkOutDate"));
-
     // console.log(hotels)
     setHasSearched(true);
   }
