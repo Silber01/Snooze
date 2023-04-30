@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import {
   Box,
   Text,
@@ -7,8 +7,10 @@ import {
   Grid,
   Heading,
   Input,
+  VStack,
 } from "@chakra-ui/react";
 import { UserContext } from "../../context/UserContext";
+import Ratings from "../ratings/Ratings";
 
 function makeDateString(datestr) {
   let newDate = new Date(datestr);
@@ -89,6 +91,7 @@ function Booking({
   const handleViewHotel = () => {
     window.location.href = `http://localhost:3000/hotel/${hotelId}`;
   };
+  const ratingRef = useRef();
 
   return (
     <Box
@@ -168,18 +171,33 @@ function Booking({
 
           {isReviewing && (
             <div>
-              <Box width="90%" height="8%">
-                <Input
-                  borderColor="white"
-                  placeholder="Write a review here."
-                  w="50vw"
-                  h="15vh"
-                  size="lg"
-                  type="text"
-                />
-                <Button background="#c6c1dc" mt={4} size="md" textColor="white">
-                  Submit Review
-                </Button>
+              <Box width="90%" height="8%" mt={10}>
+                <VStack>
+                  <Input
+                    borderColor="#33333"
+                    placeholder="Write a review here."
+                    fontSize="3xl"
+                    w="80vw"
+                    h="20vh"
+                    size="lg"
+                    type="text"
+                  />
+                  <Ratings
+                    size={48}
+                    scale={5}
+                    fillColor="gold"
+                    strokeColor="grey"
+                    ref={ratingRef}
+                  />
+                  <Button
+                    background="#c6c1dc"
+                    mt={4}
+                    size="lg"
+                    textColor="white"
+                  >
+                    Submit Review
+                  </Button>
+                </VStack>
               </Box>
             </div>
           )}
