@@ -5,8 +5,7 @@ import { Box, Icon, Stack, Text } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 
 const Rating = React.forwardRef(
-  ({ size, icon, scale, fillColor, strokeColor }, ref) => {
-    const [rating, setRating] = useState(0);
+  ({ size, icon, scale, fillColor, strokeColor, rating, setRating }, ref) => {
     const buttons = [];
 
     const onClick = (idx) => {

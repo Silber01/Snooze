@@ -79,12 +79,16 @@ function ViewHotelRoom() {
   let [ratingCount, setRatingCount] = useState(0);
   let [reviews, setReviews] = useState([]);
   let [chosenRoom, setChosenRoom] = useState(null);
-  let [datesWrong, setDatesWrong] = useState(false)
-  let [collides, setCollides] = useState(false)
+  let [datesWrong, setDatesWrong] = useState(false);
+  let [collides, setCollides] = useState(false);
   const [validDates, setValidDates] = useState(true);
   let [duration, setDuration] = useState(0);
-  const [startDate, setStartDate] = useState(sessionStorage.getItem("checkInDate"))
-  const [endDate, setEndDate] = useState(sessionStorage.getItem("checkOutDate"))
+  const [startDate, setStartDate] = useState(
+    sessionStorage.getItem("checkInDate")
+  );
+  const [endDate, setEndDate] = useState(
+    sessionStorage.getItem("checkOutDate")
+  );
 
   const checkInRef = useRef();
   const checkOutRef = useRef();
@@ -97,61 +101,57 @@ function ViewHotelRoom() {
   }
 
   async function checkCollision() {
-    if (!startDate || !endDate)
-    {
-      return
+    if (!startDate || !endDate) {
+      return;
     }
-    console.log(userData)
+    console.log(userData);
     const bearerToken = "Bearer " + userData.token;
-    console.log(bearerToken)
-    const apiReq = apiUrl + "/api/user/checkCollisions?firstDate=" + startDate + "&lastDate=" + endDate
-    console.log("Api request: " + apiReq)
-    const response = await fetch(
-      apiReq,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: bearerToken,
-        }
-      }
-    );
+    console.log(bearerToken);
+    const apiReq =
+      apiUrl +
+      "/api/user/checkCollisions?firstDate=" +
+      startDate +
+      "&lastDate=" +
+      endDate;
+    console.log("Api request: " + apiReq);
+    const response = await fetch(apiReq, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: bearerToken,
+      },
+    });
     const json = await response.json();
-    console.log(json)
+    console.log(json);
     if (json.valid) {
       console.log("Does not collide");
-      setCollides(false)
-    }
-    else {
+      setCollides(false);
+    } else {
       console.log("collides");
-      setCollides(true)
+      setCollides(true);
     }
-  };
-
-  function datesMakeSense()
-  {
-    setDatesWrong(!(Boolean(
-      startDate != null &&
-        endDate != null &&
-        isNotPast(startDate) &&
-        isNotPast(endDate) &&
-        intervalLength(startDate, endDate) > 0))
-    )
   }
 
+  function datesMakeSense() {
+    setDatesWrong(
+      !Boolean(
+        startDate != null &&
+          endDate != null &&
+          isNotPast(startDate) &&
+          isNotPast(endDate) &&
+          intervalLength(startDate, endDate) > 0
+      )
+    );
+  }
 
   function checkValidDates() {
-    datesMakeSense()
+    datesMakeSense();
     try {
-      checkCollision()
+      checkCollision();
+    } catch (error) {
+      console.log("Collision Check Error");
     }
-    catch (error) {
-      console.log("Collision Check Error")
-    }
-    
-
   }
-    
 
   useEffect(() => {
     fetchData(params.id);
@@ -159,22 +159,16 @@ function ViewHotelRoom() {
   }, []);
 
   useEffect(() => {
-    console.log("collides: " + collides)
-    console.log("dates wrong: " + datesWrong)
-    if (!collides && !datesWrong)
-      {
+    console.log("collides: " + collides);
+    console.log("dates wrong: " + datesWrong);
+    if (!collides && !datesWrong) {
       setValidDates(true);
-      setDuration(
-        intervalLength(
-          startDate,
-          endDate
-        )
-      );
+      setDuration(intervalLength(startDate, endDate));
     } else {
       setValidDates(false);
       setDuration(0);
     }
-  }, [collides, datesWrong])
+  }, [collides, datesWrong]);
 
   // useEffect(() => {
   //   if (chosenRoom != null) {
@@ -198,6 +192,10 @@ function ViewHotelRoom() {
     }
   }, [chosenRoom]);
 
+  useEffect(() => {
+    checkValidDates();
+  }, [startDate, endDate]);
+
   function roomsForText() {
     if (!startDate || !endDate) return "Rooms";
 
@@ -216,21 +214,19 @@ function ViewHotelRoom() {
           You can't make reservations for the past!
         </Text>
       );
-    }
-    else if (datesWrong) {
+    } else if (datesWrong) {
       return (
         <Text color="red" fontSize="20">
           Your check-in time must be before your check-out time.
         </Text>
       );
+    } else if (collides) {
+      return (
+        <Text color="red" fontSize="20">
+          You already have a booking during this time!
+        </Text>
+      );
     }
-      else if (collides) {
-        return (
-          <Text color="red" fontSize="20">
-            You already have a booking during this time!
-          </Text>
-        );
-    } 
     return <></>;
   }
 
@@ -251,9 +247,17 @@ function ViewHotelRoom() {
                     {rating} stars from {ratingCount} Visitors
                   </Text>
                 </Box>
-                <Flex direction="column" maxHeight="400px" overflowY="scroll" mr="5" padding="1" borderColor="#eeeeee" borderWidth="3px" borderRadius="3px">
-                {reviews
-                  .map((review, ind) => {
+                <Flex
+                  direction="column"
+                  maxHeight="400px"
+                  overflowY="scroll"
+                  mr="5"
+                  padding="1"
+                  borderColor="#eeeeee"
+                  borderWidth="3px"
+                  borderRadius="3px"
+                >
+                  {reviews.map((review, ind) => {
                     return <Review key={ind} review={review} />;
                   })}
                 </Flex>
@@ -306,9 +310,8 @@ function ViewHotelRoom() {
                   "checkOutDate",
                   checkOutRef.current.value
                 );
-                setStartDate(checkInRef.current.value)
-                setEndDate(checkOutRef.current.value)
-                checkValidDates();
+                setStartDate(checkInRef.current.value);
+                setEndDate(checkOutRef.current.value);
               }}
             >
               Set

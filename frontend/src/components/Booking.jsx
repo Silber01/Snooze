@@ -10,10 +10,11 @@ import {
   VStack,
   Textarea,
   Center,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 import { UserContext } from "../../context/UserContext";
 import Ratings from "../ratings/Ratings";
+import StarRating from "./StarRating";
 
 function makeDateString(datestr) {
   let newDate = new Date(datestr);
@@ -39,7 +40,8 @@ function Booking({
   const [imageURL, setImageURL] = useState("");
   const [roomType, setRoomType] = useState("");
   const [confirmCancel, setCancelButtonText] = useState(false);
-  const [isReviewing, setReviewing] = useState(false);
+  const [hasReviewed, setHasReviewed] = useState(false);
+  const [revInfo, setRevInfo] = useState([0, ""]);
 
   function showCancelConfirmation() {
     setCancelButtonText(true);
@@ -92,6 +94,14 @@ function Booking({
     fetchHotel();
   }, [hotelId, roomId]);
 
+  useEffect(() => {
+    let reviews = userContext.reviews;
+    reviews.forEach((rev) => {
+      if (rev.hotelId == hotelId) setHasReviewed(true);
+      setRevInfo([rev.rating, rev.review]);
+    });
+  }, []);
+
   const handleViewHotel = () => {
     window.location.href = `http://localhost:3000/hotel/${hotelId}`;
   };
@@ -99,12 +109,6 @@ function Booking({
   const reviewRef = useRef();
 
   const submitReview = async (ratingValue, reviewText) => {
-    console.log("token: ", userContext.token);
-    console.log("userId: ", userContext._id);
-    console.log("body: ", reviewText);
-    console.log("id: ", hotelId);
-    console.log("rating: ", ratingValue);
-
     /** addRating
      * hotelID: hotelId
      * rating: ratingValue
@@ -115,28 +119,118 @@ function Booking({
      * else: render the text box for the reivew and then make the api call with the review
      */
 
-    // const bearerToken = "Bearer " + userContext.token;
-    // const response = await fetch("http://localhost:4000" + "api/hotel/rating", {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: bearerToken,
-    //   },
-    //   body: JSON.stringify({
-    //     body: reviewText,
-    //     id: hotelId,
-    //     userId: userContext.id,
-    //     rating: ratingValue,
-    //   }),
-    // });
-    // const json = await response.json();
-    // if (response.ok) {
-    //   console.log("rating added!");
-    // }
-    // if (!response.ok) {
-    //   console.log("error");
-    // }
+    const bearerToken = "Bearer " + userContext.token;
+    const response = await fetch(
+      "http://localhost:4000" + "/api/hotel/review",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        },
+        body: JSON.stringify({
+          hotelId: hotelId,
+          rating: Math.max(ratingRef.current.value, 1),
+          review: reviewRef.current.value,
+          name: userContext.firstName + " " + userContext.lastName,
+        }),
+      }
+    );
+    const json = await response.json();
+    if (response.ok) {
+      console.log("review added!");
+    }
+    if (!response.ok) {
+      console.log("error");
+    }
+    window.location.reload(false);
   };
+  function ReviewBox() {
+    const [rating, setRating] = useState(0);
+    if (isCurrent) return <></>;
+    if (hasReviewed) {
+      return (
+        <Box
+          width="80%"
+          minHeight="50%"
+          borderColor="#aaaaaa"
+          borderWidth="1px"
+          borderRadius="10px"
+          p="5"
+        >
+          <Box width="15em">
+            <StarRating rating={revInfo[0]} />
+          </Box>
+          <Box pt="5">
+            <Text fontSize="20">{revInfo[1]}</Text>
+          </Box>
+        </Box>
+      );
+    }
+    function SubmitRating() {
+      if (rating != 0) {
+        return (
+          <Button
+            minWidth="130px"
+            background="#c6c1dc"
+            mt={10}
+            size="lg"
+            textColor="white"
+            onClick={() =>
+              submitReview(ratingRef.current.value, reviewRef.current.value)
+            }
+          >
+            Submit Review
+          </Button>
+        );
+      }
+      return (
+        <Button
+          colorScheme="blackAlpha"
+          mt={10}
+          size="lg"
+          cursor="not-allowed"
+          minWidth="130px"
+        >
+          Submit Review
+        </Button>
+      );
+    }
+    return (
+      <div>
+        <Box width="70%" height="8%" mt={10}>
+          <Box>
+            <Textarea
+              borderColor="#33333"
+              placeholder="Write a review here."
+              fontSize="3xl"
+              w="100%"
+              h="20vh"
+              size="lg"
+              type="text"
+              ref={reviewRef}
+              onChange={() => {
+                setRating(ratingRef.current.value);
+              }}
+            />
+            <Grid width="80%" templateColumns="2fr 1fr">
+              <Ratings
+                size={60}
+                scale={5}
+                fillColor="gold"
+                strokeColor="grey"
+                ref={ratingRef}
+                rating={rating}
+                setRating={setRating}
+              />
+
+              <SubmitRating />
+            </Grid>
+          </Box>
+        </Box>
+      </div>
+    );
+  }
 
   return (
     <Box
@@ -170,6 +264,7 @@ function Booking({
               <Text fontSize="25" mb={2}>
                 Price Paid: ${price}
               </Text>
+              <ReviewBox />
             </Box>
             <Image
               src={imageURL}
@@ -180,6 +275,7 @@ function Booking({
               borderRadius="10px"
             />
           </Grid>
+
           <Button onClick={handleViewHotel} colorScheme="blue" mt={4} mr={2}>
             View Hotel
           </Button>
@@ -194,30 +290,39 @@ function Booking({
             </Button>
           )}
           {confirmCancel && (
-            <Box borderWidth="1px" borderColor="#aaaaaa" width="50%" mt="5" p="5">
+            <Box
+              borderWidth="1px"
+              borderColor="#aaaaaa"
+              width="50%"
+              mt="5"
+              p="5"
+            >
               <VStack>
                 <Heading size="lg">Are you sure?</Heading>
-                <Text>You will only be refunded ${(price * 0.75).toFixed(2)}</Text>
-            <Flex>
-            <Button
-              colorScheme="red"
-              m="5"
-              onClick={handleCancelBooking}
-            >
-              Confirm Cancellation
-            </Button>
-            <Button
-              colorScheme="blackAlpha"
-              m="5"
-              onClick={() => {setCancelButtonText(false)}}
-            >
-              Do Not Cancel
-            </Button>
-            </Flex>
-            </VStack>
+                <Text textAlign="center">
+                  You will only be refunded ${(price * 0.75).toFixed(2)}
+                </Text>
+                <Text textAlign="center">
+                  (75% of what you originally paid)
+                </Text>
+                <Flex>
+                  <Button colorScheme="red" m="5" onClick={handleCancelBooking}>
+                    Confirm Cancellation
+                  </Button>
+                  <Button
+                    colorScheme="blackAlpha"
+                    m="5"
+                    onClick={() => {
+                      setCancelButtonText(false);
+                    }}
+                  >
+                    Do Not Cancel
+                  </Button>
+                </Flex>
+              </VStack>
             </Box>
           )}
-          {!isCurrent && (
+          {/* {!isCurrent && (
             <Button
               colorScheme="green"
               mt={4}
@@ -226,49 +331,7 @@ function Booking({
             >
               Add Review
             </Button>
-          )}
-
-          {isReviewing && (
-            <div>
-              <Box width="90%" height="8%" mt={10}>
-                <Box>
-                  <Textarea
-                    borderColor="#33333"
-                    placeholder="Write a review here."
-                    fontSize="3xl"
-                    w="70vw"
-                    h="20vh"
-                    size="lg"
-                    type="text"
-                    ref={reviewRef}
-                  />
-                  <Grid width="50%" templateColumns="2fr 1fr">
-                  <Ratings
-                    size={60}
-                    scale={5}
-                    fillColor="gold"
-                    strokeColor="grey"
-                    ref={ratingRef}
-                  />
-                  <Button
-                    background="#c6c1dc"
-                    mt={10}
-                    size="lg"
-                    textColor="white"
-                    onClick={() =>
-                      submitReview(
-                        ratingRef.current.value,
-                        reviewRef.current.value
-                      )
-                    }
-                  >
-                    Submit Review
-                  </Button>
-                  </Grid>
-                </Box>
-              </Box>
-            </div>
-          )}
+          )} */}
         </Box>
       )}
     </Box>
