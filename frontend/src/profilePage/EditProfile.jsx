@@ -18,7 +18,6 @@ import {
 
 const EditProfile = ({ user }) => {
   const userData = useContext(UserContext);
-  console.log(userData);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();

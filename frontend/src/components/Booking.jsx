@@ -1,5 +1,13 @@
 import { useContext, useState, useEffect } from "react";
-import { Box, Text, Button, Image, Grid, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Button,
+  Image,
+  Grid,
+  Heading,
+  Input,
+} from "@chakra-ui/react";
 import { UserContext } from "../../context/UserContext";
 
 function makeDateString(datestr) {
@@ -25,6 +33,7 @@ function Booking({
   const [imageURL, setImageURL] = useState("");
   const [roomType, setRoomType] = useState("");
   const [confirmCancel, setCancelButtonText] = useState(false);
+  const [isReviewing, setReviewing] = useState(false);
 
   function showCancelConfirmation() {
     setCancelButtonText(true);
@@ -33,6 +42,7 @@ function Booking({
   const handleCancelBooking = async () => {
     const bearerToken = "Bearer " + userContext.token;
     console.log(bookingID, bearerToken);
+    // get reward points from this booking, remove them from the users account
     const response = await fetch(
       "http://localhost:4000" + "/api/user/cancelbooking",
       {
@@ -146,9 +156,32 @@ function Booking({
             </Button>
           )}
           {!isCurrent && (
-            <Button colorScheme="green" mt={4} mr={2}>
+            <Button
+              colorScheme="green"
+              mt={4}
+              mr={2}
+              onClick={() => setReviewing(true)}
+            >
               Add Review
             </Button>
+          )}
+
+          {isReviewing && (
+            <div>
+              <Box width="90%" height="8%">
+                <Input
+                  borderColor="white"
+                  placeholder="Write a review here."
+                  w="50vw"
+                  h="15vh"
+                  size="lg"
+                  type="text"
+                />
+                <Button background="#c6c1dc" mt={4} size="md" textColor="white">
+                  Submit Review
+                </Button>
+              </Box>
+            </div>
           )}
         </Box>
       )}
