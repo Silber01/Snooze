@@ -8,6 +8,7 @@ import {
   Heading,
   Input,
   VStack,
+  Textarea,
 } from "@chakra-ui/react";
 import { UserContext } from "../../context/UserContext";
 import Ratings from "../ratings/Ratings";
@@ -214,8 +215,8 @@ function Booking({
           {isReviewing && (
             <div>
               <Box width="90%" height="8%" mt={10}>
-                <VStack>
-                  <Input
+                <Box>
+                  <Textarea
                     borderColor="#33333"
                     placeholder="Write a review here."
                     fontSize="3xl"
@@ -225,16 +226,18 @@ function Booking({
                     type="text"
                     ref={reviewRef}
                   />
+                  <Grid width="50%" templateColumns="2fr 1fr">
                   <Ratings
-                    size={48}
+                    size={60}
                     scale={5}
+                    gap={1}
                     fillColor="gold"
                     strokeColor="grey"
                     ref={ratingRef}
                   />
                   <Button
                     background="#c6c1dc"
-                    mt={4}
+                    mt={10}
                     size="lg"
                     textColor="white"
                     onClick={() =>
@@ -246,7 +249,8 @@ function Booking({
                   >
                     Submit Review
                   </Button>
-                </VStack>
+                  </Grid>
+                </Box>
               </Box>
             </div>
           )}

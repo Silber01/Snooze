@@ -83,6 +83,8 @@ function ViewHotelRoom() {
   let [collides, setCollides] = useState(false)
   const [validDates, setValidDates] = useState(true);
   let [duration, setDuration] = useState(0);
+  const [startDate, setStartDate] = useState(sessionStorage.getItem("checkInDate"))
+  const [endDate, setEndDate] = useState(sessionStorage.getItem("checkOutDate"))
 
   const checkInRef = useRef();
   const checkOutRef = useRef();
@@ -94,15 +96,15 @@ function ViewHotelRoom() {
     setHotel(data);
   }
 
-  async function checkCollision(firstDate, lastDate) {
-    if (!firstDate || !lastDate)
+  async function checkCollision() {
+    if (!startDate || !endDate)
     {
       return
     }
     console.log(userData)
     const bearerToken = "Bearer " + userData.token;
     console.log(bearerToken)
-    const apiReq = apiUrl + "/api/user/checkCollisions?firstDate=" + firstDate + "&lastDate=" + lastDate
+    const apiReq = apiUrl + "/api/user/checkCollisions?firstDate=" + startDate + "&lastDate=" + endDate
     console.log("Api request: " + apiReq)
     const response = await fetch(
       apiReq,
@@ -126,24 +128,22 @@ function ViewHotelRoom() {
     }
   };
 
-  function datesMakeSense(checkIn, checkOut)
+  function datesMakeSense()
   {
     setDatesWrong(!(Boolean(
-      checkIn != null &&
-        checkOut != null &&
-        isNotPast(checkIn) &&
-        isNotPast(checkOut) &&
-        intervalLength(checkIn, checkOut) > 0))
+      startDate != null &&
+        endDate != null &&
+        isNotPast(startDate) &&
+        isNotPast(endDate) &&
+        intervalLength(startDate, endDate) > 0))
     )
   }
 
 
   function checkValidDates() {
-    let checkIn = sessionStorage.getItem("checkInDate");
-    let checkOut = sessionStorage.getItem("checkOutDate");
-    datesMakeSense(checkIn, checkOut)
+    datesMakeSense()
     try {
-      checkCollision(checkIn, checkOut)
+      checkCollision()
     }
     catch (error) {
       console.log("Collision Check Error")
@@ -166,8 +166,8 @@ function ViewHotelRoom() {
       setValidDates(true);
       setDuration(
         intervalLength(
-          sessionStorage.getItem("checkInDate"),
-          sessionStorage.getItem("checkOutDate")
+          startDate,
+          endDate
         )
       );
     } else {
@@ -199,22 +199,18 @@ function ViewHotelRoom() {
   }, [chosenRoom]);
 
   function roomsForText() {
-    let checkIn = sessionStorage.getItem("checkInDate");
-    let checkOut = sessionStorage.getItem("checkOutDate");
-    if (!checkIn || !checkOut) return "Rooms";
+    if (!startDate || !endDate) return "Rooms";
 
     return (
       "Rooms for " +
-      checkIn.replaceAll("-", "/") +
+      startDate.replaceAll("-", "/") +
       " - " +
-      checkOut.replaceAll("-", "/")
+      endDate.replaceAll("-", "/")
     );
   }
 
   function ErrorText() {
-    let checkIn = sessionStorage.getItem("checkInDate");
-    let checkOut = sessionStorage.getItem("checkOutDate");
-    if (!isNotPast(checkIn) || !isNotPast(checkOut)) {
+    if (!isNotPast(startDate) || !isNotPast(endDate)) {
       return (
         <Text color="red" fontSize="20">
           You can't make reservations for the past!
@@ -255,12 +251,12 @@ function ViewHotelRoom() {
                     {rating} stars from {ratingCount} Visitors
                   </Text>
                 </Box>
-
+                <Flex direction="column" maxHeight="400px" overflowY="scroll" mr="5" padding="1" borderColor="#eeeeee" borderWidth="3px" borderRadius="3px">
                 {reviews
-                  .slice(0, Math.min(4, reviews.length))
                   .map((review, ind) => {
                     return <Review key={ind} review={review} />;
                   })}
+                </Flex>
               </Box>
               <Box height="600px">
                 <Image
@@ -310,6 +306,8 @@ function ViewHotelRoom() {
                   "checkOutDate",
                   checkOutRef.current.value
                 );
+                setStartDate(checkInRef.current.value)
+                setEndDate(checkOutRef.current.value)
                 checkValidDates();
               }}
             >
