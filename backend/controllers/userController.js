@@ -415,19 +415,14 @@ const checkCollisions = async (req, res) => {
     var userId = atob(auth);
     userId = userId.substring(8, 32);
 
-    const { hotelID } = req.query;
-    const { roomID } = req.query;
     const firstDate = new Date(req.query.firstDate);
     const lastDate = new Date(req.query.lastDate);
 
-    if (!mongoose.Types.ObjectId.isValid(hotelID)) {
-      return res.status(404).json({ error: "No such hotel" });
-    }
     if (lastDate == "Invalid Date" || firstDate == "Invalid Date") {
       return res.status(400).json({ error: "Invalid First or Last Date." });
     }
     if (lastDate.valueOf() < firstDate.valueOf()) {
-      return res.status(400).json({ error: "Last date is before." });
+      return res.status(400).json({ error: "Last date is before first date." });
     }
     if (firstDate.valueOf() <= new Date().valueOf()) {
       return res.status(400).json({ error: "First Date is before today." });
@@ -441,11 +436,7 @@ const checkCollisions = async (req, res) => {
     const dataCheck = await User.aggregate([
         { $match: {_id: mongoose.Types.ObjectId(userId)}},
         { $project: {
-            bookings: {$filter: {
-                input: '$bookings',
-                as: 'book',
-                cond: {$and:[{$eq: ['$$book.hotelID', hotelID]}, {$eq: ['$$book.roomID', roomID]}]}
-            }}
+            bookings: 1
         }}
     ])
 
