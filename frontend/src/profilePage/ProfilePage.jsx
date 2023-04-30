@@ -254,6 +254,9 @@ function ProfilePage(props) {
               />
             </Box>
           ))}
+        {currentBookings.length == 0 && (
+          <Text fontWeight="bold">You have no current bookings.</Text>
+        )}
       </Box>
 
       <Box p="10">
@@ -269,11 +272,21 @@ function ProfilePage(props) {
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
                 bookingID={booking._id}
-                price={booking.price}
+                price={(
+                  booking.price *
+                  intervalLength(
+                    booking.firstDate.substring(0, 10),
+                    booking.lastDate.substring(0, 10)
+                  ) *
+                  1.15
+                ).toFixed(2)}
                 isCurrent={false}
               />
             </Box>
           ))}
+        {pastBookings.length == 0 && (
+          <Text fontWeight="bold">You have no past bookings.</Text>
+        )}
       </Box>
     </Box>
   );
