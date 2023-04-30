@@ -40,12 +40,12 @@ const EditProfile = ({ user }) => {
   return (
     <>
       <SnoozeHeader />
-      <Heading align="center" fontSize={25} mt={7}>
+      {/* <Heading align="center" fontSize={25} mt={7}>
         Edit Profile
-      </Heading>
-      <Box align="center">
+      </Heading> */}
+      {/* <Box align="center">
         <Image mt={4} borderRadius="full" boxSize="130px" src={image} alt="" />
-      </Box>
+      </Box> */}
 
       <FormControl onSubmit={handleSave}>
         <Stack spacing={8} align="center" mt={20}>

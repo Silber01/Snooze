@@ -65,6 +65,10 @@ function ProfilePage(props) {
     console.log(past);
   }, [bookings]);
 
+  function handleClick(id) {
+    navigate("/profilepage/" + id);
+  }
+
   return (
     <Box>
       <Navbar />
@@ -77,7 +81,8 @@ function ProfilePage(props) {
             <Text>Name: {name}</Text>
             <Text mt={4}>Email: {props.user.email}</Text>
           </Box>
-          <Button mt={4} width="40%">
+          <Button onClick={() => {
+          handleClick(props.user._id);}} mt={4} width="40%">
             Edit
           </Button>
         </Box>
