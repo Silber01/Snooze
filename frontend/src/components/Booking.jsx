@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box, Text, Button, Image, Grid, Heading } from "@chakra-ui/react";
+import { UserContext } from "../../context/UserContext";
 
 function makeDateString(datestr) {
   let newDate = new Date(datestr);
@@ -14,13 +15,47 @@ function Booking({
   checkOutDate,
   price,
   isCurrent,
+  bookingID,
 }) {
+  const userContext = useContext(UserContext);
   checkInDate = makeDateString(checkInDate);
   checkOutDate = makeDateString(checkOutDate);
   const [bookingConfirmed, setBookingConfirmed] = useState(true);
   const [hotelName, setHotelName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [roomType, setRoomType] = useState("");
+  const [confirmCancel, setCancelButtonText] = useState(false);
+
+  function showCancelConfirmation() {
+    setCancelButtonText(true);
+  }
+
+  const handleCancelBooking = async () => {
+    const bearerToken = "Bearer " + userContext.token;
+    console.log(bookingID, bearerToken);
+    const response = await fetch(
+      "http://localhost:4000" + "/api/user/cancelbooking",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        },
+        body: JSON.stringify({
+          userBookingID: bookingID,
+        }),
+      }
+    );
+    const json = await response.json();
+    if (response.ok) {
+      console.log("booking removed!");
+    }
+    if (!response.ok) {
+      console.log("error");
+    }
+    window.location.reload(false);
+  };
+
   let data = {};
   useEffect(() => {
     const fetchHotel = async () => {
@@ -91,8 +126,23 @@ function Booking({
             View Hotel
           </Button>
           {isCurrent && (
-            <Button colorScheme="red" mt={4} mr={2}>
+            <Button
+              colorScheme="red"
+              mt={4}
+              mr={2}
+              onClick={showCancelConfirmation}
+            >
               Cancel Booking
+            </Button>
+          )}
+          {confirmCancel && (
+            <Button
+              colorScheme="red"
+              mt={4}
+              mr={2}
+              onClick={handleCancelBooking}
+            >
+              Confirm Cancellation
             </Button>
           )}
           {!isCurrent && (

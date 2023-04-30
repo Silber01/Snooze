@@ -39,6 +39,7 @@ function HomePage(props) {
   let [hotels, setHotels] = useState([]);
   let [hasSearched, setHasSearched] = useState(false);
   const userContext = useContext(UserContext);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (userContext == "NOT LOGGED IN") {

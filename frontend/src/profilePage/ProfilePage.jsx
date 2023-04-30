@@ -26,8 +26,8 @@ import SnoozeHeader from "../general/SnoozeHeader";
 
 function ProfilePage(props) {
   const userContext = useContext(UserContext);
-  const bookings = userContext.bookings;
 
+  const bookings = userContext.bookings;
   const name = `${props.user.firstName} ${props.user.lastName}`;
   const { email } = props;
 
@@ -40,8 +40,8 @@ function ProfilePage(props) {
 
   useEffect(() => {
     props.updateUser();
-    console.log(bookings)
-  }, [])
+    console.log(bookings);
+  }, []);
 
   let [currentBookings, setCurrentBookings] = useState([]);
   let [pastBookings, setPastBookings] = useState([]);
@@ -61,26 +61,28 @@ function ProfilePage(props) {
 
     setCurrentBookings(cur);
     setPastBookings(past);
-    console.log(cur)
-    console.log(past)
+    console.log(cur);
+    console.log(past);
   }, [bookings]);
 
   return (
     <Box>
       <Navbar />
       <Grid templateColumns="2fr 1fr">
-      <Box maxW="xl" mt={12} p="10">
-        <Heading size="lg" mt={4} mb={4}>
-          Personal Info
-        </Heading>
-        <Box fontSize="xl" fontWeight="{500}">
-          <Text>Name: {name}</Text>
-          <Text mt={4}>Email: {props.user.email}</Text>
+        <Box maxW="xl" mt={12} p="10">
+          <Heading size="lg" mt={4} mb={4}>
+            Personal Info
+          </Heading>
+          <Box fontSize="xl" fontWeight="{500}">
+            <Text>Name: {name}</Text>
+            <Text mt={4}>Email: {props.user.email}</Text>
+          </Box>
+          <Button mt={4} width="40%">
+            Edit
+          </Button>
         </Box>
-        <Button mt={4} width="40%">Edit</Button>
-      </Box>
-      <Box mt={12 }>
-      <Circle
+        <Box mt={12}>
+          <Circle
             size="20em"
             borderColor="pink"
             borderWidth="12px"
@@ -92,8 +94,8 @@ function ProfilePage(props) {
               Reward points
             </Text>
           </Circle>
-          </Box>
-        </Grid>
+        </Box>
+      </Grid>
       <Box mt={12} p="10">
         <Heading size="lg" mb={4}>
           Current Bookings
@@ -106,6 +108,7 @@ function ProfilePage(props) {
                 hotelId={booking.hotelID}
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
+                bookingID={booking._id}
                 price={booking.price}
                 isCurrent={true}
               />
@@ -125,6 +128,7 @@ function ProfilePage(props) {
                 hotelId={booking.hotelID}
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
+                bookingID={booking._id}
                 price={booking.price}
                 isCurrent={false}
               />
