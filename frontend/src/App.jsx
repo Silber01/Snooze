@@ -65,12 +65,6 @@ function App() {
             <Route 
               exact path="/profilepage" 
               element={<ProfilePage user={allUserData} updateUser={updateUser} />} />
-            
-            <Route
-              exact
-              path="/profilepage/:id"
-              element={<EditProfile user={allUserData} />}
-            />
             {/* <Route
               exact
               path="/editprofile"

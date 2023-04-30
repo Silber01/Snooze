@@ -115,7 +115,8 @@ function ProfilePage(props) {
   function handleClick() {
     navigate("/profilepage");
   }
-
+  const [firstNameValid, setFirstNameValid] = useState(true)
+  const [lastNameValid, setLastNameValid] = useState(true)
   return (
     <Box>
       <Navbar />
@@ -145,24 +146,30 @@ function ProfilePage(props) {
                 <div>
                   <FormLabel>First Name</FormLabel>
                   <Input
+                    isInvalid={!firstNameValid}
                     size="lg"
                     w={500}
                     type="text"
                     defaultValue={props.user.firstName}
                     onChange={(event) => {
-                      setFirstName(event.target.value);
+                      setFirstName(event.target.value.trim());
+                      setFirstNameValid(event.target.value != null &&
+                        event.target.value != "")
                     }}
                   />
                 </div>
                 <div>
                   <FormLabel>Last Name</FormLabel>
                   <Input
+                    isInvalid={!lastNameValid}
                     size="lg"
                     w={500}
                     type="text"
                     defaultValue={props.user.lastName}
                     onChange={(event) => {
                       setLastName(event.target.value);
+                      setLastNameValid(event.target.value != null &&
+                        event.target.value != "")
                     }}
                   />
                 </div>
@@ -171,7 +178,10 @@ function ProfilePage(props) {
                     type="button"
                     mr={3}
                     colorScheme="green"
-                    onClick={() => saveEdit()}
+                    onClick={() => {
+                      if (firstNameValid && lastNameValid)
+                        saveEdit()}
+                    }
                   >
                     Save
                   </Button>

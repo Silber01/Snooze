@@ -75,6 +75,7 @@ function HomePage(props) {
 
   useEffect(() => {
     fetchHotels();
+    checkValidDates();
   }, []);
 
   // useEffect(() => {
@@ -105,11 +106,8 @@ function HomePage(props) {
     console.log(checkIn);
     console.log(checkOut);
 
-    if (isNotPast(checkIn) && isNotPast(checkOut)) {
+    if (validDates) {
       searchHotels(location, minPrice, maxPrice, rating, sort);
-      setValidDates(true);
-    } else {
-      setValidDates(false);
     }
 
     // console.log(minPrice);
@@ -122,11 +120,21 @@ function HomePage(props) {
   }
 
   function checkValidDates() {
+    let checkIn = checkInRef.current.value;
+    let checkOut = checkOutRef.current.value;
     setValidDates(
-      dateToUnix(sessionStorage.getItem("checkInDate")) <=
-        dateToUnix(sessionStorage.getItem("checkOutDate"))
+      (intervalLength(checkIn, checkOut) > 0) && isNotPast(checkIn) && isNotPast(checkOut)
     );
   }
+
+  useEffect(() => {
+    let checkIn = checkInRef.current.value;
+    let checkOut = checkOutRef.current.value;
+    console.log(validDates)
+    console.log("interval length: " + intervalLength(checkIn, checkOut))
+    console.log(isNotPast(checkIn))
+    console.log(isNotPast(checkOut))
+  }, [validDates])
 
   return (
     <div>
