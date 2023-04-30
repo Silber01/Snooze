@@ -56,11 +56,11 @@ const getHotels = async (req, res) => {
     } else if (sort == 3) {
       sortObj["$sort"] = { "rooms.price": 1 };
     } else if (sort == 4) {
-      sortObj["$sort"] = { "rooms.price": -1 };
+      sortObj["$sort"] = { "rooms.0.price": -1 };
     } else if (sort == 5) {
-      sortObj["$sort"] = { ratings: 1 };
+      sortObj["$sort"] = { ratingcalc: 1 };
     } else if (sort == 6) {
-      sortObj["$sort"] = { ratings: -1 };
+      sortObj["$sort"] = { ratingcalc: -1 };
     }
 
     console.log(matchObj);
@@ -77,6 +77,7 @@ const getHotels = async (req, res) => {
             $divide: [
               {
                 $sum: [
+                  { $multiply: ["$ratings.1", 1] },
                   { $multiply: ["$ratings.2", 2] },
                   { $multiply: ["$ratings.3", 3] },
                   { $multiply: ["$ratings.4", 4] },
@@ -119,12 +120,26 @@ const getHotels = async (req, res) => {
           "rooms.price": { $lte: maxPrice },
         },
       },
+      {$unwind:"$rooms"},
+      {"$sort":{ "rooms.price": 1 }},
       {
-        $project: {
-          ratingcalc: 0,
-        },
+        $group: {
+          ratingcalc:{ $first: "$ratingcalc"},
+          _id: "$_id",
+          name: { $first: "$name" },
+          description: { $first: "$description" },
+          imgsrc: { $first: "$imgsrc" },
+          ratings: { $first: "$ratings" },
+          reviews: { $first: "$reviews" },
+          location: { $first: "$location" },
+          rooms: { $push: "$rooms" }
+        }
       },
       sortObj,
+      {
+        $project: {ratingcalc: 0}
+      }
+      
     ]);
     res.status(200).json(hotel);
   } catch (err) {
