@@ -10,7 +10,6 @@ const {
   bookHotel,
   addReview,
   getAvailableRooms,
-  addRating,
   generateHotel,
   checkHotel,
 } = require("../controllers/hotelController");
@@ -38,9 +37,6 @@ router.get("/checkhotel", checkHotel);
 
 //Add Review
 router.put("/review", addReview);
-
-//Add Rating
-router.put("/rating", addRating);
 
 // Generate a hotel
 router.put("/generate", generateHotel);

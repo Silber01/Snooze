@@ -374,54 +374,37 @@ const checkHotel = async (req, res) => {
  * @param hotelID
  */
 const addReview = async (req, res) => {
-  var authorization = req.headers.authorization.split(" ")[1];
-  const [, auth] = authorization.split(".");
+  var authorization = req.headers.authorization.split(' ')[1]
+  const [, auth,] = authorization.split(".")
   var userIds = atob(auth);
   userIds = userIds.substring(8, 32);
   var body = req.body;
-  const id = body.hotelID;
-  delete body.hotelID;
+  const id = body.hotelId;
   body.userId = userIds;
+  const id2 = body.userId;
+  const rating = body.rating;
 
-  const userReview = await Hotel.findById({ _id: id }).find({
-    reviews: { $elemMatch: { userId: userIds } },
-  });
-  console.log(JSON.stringify(userReview).includes("review"));
+  const userReview = await Hotel.findById({ _id: id }).find({ 'reviews': { $elemMatch: { userId: userIds } } });
   if (JSON.stringify(userReview).includes("review")) {
-    res.status(409).json("REVIEW ALREADY EXISTS");
-  } else {
-    const hotel = await Hotel.findByIdAndUpdate(
-      { _id: id },
-      {
-        $push: {
-          reviews: body,
-        },
-      }
-    );
+    res.status(409).json("REVIEW/RATING ALREADY EXISTS");
   }
-  res.status(200).json(userReview);
-};
-
-const addRating = async (req, res) => {
-  var authorization = req.headers.authorization.split(" ")[1];
-  const [, auth] = authorization.split(".");
-  var userId = atob(auth);
-  userId = userId.substring(8, 32);
-  var body = req.body;
-  const id = body.hotelID;
-  delete body.hotelID;
-  body.userId = userId;
-
-  const hotel = await Hotel.findByIdAndUpdate(
-    { _id: id },
-    {
-      $inc: {
-        [`ratings.${body.rating}`]: 1,
+  else {
+    const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
+      $push: {
+        "reviews": body
       },
-    }
-  );
-  res.status(200).json(hotel);
-};
+      $inc: {
+        [`ratings.${body.rating}`]:1
+      }
+    })
+    const user = await User.updateOne({_id: id2},{
+      $push:{
+        "reviews":body
+      }
+    })
+    res.status(200).json("success");
+  }
+}
 
 /**
  * Route to generate hotels.
@@ -439,7 +422,6 @@ module.exports = {
   bookHotel,
   addReview,
   getAvailableRooms,
-  addRating,
   generateHotel,
   checkHotel,
 };
