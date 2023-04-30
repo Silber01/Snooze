@@ -254,15 +254,19 @@ const addReview = async (req, res) => {
   const id = body.hotelId;
   body.userId = userIds;
   const id2 = body.userId;
+  const rating = body.rating;
 
   const userReview = await Hotel.findById({ _id: id }).find({ 'reviews': { $elemMatch: { userId: userIds } } });
   if (JSON.stringify(userReview).includes("review")) {
-    res.status(409).json("REVIEW ALREADY EXISTS");
+    res.status(409).json("REVIEW/RATING ALREADY EXISTS");
   }
   else {
     const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
       $push: {
         "reviews": body
+      },
+      $inc: {
+        [`ratings.${body.rating}`]:1
       }
     })
     const user = await User.updateOne({_id: id2},{
@@ -273,25 +277,6 @@ const addReview = async (req, res) => {
     res.status(200).json("success");
   }
 }
-
-const addRating = async (req, res) => {
-  var authorization = req.headers.authorization.split(' ')[1];
-  const [, auth,] = authorization.split(".")
-  var userId = atob(auth);
-  userId = userId.substring(8, 32);
-  var body = req.body
-  const id = body.hotelId;
-  delete body.hotelId;
-  body.userId = userId;
-
-  const hotel = await Hotel.findByIdAndUpdate({ _id: id }, {
-    $inc: {
-      [`ratings.${body.rating}`]: 1
-    }
-  })
-  res.status(200).json("success");
-}
-
 
 module.exports = {
   getAllHotels,
