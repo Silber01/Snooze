@@ -79,6 +79,8 @@ function ViewHotelRoom() {
   let [ratingCount, setRatingCount] = useState(0);
   let [reviews, setReviews] = useState([]);
   let [chosenRoom, setChosenRoom] = useState(null);
+  let [datesWrong, setDatesWrong] = useState(false)
+  let [collides, setCollides] = useState(false)
   const [validDates, setValidDates] = useState(true);
   let [duration, setDuration] = useState(0);
 
@@ -92,18 +94,67 @@ function ViewHotelRoom() {
     setHotel(data);
   }
 
+  async function checkCollision(firstDate, lastDate) {
+    const bearerToken = "Bearer " + userData.token;
+    const response = await fetch(
+      apiUrl + "/api/user/checkCollisions?firstDate=" + firstDate + "&lastDate=" + lastDate,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        }
+      }
+    );
+    const json = await response.json();
+    console.log(json)
+    if (json.valid) {
+      console.log("Does not collide");
+      setCollides(false)
+    }
+    else {
+      console.log("collides");
+      setCollides(true)
+    }
+  };
+
+  function datesMakeSense(checkIn, checkOut)
+  {
+    setDatesWrong(!(Boolean(
+      checkIn != null &&
+        checkOut != null &&
+        isNotPast(checkIn) &&
+        isNotPast(checkOut) &&
+        intervalLength(checkIn, checkOut) > 0))
+    )
+  }
+
+
   function checkValidDates() {
     let checkIn = sessionStorage.getItem("checkInDate");
     let checkOut = sessionStorage.getItem("checkOutDate");
-    if (
-      Boolean(
-        checkIn != null &&
-          checkOut != null &&
-          isNotPast(checkIn) &&
-          isNotPast(checkOut) &&
-          intervalLength(checkIn, checkOut) > 0
-      )
-    ) {
+    datesMakeSense(checkIn, checkOut)
+    try {
+      checkCollision(checkIn, checkOut)
+    }
+    catch (error) {
+      console.log("Collision Check Error")
+    }
+    
+
+  }
+    
+
+  useEffect(() => {
+    fetchData(params.id);
+    checkValidDates();
+  }, []);
+
+  useEffect(() => {
+    console.log("collides: " + collides)
+    console.log("dates wrong: " + datesWrong)
+    if (!collides && !datesWrong)
+      {
       setValidDates(true);
       setDuration(
         intervalLength(
@@ -115,18 +166,7 @@ function ViewHotelRoom() {
       setValidDates(false);
       setDuration(0);
     }
-  }
-
-  useEffect(() => {
-    fetchData(params.id);
-    checkValidDates();
-    setDuration(
-      intervalLength(
-        sessionStorage.getItem("checkInDate"),
-        sessionStorage.getItem("checkOutDate")
-      )
-    );
-  }, []);
+  }, [collides, datesWrong])
 
   // useEffect(() => {
   //   if (chosenRoom != null) {
@@ -172,19 +212,21 @@ function ViewHotelRoom() {
           You can't make reservations for the past!
         </Text>
       );
-    } else if (duration <= 0) {
+    }
+    else if (datesWrong) {
       return (
         <Text color="red" fontSize="20">
           Your check-in time must be before your check-out time.
         </Text>
       );
-    } else if (!validDates) {
-      return (
-        <Text color="red" fontSize="20">
-          You already have a booking during this time!
-        </Text>
-      );
     }
+      else if (collides) {
+        return (
+          <Text color="red" fontSize="20">
+            You already have a booking during this time!
+          </Text>
+        );
+    } 
     return <></>;
   }
 
