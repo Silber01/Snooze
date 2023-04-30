@@ -9,6 +9,8 @@ import {
   Input,
   VStack,
   Textarea,
+  Center,
+  Flex
 } from "@chakra-ui/react";
 import { UserContext } from "../../context/UserContext";
 import Ratings from "../ratings/Ratings";
@@ -192,14 +194,28 @@ function Booking({
             </Button>
           )}
           {confirmCancel && (
+            <Box borderWidth="1px" borderColor="#aaaaaa" width="50%" mt="5" p="5">
+              <VStack>
+                <Heading size="lg">Are you sure?</Heading>
+                <Text>You will only be refunded ${(price * 0.75).toFixed(2)}</Text>
+            <Flex>
             <Button
               colorScheme="red"
-              mt={4}
-              mr={2}
+              m="5"
               onClick={handleCancelBooking}
             >
               Confirm Cancellation
             </Button>
+            <Button
+              colorScheme="blackAlpha"
+              m="5"
+              onClick={() => {setCancelButtonText(false)}}
+            >
+              Do Not Cancel
+            </Button>
+            </Flex>
+            </VStack>
+            </Box>
           )}
           {!isCurrent && (
             <Button
@@ -230,7 +246,6 @@ function Booking({
                   <Ratings
                     size={60}
                     scale={5}
-                    gap={1}
                     fillColor="gold"
                     strokeColor="grey"
                     ref={ratingRef}

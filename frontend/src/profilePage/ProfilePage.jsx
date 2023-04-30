@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import image from "../../assets/sampleprofile.png";
 import Rewardpoints from "./Rewardpoints";
 import Booking from "../components/Booking";
-import { isNotPast } from "../intervals";
+import { intervalLength, isNotPast } from "../intervals";
 import Navbar from "../Navbar";
 import {
   SimpleGrid,
@@ -225,7 +225,7 @@ function ProfilePage(props) {
                 checkInDate={booking.firstDate}
                 checkOutDate={booking.lastDate}
                 bookingID={booking._id}
-                price={booking.price}
+                price={(booking.price * intervalLength(booking.firstDate.substring(0,10), booking.lastDate.substring(0,10)) * 1.15).toFixed(2)}
                 isCurrent={true}
               />
             </Box>

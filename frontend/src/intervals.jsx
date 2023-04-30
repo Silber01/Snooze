@@ -20,7 +20,6 @@ export function isNotPast(timestamp)
 {
     let date = dateToUnix(timestamp)
     let today = Date.now() - (Date.now() % 86400000)
-    console.log(date / 86400000, today / 86400000)
     return date >= today
 
 }
