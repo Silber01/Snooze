@@ -1,43 +1,72 @@
-import React from "react";
-import "./EditProfile.css";
+import React, { useEffect, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SnoozeHeader from "../general/SnoozeHeader";
-import icon from "../../assets/sampleprofile.png";
+import image from "../../assets/sampleprofile.png";
+import {
+  Box,
+  Button,
+  Heading,
+  Input,
+  Stack,
+  Image,
+  FormControl,
+  Tag,
+  FormLabel,
+} from "@chakra-ui/react";
 
-const EditProfile = (props) => {
-  let navigate = useNavigate();
+const EditProfile = ({ user }) => {
+  const userData = useContext(UserContext);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const navigate = useNavigate();
 
-  const name = `${props.user.firstName} ${props.user.lastName}`;
+  const handleSave = (event) => {
+    event.preventDefault();
+  };
 
+  function handleClick() {
+    navigate("/profilepage");
+  }
+
+  useEffect(() => {
+    if (userData.firstName) {
+      setFirstName(userData.firstName);
+      setLastName(userData.lastName);
+    }
+  }, [userData]);
   return (
-    <div className="EditProfile">
+    <>
       <SnoozeHeader />
-      <div className="container">
-        <div className="icon-box">
-          <p className="title">Edit Profile</p>
-          <img className="icon" src={icon} alt="" />
-          <p>Edit picture or avatar</p>
-        </div>
-        <div className="info-box">
-          <div className="single-box">
-            <p className="text-title">Name:</p>
-            <p>{name}</p>
+      <FormControl onSubmit={handleSave}>
+        <Stack spacing={8} align="center" mt={20}>
+          <div>
+            <FormLabel>First Name</FormLabel>
+            <Input
+              size="lg"
+              w={500}
+              type="text"
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
+            />
           </div>
-          <div className="single-box">
-            <p className="text-title">Email:</p>
-            <p>{props.user.email}</p>
+          <div>
+            <FormLabel>Last Name</FormLabel>
+            <Input
+              size="lg"
+              w={500}
+              type="text"
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
+            />
           </div>
-          {/* <div className='single-box'>
-            <p className='text-title'>Phone number:</p>
-            <p>{props.user.phoneNumber}</p>
-          </div> */}
-        </div>
-
-        <button className="button" onClick={() => navigate("/profilepage")}>
-          Save
-        </button>
-      </div>
-    </div>
+          <Button onClick={handleClick} mt={7} colorScheme="green">
+            Save
+          </Button>
+        </Stack>
+      </FormControl>
+    </>
   );
 };
 

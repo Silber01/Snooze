@@ -2,6 +2,7 @@ import "./SignUpTextfield.css";
 import SnoozeHeader from "../general/SnoozeHeader";
 import React, { useState, useRef, useEffect } from "react";
 import { useLogin } from "../../hooks/useLogin";
+import { Text, Link, Flex } from "@chakra-ui/react";
 
 const SignIn = (props) => {
   console.log("on sign in page");
@@ -67,12 +68,17 @@ const SignIn = (props) => {
             Sign In
           </button>
           {getErrorDiv(error)}
-          <p className="HaveAnAccountText">
-            Don't have one? <a href="./signup"> Sign Up</a>
-          </p>
-          <p className="HaveAnAccountText">
+
+          <Text align='center' mt={6} fontSize={20}>
+            Don't have one? {' '}
+            <Link color='messenger.500' href='./signup'>Sign up</Link>
+            <Flex direction='column' mt={4}>
+              <Link color='messenger.500' href='./forgotpassword'>Forgot Password?</Link>
+            </Flex>
+          </Text>
+          {/* <p className="HaveAnAccountText">
             <a href="./forgotpassword">Forgot Password?</a>
-          </p>
+          </p> */}
         </div>
       </div>
     </>

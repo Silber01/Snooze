@@ -1,88 +1,87 @@
 .Payment {
-    margin-left: 10%;
+  margin-left: 10%;
 }
 
 .paymentDetails {
-    font-size:30px;
-    font-family: "Arial";
-    font-weight:bold;
+  font-size: 30px;
+  font-family: "Arial";
+  font-weight: bold;
 }
 
 .reqField {
-    color:red;
+  color: red;
 }
 
-form .formLabel{
-    font-size: 20px;
-    font-family: "Arial";
-    font-weight: bold;
-
+form .formLabel {
+  font-size: 20px;
+  font-family: "Arial";
+  font-weight: bold;
 }
 
 form input {
-    padding-top:0.5%;
-    padding-bottom:0.5%;
-    border-radius: 3px;
-    border: 2px solid #ccc;
-    font-size:18px
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  border-radius: 3px;
+  border: 2px solid #ccc;
+  font-size: 18px;
 }
 
 form #firstName {
-    width:25%;
-    min-width:150px;
+  width: 25%;
+  min-width: 150px;
 }
 
 form #lastName {
-    width:25%;
-    min-width:150px;
+  width: 25%;
+  min-width: 150px;
 }
 
 form #cardNumber {
-    width:25%;
-    min-width:150px;
+  width: 25%;
+  min-width: 150px;
 }
 
 form #expDateMM {
-    min-width:30px;
-    width:2%;
-    text-align: center;
+  min-width: 30px;
+  width: 2%;
+  text-align: center;
 }
 form #expDateDD {
-    min-width:30px;
-    width:2%;
-    text-align: center;
+  min-width: 30px;
+  width: 2%;
+  text-align: center;
 }
 
 form .expDateDivider {
-    font-size: 30px;
-    font-weight: bold;
-    padding:1%;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 1%;
 }
 
 form #securityCode {
-    width:3%;
-    text-align: center;
-    min-width:40px;
+  width: 3%;
+  text-align: center;
+  min-width: 40px;
 }
 
 .billingAddress {
-    font-size:30px;
-    font-family: "Arial";
-    font-weight:bold;
+  font-size: 30px;
+  font-family: "Arial";
+  font-weight: bold;
 }
 
 .addressInfoLine {
-    display:grid;
-    grid-template-columns: 8% 25%;
-    min-height:80px;
+  display: grid;
+  grid-template-columns: 8% 25%;
+  min-height: 80px;
 }
 
 .addressInfoLine label {
-    margin-top: 10%
+  margin-top: 10%;
 }
 
 .addressInfo label {
-    font-size:18px;
-    font-weight: bold;
-    font-family: "Arial";
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Arial";
 }

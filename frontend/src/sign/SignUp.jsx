@@ -3,6 +3,7 @@ import "./SignUpTextfield.css";
 import SnoozeHeader from "../general/SnoozeHeader";
 import { useState, useRef, useEffect } from "react";
 import { useSignup } from "../../hooks/useSignup";
+import { Link, Text } from "@chakra-ui/react";
 
 const SignUp = (props) => {
   const emailRef = useRef();
@@ -22,7 +23,7 @@ const SignUp = (props) => {
     setPasswordValid(true);
     if (!error) {
       console.log("successful signup");
-    } else if (error == "Invalid email") setEmailValid(false);
+    } else if (error == "Email not valid") setEmailValid(false);
     else if (error == "Password not strong enough") setPasswordValid(false);
     else if (error == "Email already in use") setEmailValid(false);
     else {
@@ -78,9 +79,11 @@ const SignUp = (props) => {
             Continue
           </button>
           {getErrorDiv(error)}
-          <p className="HaveAnAccountText">
-            Already have an account? <a href="./">Sign in</a>
-          </p>
+          
+          <Text align='center' mt={6} fontSize={20}>
+            Already have an account? {' '}
+            <Link color='messenger.500' href='./'>Sign in</Link>
+          </Text>
         </div>
       </div>
     </div>
