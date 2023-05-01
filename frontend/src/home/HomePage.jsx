@@ -274,7 +274,7 @@ function HomePage(props) {
               {/* error message displayed when dates are in the past (not used atm.) */}
               <Select variant="filled" ref={sortRef}>
                 <option value="1">Alphabetically</option>
-                <option value="2">Rating</option>
+                <option value="6">Rating</option>
                 <option value="3">Price: Low to High</option>
                 <option value="4">Price: High to Low</option>
               </Select>
