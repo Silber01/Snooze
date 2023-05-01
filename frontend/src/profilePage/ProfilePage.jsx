@@ -225,6 +225,8 @@ function ProfilePage(props) {
               {userContext.rewardPoints}
               <br />
               Reward points
+              <br />
+              Worth ${(userContext.rewardPoints / 1000).toFixed(2)}
             </Text>
           </Circle>
         </Box>
