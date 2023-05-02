@@ -5,8 +5,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start:backend": "node ./backend/app.js",
-    "start:frontend": "vite",
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview"
